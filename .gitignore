@@ -24,5 +24,3 @@ publishOutput/
 .config/
 .vs/
 appsettings.json
-*.csproj
-*.sln
