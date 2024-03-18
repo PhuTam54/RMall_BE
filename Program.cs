@@ -1,10 +1,13 @@
 using RMall_BE;
 using Microsoft.EntityFrameworkCore;
 
+//var builder = WebApplication.CreateBuilder(args);
+//builder.Services.AddDbContext<DataContext>(opt => 
+//    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+//);
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<DataContext>(opt => 
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-);
+builder.Services.AddDbContext<DataContext>(opt => opt.UseInMemoryDatabase("RMall"));
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // Add services to the container.
 
