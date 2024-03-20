@@ -16,11 +16,15 @@ namespace RMall_BE.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IShopRepository _shopRepository;
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly IFloorRepository _floorRepository;
 
-        public ShopsController(IMapper mapper, IShopRepository shopRepository)
+        public ShopsController(IMapper mapper, IShopRepository shopRepository, ICategoryRepository categoryRepository,IFloorRepository floorRepository)
         {
             _mapper = mapper;
             _shopRepository = shopRepository;
+            _categoryRepository = categoryRepository;
+            _floorRepository = floorRepository;
         }
 
         [HttpGet]
@@ -30,8 +34,9 @@ namespace RMall_BE.Controllers
             return Ok(shops);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetShop(int id)
+        [HttpGet]
+        [Route("id")]
+        public IActionResult GetShopById(int id)
         {
             if (!_shopRepository.ShopExist(id))
                 return NotFound();
@@ -44,7 +49,22 @@ namespace RMall_BE.Controllers
             return Ok(shop);
         }
 
-        
+        [HttpGet]
+        [Route("name")]
+        public IActionResult GetShopByName(string name)
+        {
+            var shop = _shopRepository.GetShopByName(name);
+            if (shop == null)
+                return NotFound();
+
+            var shopMap = _mapper.Map<ShopDto>(shop);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(shopMap);
+        }
+
         /// <summary>
         /// Create Shop
         /// </summary>
@@ -62,8 +82,14 @@ namespace RMall_BE.Controllers
         /// 
         /// </remarks>
         [HttpPost]
-        public IActionResult CreateShop([FromBody]ShopDto shopCreate)
+        public IActionResult CreateShop([FromQuery]int categoryId, [FromQuery] int floorId, [FromBody]ShopDto shopCreate)
         {
+            if(categoryId == null && floorId == null)
+                return BadRequest(ModelState);
+            if (!_categoryRepository.CategoryExist(categoryId))
+                return NotFound("Category Not Found!");
+            if (!_floorRepository.FloorExist(floorId))
+                return NotFound("Floor Not Found!");
             if (shopCreate == null)
                 return BadRequest(ModelState);
 
@@ -71,7 +97,8 @@ namespace RMall_BE.Controllers
                 return BadRequest(ModelState);
 
             var shopMap = _mapper.Map<Shop>(shopCreate);
-
+            shopMap.Category = _categoryRepository.GetCategoryById(categoryId);
+            shopMap.Floor = _floorRepository.GetFloorById(floorId);
 
             if (!_shopRepository.CreateShop(shopMap))
             {
@@ -82,7 +109,8 @@ namespace RMall_BE.Controllers
             return Ok("Successfully created");
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
+        [Route("id")]
         public IActionResult UpdateShop(int id, [FromBody]ShopDto updatedShop)
         {
             if (!_shopRepository.ShopExist(id))
@@ -99,14 +127,15 @@ namespace RMall_BE.Controllers
             var shopMap = _mapper.Map<Shop>(updatedShop);
             if (!_shopRepository.UpdateShop(shopMap))
             {
-                ModelState.AddModelError("", "Something went wrong updating reviewer");
+                ModelState.AddModelError("", "Something went wrong updating shop");
                 return StatusCode(500, ModelState);
             }
 
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
+        [Route("id")]
         public IActionResult DeleteShop(int id)
         {
             if (!_shopRepository.ShopExist(id))
@@ -121,7 +150,7 @@ namespace RMall_BE.Controllers
 
             if (!_shopRepository.DeleteShop(shopToDelete))
             {
-                ModelState.AddModelError("", "Something went wrong deleting reviewer");
+                ModelState.AddModelError("", "Something went wrong deleting shop");
             }
 
             return NoContent();

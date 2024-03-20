@@ -97,12 +97,7 @@ namespace RMallBE.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ShopId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ShopId");
 
                     b.ToTable("ContactInfos");
                 });
@@ -155,6 +150,23 @@ namespace RMallBE.Migrations
                     b.ToTable("Floors");
                 });
 
+            modelBuilder.Entity("RMall_BE.Models.Language", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Languages");
+                });
+
             modelBuilder.Entity("RMall_BE.Models.Map", b =>
                 {
                     b.Property<int>("Id")
@@ -171,12 +183,7 @@ namespace RMallBE.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ShopId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ShopId");
 
                     b.ToTable("Maps");
                 });
@@ -245,6 +252,69 @@ namespace RMallBE.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("RMall_BE.Models.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ShopId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Shop_Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShopId");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("RMall_BE.Models.Room", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Columns")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Rows")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Rooms");
                 });
 
             modelBuilder.Entity("RMall_BE.Models.Shop", b =>
@@ -368,28 +438,6 @@ namespace RMallBE.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("RMall_BE.Models.ContactInfo", b =>
-                {
-                    b.HasOne("RMall_BE.Models.Shop", "Shop")
-                        .WithMany("ContactInfos")
-                        .HasForeignKey("ShopId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Shop");
-                });
-
-            modelBuilder.Entity("RMall_BE.Models.Map", b =>
-                {
-                    b.HasOne("RMall_BE.Models.Shop", "Shop")
-                        .WithMany("Maps")
-                        .HasForeignKey("ShopId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Shop");
-                });
-
             modelBuilder.Entity("RMall_BE.Models.Order", b =>
                 {
                     b.HasOne("RMall_BE.Models.User", "User")
@@ -414,6 +462,17 @@ namespace RMallBE.Migrations
                         .HasForeignKey("OrderId");
 
                     b.Navigation("Card");
+                });
+
+            modelBuilder.Entity("RMall_BE.Models.Product", b =>
+                {
+                    b.HasOne("RMall_BE.Models.Shop", "Shop")
+                        .WithMany("Products")
+                        .HasForeignKey("ShopId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Shop");
                 });
 
             modelBuilder.Entity("RMall_BE.Models.Shop", b =>
@@ -457,9 +516,7 @@ namespace RMallBE.Migrations
 
             modelBuilder.Entity("RMall_BE.Models.Shop", b =>
                 {
-                    b.Navigation("ContactInfos");
-
-                    b.Navigation("Maps");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("RMall_BE.Models.User", b =>

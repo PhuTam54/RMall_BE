@@ -26,6 +26,21 @@ namespace RMallBE.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ContactInfos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(name: "Phone_Number", type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContactInfos", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Feedbacks",
                 columns: table => new
                 {
@@ -53,6 +68,49 @@ namespace RMallBE.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Floors", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Languages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Languages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Maps",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Maps", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Rooms",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Slug = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rows = table.Column<int>(type: "int", nullable: false),
+                    Columns = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rooms", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -170,43 +228,24 @@ namespace RMallBE.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ContactInfos",
+                name: "Products",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(name: "Phone_Number", type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ShopId = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ShopId = table.Column<int>(name: "Shop_Id", type: "int", nullable: false),
+                    ShopId0 = table.Column<int>(name: "ShopId", type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ContactInfos", x => x.Id);
+                    table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ContactInfos_Shops_ShopId",
-                        column: x => x.ShopId,
-                        principalTable: "Shops",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Maps",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ShopId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Maps", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Maps_Shops_ShopId",
-                        column: x => x.ShopId,
+                        name: "FK_Products_Shops_ShopId",
+                        column: x => x.ShopId0,
                         principalTable: "Shops",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -247,16 +286,6 @@ namespace RMallBE.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ContactInfos_ShopId",
-                table: "ContactInfos",
-                column: "ShopId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Maps_ShopId",
-                table: "Maps",
-                column: "ShopId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Orders_UserId",
                 table: "Orders",
                 column: "UserId");
@@ -270,6 +299,11 @@ namespace RMallBE.Migrations
                 name: "IX_Payments_OrderId",
                 table: "Payments",
                 column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_ShopId",
+                table: "Products",
+                column: "ShopId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Shops_CategoryId",
@@ -292,16 +326,22 @@ namespace RMallBE.Migrations
                 name: "Feedbacks");
 
             migrationBuilder.DropTable(
+                name: "Languages");
+
+            migrationBuilder.DropTable(
                 name: "Maps");
 
             migrationBuilder.DropTable(
                 name: "Payments");
 
             migrationBuilder.DropTable(
-                name: "Todos");
+                name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Shops");
+                name: "Rooms");
+
+            migrationBuilder.DropTable(
+                name: "Todos");
 
             migrationBuilder.DropTable(
                 name: "Cards");
@@ -310,13 +350,16 @@ namespace RMallBE.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
+                name: "Shops");
+
+            migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
                 name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Floors");
-
-            migrationBuilder.DropTable(
-                name: "Users");
         }
     }
 }
