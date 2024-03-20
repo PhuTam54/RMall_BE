@@ -13,7 +13,6 @@
         public int Floor_Id { get; set; }
         public Category Category { get; set; }
         public Floor Floor { get; set; }
-        public ICollection<Map>? Maps { get; set; }
-        public ICollection<ContactInfo> ContactInfos { get; set; }
+        public ICollection<Product>? Products { get; set; }
     }
 }

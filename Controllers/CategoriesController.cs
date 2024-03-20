@@ -31,7 +31,8 @@ namespace RMall_BE.Controllers
             return Ok(categories);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("id")]
         public IActionResult GetCategory(int id)
         {
             if(!_categoryRepository.CategoryExist(id))
@@ -60,7 +61,8 @@ namespace RMall_BE.Controllers
             return Ok("Create Category Successfully!");
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
+        [Route("id")]
         public IActionResult UpdateCategory(int id, [FromBody]CategoryDto categoryUpdate)
         {
             if (!_categoryRepository.CategoryExist(id))
@@ -83,7 +85,8 @@ namespace RMall_BE.Controllers
             return Ok("Update Category Successfully");
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
+        [Route("id")]
         public IActionResult DeleteCategory(int id)
         {
             if (!_categoryRepository.CategoryExist(id))

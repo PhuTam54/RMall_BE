@@ -30,7 +30,8 @@ namespace RMall_BE.Controllers
             return Ok(users);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("id")]
         [ProducesResponseType(200, Type = typeof(User))]
         [ProducesResponseType(400)]
         public IActionResult GetUserById(int id)
@@ -84,7 +85,8 @@ namespace RMall_BE.Controllers
             return Ok("Successfully created");
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
+        [Route("id")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
@@ -111,7 +113,8 @@ namespace RMall_BE.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
+        [Route("id")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]

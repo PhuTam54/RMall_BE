@@ -4,55 +4,56 @@ using Microsoft.AspNetCore.Mvc;
 using RMall_BE.Dto;
 using RMall_BE.Interfaces;
 using RMall_BE.Models;
+using RMall_BE.Repositories;
 
 namespace RMall_BE.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FeedbacksController : Controller
+    public class LanguagesController : ControllerBase
     {
-        private readonly IFeedbackRepository _feedbackRepository;
+        private readonly ILanguageRepository _languageRepository;
         private readonly IMapper _mapper;
 
-        public FeedbacksController(IFeedbackRepository feedbackRepository, IMapper mapper)
+        public LanguagesController(ILanguageRepository languageRepository, IMapper mapper)
         {
-            _feedbackRepository = feedbackRepository;
+            _languageRepository = languageRepository;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public IActionResult GetAllFeedBack()
+        public IActionResult GetAllLanguage()
         {
 
-            var feedbacks = _mapper.Map<List<FeedbackDto>>(_feedbackRepository.GetAllFeedback());
+            var languages = _mapper.Map<List<LanguageDto>>(_languageRepository.GetAllLanguage());
 
-            return Ok(feedbacks);
+            return Ok(languages);
         }
 
         [HttpGet]
         [Route("id")]
-        [ProducesResponseType(200, Type = typeof(Feedback))]
+        [ProducesResponseType(200, Type = typeof(Language))]
         [ProducesResponseType(400)]
-        public IActionResult GetFeedbackById(int id)
+        public IActionResult GetLanguageById(int id)
         {
-            if (!_feedbackRepository.FeedbackExist(id))
+            if (!_languageRepository.LanguageExist(id))
                 return NotFound();
 
-            var feedback = _mapper.Map<FeedbackDto>(_feedbackRepository.GetFeedbackById(id));
+            var language = _mapper.Map<LanguageDto>(_languageRepository.GetLanguageById(id));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(feedback);
+            return Ok(language);
         }
 
         /// <summary>
-        /// Create Feedback
+        /// Create Language
         /// </summary>
-        /// <param name="feedbackCreate"></param>
+        /// <param name="LanguageCreate"></param>
         /// <returns></returns>
         /// <remarks>
-        /// POST/Feedback
+        /// POST/Language
         /// {
         /// "name": "Quan",
         /// "email": "quan123@gmail.com",
@@ -63,18 +64,18 @@ namespace RMall_BE.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateFeedback([FromBody] FeedbackDto feedbackCreate)
+        public IActionResult CreateLanguage([FromBody] LanguageDto languageCreate)
         {
-            if (feedbackCreate == null)
+            if (languageCreate == null)
                 return BadRequest(ModelState);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var feedbackMap = _mapper.Map<Feedback>(feedbackCreate);
+            var languageMap = _mapper.Map<Language>(languageCreate);
 
 
-            if (!_feedbackRepository.CreateFeedback(feedbackMap))
+            if (!_languageRepository.CreateLanguage(languageMap))
             {
                 ModelState.AddModelError("", "Something went wrong while savin");
                 return StatusCode(500, ModelState);
@@ -88,23 +89,23 @@ namespace RMall_BE.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateFeedback(int id, [FromBody] FeedbackDto updatedFeedback)
+        public IActionResult UpdateLanguage(int id, [FromBody] LanguageDto updatedLanguage)
         {
-            if (!_feedbackRepository.FeedbackExist(id))
+            if (!_languageRepository.LanguageExist(id))
                 return NotFound();
-            if (updatedFeedback == null)
+            if (updatedLanguage == null)
                 return BadRequest(ModelState);
 
-            if (id != updatedFeedback.Id)
+            if (id != updatedLanguage.Id)
                 return BadRequest(ModelState);
 
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var feedbackMap = _mapper.Map<Feedback>(updatedFeedback);
-            if (!_feedbackRepository.UpdateFeedback(feedbackMap))
+            var languageMap = _mapper.Map<Language>(updatedLanguage);
+            if (!_languageRepository.UpdateLanguage(languageMap))
             {
-                ModelState.AddModelError("", "Something went wrong updating reviewer");
+                ModelState.AddModelError("", "Something went wrong updating language");
                 return StatusCode(500, ModelState);
             }
 
@@ -116,21 +117,21 @@ namespace RMall_BE.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult DeleteFeedback(int id)
+        public IActionResult DeleteLanguage(int id)
         {
-            if (!_feedbackRepository.FeedbackExist(id))
+            if (!_languageRepository.LanguageExist(id))
             {
                 return NotFound();
             }
 
-            var feedbackToDelete = _feedbackRepository.GetFeedbackById(id);
+            var languageToDelete = _languageRepository.GetLanguageById(id);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!_feedbackRepository.DeleteFeedback(feedbackToDelete))
+            if (!_languageRepository.DeleteLanguage(languageToDelete))
             {
-                ModelState.AddModelError("", "Something went wrong deleting reviewer");
+                ModelState.AddModelError("", "Something went wrong deleting language");
             }
 
             return NoContent();

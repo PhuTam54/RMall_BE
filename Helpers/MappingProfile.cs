@@ -12,10 +12,18 @@ namespace RMall_BE.Helpers
             CreateMap<FeedbackDto, Feedback>();
             CreateMap<Shop, ShopDto>();
             CreateMap<ShopDto, Shop>();
+            CreateMap<Floor, FloorDto>();
+            CreateMap<FloorDto, Floor>();
             CreateMap<User, UserDto>();
             CreateMap<UserDto, User>();
             CreateMap<Category, CategoryDto>();
             CreateMap<CategoryDto, Category>();
+            CreateMap<Product, ProductDto>();
+            CreateMap<ProductDto, Product>();
+            CreateMap<Room, RoomDto>();
+            CreateMap<RoomDto, Room>();
+            CreateMap<Language, LanguageDto>();
+            CreateMap<LanguageDto, Language>();
         }
     }
 }

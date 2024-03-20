@@ -23,6 +23,11 @@ namespace RMall_BE.Repositories
             return _context.Shops.FirstOrDefault(s => s.Id == id);
 
         }
+        public Shop GetShopByName(string name)
+        {
+            return _context.Shops.FirstOrDefault(s => s.Name == name);
+        }
+
         public ICollection<Shop> GetShopOfCategory(int categoryId)
         {
             return _context.Shops.Where(s => s.Category_Id == categoryId).ToList();
