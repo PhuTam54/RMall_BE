@@ -1,21 +1,47 @@
-using RMall_BE;
+﻿using RMall_BE;
 using Microsoft.EntityFrameworkCore;
+using RMall_BE.Data;
+using System.Text.Json.Serialization;
+using System.Reflection;
+using RMall_BE.Interfaces;
+using RMall_BE.Repositories;
+using Microsoft.OpenApi.Models;
 
-//var builder = WebApplication.CreateBuilder(args);
-//builder.Services.AddDbContext<DataContext>(opt => 
-//    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-//);
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<DataContext>(opt => opt.UseInMemoryDatabase("RMall"));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+
 
 // Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo()
+    {
+        Version = "v1",
+        Title = "RMall API",
+        Description = "RMall API",
+        //Contact = new Microsoft.OpenApi.Models.OpenApiContact()
+        //{
+        //    Name = "RMall",
+        //    Url = new Uri("https://localhost:7168")
+        //}
+    });
+});
+builder.Services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+builder.Services.AddScoped<IShopRepository, ShopRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
+builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
+builder.Services.AddDbContext<RMallContext>(opt =>
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -32,44 +58,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Todo items for the test
-app.MapGet("/Todo", async (DataContext db) =>
-    await db.Todo.ToListAsync());
 
-app.MapGet("/Todo/{id}", async (int id, DataContext db) =>
-    await db.Todo.FindAsync(id)
-        is Todo toDo
-        ? Results.Ok(toDo) : Results.NotFound());
-
-app.MapPost("Add/Todo", async (Todo todo, DataContext db) =>
-{
-    db.Todo.Add(todo);
-    await db.SaveChangesAsync();
-
-    return Results.Created($"/Todo/{todo.ID}", todo);
-});
-
-app.MapPut("/Todo/{id}", async (int id, Todo inputTodo, DataContext db) =>
-{
-    var todo = await db.Todo.FindAsync(id);
-    if (todo == null) return Results.NotFound();
-
-    todo.ItemName = inputTodo.ItemName;
-    todo.Description = inputTodo.Description;
-
-    await db.SaveChangesAsync();
-
-    return Results.NoContent();
-});
-
-app.MapDelete("/Delete/{id}", async (int id, DataContext db) =>
-{
-    if (await db.Todo.FindAsync(id) is Todo todo)
-    {
-        db.Todo.Remove(todo);
-        await db.SaveChangesAsync();
-        return Results.Ok(todo);
-    }
-    return Results.NotFound();
-});
 
 app.Run();
