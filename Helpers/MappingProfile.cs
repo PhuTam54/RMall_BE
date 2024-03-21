@@ -18,14 +18,13 @@ namespace RMall_BE.Helpers
             CreateMap<UserDto, User>();
             CreateMap<Category, CategoryDto>();
             CreateMap<CategoryDto, Category>();
-<<<<<<< Updated upstream
+
             CreateMap<Product, ProductDto>();
             CreateMap<ProductDto, Product>();
             CreateMap<Room, RoomDto>();
             CreateMap<RoomDto, Room>();
             CreateMap<Language, LanguageDto>();
             CreateMap<LanguageDto, Language>();
-=======
 
 
             CreateMap<Movie, MovieDto>();
@@ -37,7 +36,7 @@ namespace RMall_BE.Helpers
             CreateMap<Genre, GenreDto>();
             CreateMap<GenreDto, Genre>();
       
->>>>>>> Stashed changes
+
         }
     }
 }

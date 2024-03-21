@@ -23,9 +23,7 @@ namespace RMall_BE.Data
         public DbSet<Language> Languages { get; set; }
 
 
-<<<<<<< Updated upstream
 
-=======
         public DbSet<Movie> Movies => Set<Movie>();
         public DbSet<Seat> Seats => Set<Seat>();
         public DbSet<Genre> Genres => Set<Genre>();
@@ -35,7 +33,7 @@ namespace RMall_BE.Data
         public DbSet<Food> Foods => Set<Food>();
         public DbSet<Order> orders => Set<Order>();
      
->>>>>>> Stashed changes
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
             modelBuilder.Entity<Genre>()
