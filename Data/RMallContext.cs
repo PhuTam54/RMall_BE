@@ -23,11 +23,26 @@ namespace RMall_BE.Data
         public DbSet<Language> Languages { get; set; }
 
 
+<<<<<<< Updated upstream
 
+=======
+        public DbSet<Movie> Movies => Set<Movie>();
+        public DbSet<Seat> Seats => Set<Seat>();
+        public DbSet<Genre> Genres => Set<Genre>();
+        public DbSet<GenreMovie> GenreMovies => Set<GenreMovie>();
+        public DbSet<OrderTicket> OrderTickets => Set<OrderTicket>();
+        public DbSet<OrderFood> OrderFoods => Set<OrderFood>();      
+        public DbSet<Food> Foods => Set<Food>();
+        public DbSet<Order> orders => Set<Order>();
+     
+>>>>>>> Stashed changes
         protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-
-    }
+            modelBuilder.Entity<Genre>()
+              .Ignore(g => g.GenreMovies);
+            modelBuilder.Entity<Movie>()
+                .Ignore(a => a.GenreMovies);
+        }
 }
 
 }

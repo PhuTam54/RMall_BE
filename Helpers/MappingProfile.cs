@@ -18,12 +18,26 @@ namespace RMall_BE.Helpers
             CreateMap<UserDto, User>();
             CreateMap<Category, CategoryDto>();
             CreateMap<CategoryDto, Category>();
+<<<<<<< Updated upstream
             CreateMap<Product, ProductDto>();
             CreateMap<ProductDto, Product>();
             CreateMap<Room, RoomDto>();
             CreateMap<RoomDto, Room>();
             CreateMap<Language, LanguageDto>();
             CreateMap<LanguageDto, Language>();
+=======
+
+
+            CreateMap<Movie, MovieDto>();
+            CreateMap<MovieDto, Movie>();
+            CreateMap<Food, FoodDto>();
+            CreateMap<FoodDto, Food>();
+            CreateMap<Seat, SeatDto>();
+            CreateMap<SeatDto, Seat>();
+            CreateMap<Genre, GenreDto>();
+            CreateMap<GenreDto, Genre>();
+      
+>>>>>>> Stashed changes
         }
     }
 }
