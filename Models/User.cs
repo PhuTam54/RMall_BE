@@ -1,4 +1,6 @@
 ﻿using Microsoft.VisualBasic;
+using RMall_BE.Models.Movies;
+using RMall_BE.Models.Orders;
 
 namespace RMall_BE.Models
 {
@@ -16,5 +18,7 @@ namespace RMall_BE.Models
         
         public ICollection<Order> Orders { get; set; }
         public ICollection<Card> Cards { get; set; }
+        public ICollection<Favorite> Favorites { get; set; }
+
     }
 }
