@@ -49,6 +49,10 @@ namespace RMall_BE.Helpers
             #region Seat
             CreateMap<Seat, SeatDto>();
             CreateMap<SeatDto, Seat>();
+            CreateMap<SeatType, SeatTypeDto>();
+            CreateMap<SeatTypeDto, SeatType>();
+            CreateMap<SeatReservation, SeatReservationDto>();
+            CreateMap<SeatReservationDto, SeatReservation>();
             #endregion
 
             #region Order

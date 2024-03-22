@@ -7,6 +7,7 @@ using RMall_BE.Interfaces.MovieInterfaces;
 using RMall_BE.Interfaces.MovieInterfaces.SeatInterfaces;
 using RMall_BE.Models.Movies.Seats;
 using RMall_BE.Repositories.MovieRepositories;
+using RMall_BE.Repositories.MovieRepositories.SeatRepositories;
 
 namespace RMall_BE.Controllers.Movies.Seats
 {
@@ -18,13 +19,17 @@ namespace RMall_BE.Controllers.Movies.Seats
         private readonly ISeatRepository _seatRepository;
         private readonly IMapper _mapper;
         private readonly IRoomRepository _roomRepository;
+        private readonly ISeatTypeRepository _seatTypeRepository;
+        private readonly ISeatReservationRepository _seatReservationRepository;
 
-        public SeatsController(RMallContext context ,ISeatRepository seatRepository, IMapper mapper,IRoomRepository roomRepository)
+        public SeatsController(RMallContext context ,ISeatRepository seatRepository, IMapper mapper,IRoomRepository roomRepository,ISeatTypeRepository seatTypeRepository,ISeatReservationRepository seatReservationRepository)
         {
             _context = context;
             _seatRepository = seatRepository;
             _mapper = mapper;
             _roomRepository = roomRepository;
+            _seatTypeRepository = seatTypeRepository;
+            _seatReservationRepository = seatReservationRepository;
         }
 
         [HttpGet]
@@ -61,11 +66,9 @@ namespace RMall_BE.Controllers.Movies.Seats
         {
             if (!_roomRepository.RoomExist(roomId))
                 return NotFound("Room Not Found!");
-            var seatType = _context.SeatTypes.FirstOrDefault(st => st.Id == seatTypeId);
-            var seatReservation = _context.SeatReservations.FirstOrDefault(sr => sr.Id == seatReservationId);
-            if (seatType == null)
+            if (!_seatTypeRepository.SeatTypeExist(seatTypeId))
                 return NotFound("Set Type Not Found!");
-            if(seatReservation == null)
+            if(!_seatReservationRepository.SeatReservationExist(seatReservationId))
                 return NotFound("Set Reservation Not Found!");
 
             if (seatCreate == null)
@@ -76,8 +79,8 @@ namespace RMall_BE.Controllers.Movies.Seats
 
             var seatMap = _mapper.Map<Seat>(seatCreate);
             seatMap.Room = _roomRepository.GetRoomById(roomId);
-            seatMap.SeatType = seatType;
-            seatMap.SeatReservation = seatReservation;
+            seatMap.SeatType = _seatTypeRepository.GetSeatTypeById(seatTypeId);
+            seatMap.SeatReservation = _seatReservationRepository.GetSeatReservationById(seatReservationId);
 
             if (!_seatRepository.CreateSeat(seatMap))
             {
