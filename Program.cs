@@ -58,6 +58,9 @@ builder.Services.AddScoped<IGalleryMovieRepository, GalleryMovieRepository>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IShowRepository, ShowRepository>();
+builder.Services.AddScoped<ISeatTypeRepository, SeatTypeRepository>();
+builder.Services.AddScoped<ISeatReservationRepository, SeatReservationRepository>();
+
 
 
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
