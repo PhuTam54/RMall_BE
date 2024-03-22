@@ -106,7 +106,7 @@ namespace RMall_BE.Controllers
             var userMap = _mapper.Map<User>(updatedUser);
             if (!_userRepository.UpdateUser(userMap))
             {
-                ModelState.AddModelError("", "Something went wrong updating reviewer");
+                ModelState.AddModelError("", "Something went wrong updating User!");
                 return StatusCode(500, ModelState);
             }
 
@@ -132,7 +132,7 @@ namespace RMall_BE.Controllers
 
             if (!_userRepository.DeleteUser(userToDelete))
             {
-                ModelState.AddModelError("", "Something went wrong deleting reviewer");
+                ModelState.AddModelError("", "Something went wrong deleting User!");
             }
 
             return NoContent();
