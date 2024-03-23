@@ -7,7 +7,7 @@ using RMall_BE.Models.Movies.Genres;
 namespace RMall_BE.Controllers.Movies
 {
 
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class GenresController : Controller
     {

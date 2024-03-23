@@ -10,7 +10,7 @@ using RMall_BE.Repositories;
 
 namespace RMall_BE.Controllers.Shops
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class ShopsController : Controller
     {

@@ -7,7 +7,7 @@ using RMall_BE.Models;
 
 namespace RMall_BE.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class FeedbacksController : Controller
     {

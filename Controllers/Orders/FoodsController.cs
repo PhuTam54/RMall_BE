@@ -7,7 +7,7 @@ using RMall_BE.Models.Orders;
 
 namespace RMall_BE.Controllers.Orders
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class FoodsController : Controller
     {

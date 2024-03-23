@@ -11,7 +11,7 @@ using RMall_BE.Repositories.MovieRepositories.SeatRepositories;
 
 namespace RMall_BE.Controllers.Movies.Seats
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class SeatTypesController : Controller
     {

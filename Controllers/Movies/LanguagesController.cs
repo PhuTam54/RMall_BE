@@ -8,7 +8,7 @@ using RMall_BE.Repositories;
 
 namespace RMall_BE.Controllers.Movies
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class LanguagesController : ControllerBase
     {

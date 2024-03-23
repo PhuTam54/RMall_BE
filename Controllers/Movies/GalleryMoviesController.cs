@@ -11,7 +11,7 @@ using RMall_BE.Repositories.MovieRepositories;
 
 namespace RMall_BE.Controllers.Movies
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class GalleryMoviesController : Controller
     {
