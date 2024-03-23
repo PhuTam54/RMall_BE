@@ -14,13 +14,13 @@ using RMall_BE.Repositories.ShopRepositories;
 using RMall_BE.Repositories.OrderRepositories;
 using RMall_BE.Repositories.MovieRepositories;
 using RMall_BE.Repositories.MovieRepositories.SeatRepositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-
 // Add services to the container.
-
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -61,12 +61,41 @@ builder.Services.AddScoped<IShowRepository, ShowRepository>();
 builder.Services.AddScoped<ISeatTypeRepository, SeatTypeRepository>();
 builder.Services.AddScoped<ISeatReservationRepository, SeatReservationRepository>();
 
-
-
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 builder.Services.AddDbContext<RMallContext>(opt =>
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("RMallContext") ??
+    throw new InvalidOperationException("Connection string 'RMallContext' not found."))
 );
+
+// Lấy cấu hình từ appsettings.json
+var configuration = builder.Configuration;
+
+// Lấy các cài đặt mail từ appsettings.json
+var mailSettings = configuration.GetSection("MailSettings");
+var jwtSettings = configuration.GetSection("JwtSettings");
+
+// Thêm cấu hình mail vào dịch vụ của ứng dụng
+//builder.Services.Configure<MailSettings>(mailSettings);
+
+// Thiết lập JWT Authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings["Issuer"],
+        ValidAudience = jwtSettings["Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]))
+    };
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -78,11 +107,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Authentication
+app.UseAuthentication();
+
+app.UseRouting();
+
 app.UseAuthorization();
 
 app.MapControllers();
-
-// Todo items for the test
-
 
 app.Run();
