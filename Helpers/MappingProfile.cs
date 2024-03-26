@@ -67,20 +67,6 @@ namespace RMall_BE.Helpers
 
             CreateMap<Feedback, FeedbackDto>();
             CreateMap<FeedbackDto, Feedback>();
-            
-            
-            
-
-            
-            
-
-
-
-            
-            
-            
-
-      
         }
     }
 }
