@@ -9,5 +9,6 @@
         public string Password { get; set; }
         public string Phone_Number { get; set; }
         public string Address { get; set; }
+        public int Role { get; set; }
     }
 }

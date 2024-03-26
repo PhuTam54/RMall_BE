@@ -17,6 +17,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using RMall_BE.Identity;
 
 namespace RMall_BE.Controllers
 {
@@ -45,14 +46,18 @@ namespace RMall_BE.Controllers
             return "Authenticated with JWT";
         }
 
+        //[Authorize(Policy = IdentityData.RolePolicyName)]
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Customer")]
         [HttpGet]
         [Route("Details")]
         public string GetDetails()
         {
-            return "Details";
+            return "Authorized with JWT";
         }
 
         [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
         public string AddUser(UserDto user)
         {
