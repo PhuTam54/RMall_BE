@@ -1,11 +1,8 @@
-﻿using RMall_BE;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RMall_BE.Data;
 using System.Text.Json.Serialization;
-using System.Reflection;
 using RMall_BE.Interfaces;
 using RMall_BE.Repositories;
-using Microsoft.OpenApi.Models;
 using RMall_BE.Interfaces.ShopInterfaces;
 using RMall_BE.Interfaces.MovieInterfaces;
 using RMall_BE.Interfaces.MovieInterfaces.SeatInterfaces;
@@ -17,11 +14,11 @@ using RMall_BE.Repositories.MovieRepositories.SeatRepositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.AspNetCore.Cors.Infrastructure;
-using RMall_BE.Identity;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using RMall_BE.Swagger;
+using RMall_BE.Interfaces.MallInterfaces;
+using RMall_BE.Repositories.MallRepositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -68,6 +65,7 @@ builder.Services.AddScoped<IFoodRepository, FoodRepository>();
 builder.Services.AddScoped<ISeatRepository, SeatRepository>();
 builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 builder.Services.AddScoped<IGalleryMovieRepository, GalleryMovieRepository>();
+builder.Services.AddScoped<IGalleryMallRepository, GalleryMallRepository>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IShowRepository, ShowRepository>();

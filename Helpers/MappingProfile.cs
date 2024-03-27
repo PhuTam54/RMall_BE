@@ -42,7 +42,7 @@ namespace RMall_BE.Helpers
             CreateMap<LanguageDto, Language>();
             CreateMap<Genre, GenreDto>();
             CreateMap<GenreDto, Genre>();
-            CreateMap<GalleryMovie, GalleryMovieDto>();
+            CreateMap<GalleryMovie, GalleryMallDto>();
             CreateMap<GalleryMovieDto, GalleryMovie>();
             #endregion
 
@@ -67,6 +67,9 @@ namespace RMall_BE.Helpers
 
             CreateMap<Feedback, FeedbackDto>();
             CreateMap<FeedbackDto, Feedback>();
+
+            CreateMap<GalleryMallDto, GalleryMall>();
+            CreateMap<GalleryMall, GalleryMallDto>();
         }
     }
 }
