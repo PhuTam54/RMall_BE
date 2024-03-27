@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RMall_BE.Dto.ShopsDto;
+using RMall_BE.Identity;
 using RMall_BE.Interfaces.ShopInterfaces;
 using RMall_BE.Models.Shops;
 using RMall_BE.Repositories;
@@ -46,7 +48,8 @@ namespace RMall_BE.Controllers.Shops
             return Ok(floor);
         }
 
-
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -70,6 +73,8 @@ namespace RMall_BE.Controllers.Shops
             return Ok("Successfully created");
         }
 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
         [ProducesResponseType(400)]
@@ -98,6 +103,8 @@ namespace RMall_BE.Controllers.Shops
             return NoContent();
         }
 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
         [ProducesResponseType(400)]

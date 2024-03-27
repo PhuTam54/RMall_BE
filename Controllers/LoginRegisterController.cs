@@ -16,28 +16,25 @@ namespace RMall_BE.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class LoginController : ControllerBase
+    public class LoginRegisterController : ControllerBase
     {
         private readonly RMallContext _context;
         private readonly IConfiguration _config;
-        private readonly IUserRepository _userRepository;
-        private readonly IMapper _mapper;
 
         const int CUSTOMER = 1;
         const int ADMIN = 2;
         const int TENANT = 3;
 
-        public LoginController(RMallContext context, IConfiguration config, IUserRepository userRepository, IMapper mapper)
+        public LoginRegisterController(RMallContext context, IConfiguration config)
         {
             _context = context;
             _config = config;
-            _userRepository = userRepository;
-            _mapper = mapper;
         }
 
         // JWT Authentication
         [AllowAnonymous]
         [HttpPost]
+        [Route("Login")]
         public IActionResult Login([FromBody]LoginModel loginModel)
         {
             IActionResult response = Unauthorized();
@@ -60,9 +57,9 @@ namespace RMall_BE.Controllers
                     // Tạo danh sách claim
                     var claims = new List<Claim>
                     {
-                        //new Claim(ClaimTypes.Role, account.Role), // 1.Guest / 2.Admin / 3.Tenant
                         new Claim(ClaimTypes.Email, account.Email),
                         new Claim("userRole", userRole)
+                        // 1.Guest / 2.Admin / 3.Tenant
                     };
                     // Tạo JWT token
                     var token = GenerateJwtToken(_config["JwtSettings:SecretKey"],
@@ -87,13 +84,6 @@ namespace RMall_BE.Controllers
 
         private string GenerateJwtToken(string secretKey, string issuer, string audience, int expirationMinutes, IEnumerable<Claim> claims)
         {
-            //// Tạo danh sách permissions dựa trên vai trò của người dùng
-            //var permissions = GetPermissionsForUser(claims);
-
-            //// Thêm claim "Permissions" vào danh sách claims
-            //var claimsList = new List<Claim>(claims);
-            //claimsList.AddRange(permissions);
-
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -107,27 +97,7 @@ namespace RMall_BE.Controllers
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
-
-        private IEnumerable<Claim> GetPermissionsForUser(IEnumerable<Claim> claims)
-        {
-            // Logic để xác định và trả về danh sách permissions dựa trên vai trò của người dùng (claims)
-            // Ví dụ: nếu người dùng có vai trò "Admin", gán cho họ quyền hạn "edit_user", "delete_user", v.v.
-            var permissions = new List<Claim>();
-
-            foreach (var claim in claims)
-            {
-                if (claim.Type == ClaimTypes.Role)
-                {
-                    if (claim.Value == "Admin")
-                    {
-                        permissions.Add(new Claim("Permissions", "edit_user"));
-                        permissions.Add(new Claim("Permissions", "delete_user"));
-                    }
-                    // Thêm các logic xử lý khác tương ứng với các vai trò khác
-                }
-            }
-
-            return permissions;
-        }
+        
+        // Resgiter
     }
 }

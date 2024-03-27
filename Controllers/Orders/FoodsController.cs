@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RMall_BE.Dto.OrdersDto;
+using RMall_BE.Identity;
 using RMall_BE.Interfaces.OrderInterfaces;
 using RMall_BE.Models.Orders;
 
@@ -23,7 +25,6 @@ namespace RMall_BE.Controllers.Orders
         [HttpGet]
         public IActionResult GetAllFood()
         {
-
             var foods = _mapper.Map<List<FoodDto>>(_foodRepository.GetAllFood());
 
             return Ok(foods);
@@ -46,7 +47,8 @@ namespace RMall_BE.Controllers.Orders
             return Ok(food);
         }
 
-
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -60,7 +62,6 @@ namespace RMall_BE.Controllers.Orders
 
             var foodMap = _mapper.Map<Food>(foodCreate);
 
-
             if (!_foodRepository.CreateFood(foodMap))
             {
                 ModelState.AddModelError("", "Something went wrong while savin");
@@ -70,6 +71,8 @@ namespace RMall_BE.Controllers.Orders
             return Ok("Successfully created");
         }
 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
         [ProducesResponseType(400)]
@@ -96,6 +99,8 @@ namespace RMall_BE.Controllers.Orders
             return NoContent();
         }
 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
         [ProducesResponseType(400)]

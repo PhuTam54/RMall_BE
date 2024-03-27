@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RMall_BE.Data;
 using RMall_BE.Dto.ShopsDto;
 using RMall_BE.Helpers;
+using RMall_BE.Identity;
 using RMall_BE.Interfaces.ShopInterfaces;
 using RMall_BE.Models.Shops;
 using RMall_BE.Repositories;
@@ -43,6 +45,8 @@ namespace RMall_BE.Controllers.Shops
 
         }
 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
         public IActionResult CreateCategory([FromBody] CategoryDto categoryCreate)
         {
@@ -61,6 +65,8 @@ namespace RMall_BE.Controllers.Shops
             return Ok("Create Category Successfully!");
         }
 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
         public IActionResult UpdateCategory(int id, [FromBody] CategoryDto categoryUpdate)
@@ -85,6 +91,8 @@ namespace RMall_BE.Controllers.Shops
             return Ok("Update Category Successfully");
         }
 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
         public IActionResult DeleteCategory(int id)
@@ -103,7 +111,5 @@ namespace RMall_BE.Controllers.Shops
             }
             return Ok("Delete Category Successfully!");
         }
-
-
     }
 }

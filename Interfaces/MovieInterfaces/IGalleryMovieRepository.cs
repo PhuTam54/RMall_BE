@@ -1,5 +1,4 @@
-﻿using RMall_BE.Models;
-using RMall_BE.Models.Movies.Genres;
+﻿using RMall_BE.Models.Movies;
 
 namespace RMall_BE.Interfaces.MovieInterfaces
 {

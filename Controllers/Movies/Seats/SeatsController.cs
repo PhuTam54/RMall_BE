@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RMall_BE.Data;
 using RMall_BE.Dto.MoviesDto.SeatsDto;
+using RMall_BE.Identity;
 using RMall_BE.Interfaces.MovieInterfaces;
 using RMall_BE.Interfaces.MovieInterfaces.SeatInterfaces;
 using RMall_BE.Models.Movies.Seats;
@@ -57,8 +59,8 @@ namespace RMall_BE.Controllers.Movies.Seats
             return Ok(movie);
         }
 
-
-
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -91,6 +93,8 @@ namespace RMall_BE.Controllers.Movies.Seats
             return Ok("Successfully created");
         }
 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
         [ProducesResponseType(400)]
@@ -117,6 +121,8 @@ namespace RMall_BE.Controllers.Movies.Seats
             return NoContent();
         }
 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
         [ProducesResponseType(400)]

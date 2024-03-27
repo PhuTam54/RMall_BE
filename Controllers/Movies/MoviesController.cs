@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RMall_BE.Data;
 using RMall_BE.Dto.MoviesDto;
+using RMall_BE.Identity;
 using RMall_BE.Interfaces.MovieInterfaces;
 using RMall_BE.Models.Movies;
 using RMall_BE.Repositories;
@@ -48,8 +50,8 @@ namespace RMall_BE.Controllers.Movies
             return Ok(movie);
         }
 
-
-
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -73,6 +75,8 @@ namespace RMall_BE.Controllers.Movies
             return Ok("Successfully created");
         }
 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
         [ProducesResponseType(400)]
@@ -99,6 +103,8 @@ namespace RMall_BE.Controllers.Movies
             return NoContent();
         }
 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
         [ProducesResponseType(400)]

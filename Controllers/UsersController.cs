@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RMall_BE.Dto;
+using RMall_BE.Identity;
 using RMall_BE.Interfaces;
 using RMall_BE.Models;
 using RMall_BE.Repositories;
@@ -47,21 +49,8 @@ namespace RMall_BE.Controllers
             return Ok(user);
         }
 
-        /// <summary>
-        /// Create user
-        /// </summary>
-        /// <param name="userCreate"></param>
-        /// <returns></returns>
-        /// <remarks>
-        /// POST/user
-        /// {
-        /// "fullName": "NHQ",
-        /// "email": "NHQ@gmail.com",
-        /// "password": "12345",
-        /// "phone_Number": "1234567890",
-        /// "address": "abc-1234"
-        /// }
-        /// </remarks>
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -85,6 +74,8 @@ namespace RMall_BE.Controllers
             return Ok("Successfully created");
         }
 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
         [ProducesResponseType(400)]
@@ -113,6 +104,8 @@ namespace RMall_BE.Controllers
             return NoContent();
         }
 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
         [ProducesResponseType(400)]

@@ -50,7 +50,6 @@ namespace RMall_BE.Controllers.Movies.Seats
             return Ok(seatReservation);
         }
 
-
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
