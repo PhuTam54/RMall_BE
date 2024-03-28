@@ -5,6 +5,7 @@ using RMall_BE.Dto.MoviesDto.SeatsDto;
 using RMall_BE.Dto.OrdersDto;
 using RMall_BE.Dto.ShopsDto;
 using RMall_BE.Dto.UsersDto;
+using RMall_BE.Entities;
 using RMall_BE.Models;
 using RMall_BE.Models.Movies;
 using RMall_BE.Models.Movies.Genres;
@@ -71,6 +72,7 @@ namespace RMall_BE.Helpers
             CreateMap<AdminDto, Admin>();
             CreateMap<Tenant, TenantDto>();
             CreateMap<TenantDto, Tenant>();
+            CreateMap<RegisterRequest, Customer>();
             #endregion
 
             CreateMap<Feedback, FeedbackDto>();

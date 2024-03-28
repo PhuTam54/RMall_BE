@@ -21,6 +21,7 @@ using RMall_BE.Interfaces.MallInterfaces;
 using RMall_BE.Repositories.MallRepositories;
 using RMall_BE.Repositories.UserRepositories;
 using RMall_BE.Models.User;
+using RMall_BE.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -119,25 +120,29 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
-app.UseCors();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseCors();
+
+    // global error handler
+    app.UseMiddleware<ErrorHandlerMiddleware>();
+
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.UseHttpsRedirection();
+
+    // Authentication
+    app.UseAuthentication();
+
+    app.UseRouting();
+
+    // Authorization
+    app.UseAuthorization();
+
+    app.MapControllers();
 }
-
-app.UseHttpsRedirection();
-
-// Authentication
-app.UseAuthentication();
-
-app.UseRouting();
-
-// Authorization
-app.UseAuthorization();
-
-app.MapControllers();
-
 app.Run();
