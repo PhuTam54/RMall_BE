@@ -49,8 +49,9 @@ namespace RMall_BE.Controllers.Users
             return Ok(user);
         }
 
-        [Authorize]
-        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
+        [AllowAnonymous]
+        //[Authorize]
+        //[RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
