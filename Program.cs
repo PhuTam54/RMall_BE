@@ -19,6 +19,8 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using RMall_BE.Swagger;
 using RMall_BE.Interfaces.MallInterfaces;
 using RMall_BE.Repositories.MallRepositories;
+using RMall_BE.Repositories.UserRepositories;
+using RMall_BE.Models.User;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,7 +57,9 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
 builder.Services.AddScoped<IShopRepository, ShopRepository>();
 builder.Services.AddScoped<IFloorRepository, FloorRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserRepository<Customer>, CustomerRepository>();
+builder.Services.AddScoped<IUserRepository<Admin>, AdminRepository>();
+builder.Services.AddScoped<IUserRepository<Tenant>, TenantRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();

@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using RMall_BE.Models;
 using Microsoft.AspNetCore.Mvc;
-using RMall_BE.Dto;
-using RMall_BE.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using RMall_BE.Data;
 using System.Net.Mail;
@@ -18,6 +16,9 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using RMall_BE.Identity;
+using RMall_BE.Interfaces;
+using RMall_BE.Dto.UsersDto;
+using RMall_BE.Models.User;
 
 namespace RMall_BE.Controllers
 {
@@ -27,10 +28,10 @@ namespace RMall_BE.Controllers
     {
         private readonly RMallContext _context;
         private readonly IConfiguration _config;
-        private readonly IUserRepository _userRepository;
+        private readonly IUserRepository<Customer> _userRepository;
         private readonly IMapper _mapper;
 
-        public HomeController(RMallContext context, IConfiguration config, IUserRepository userRepository, IMapper mapper)
+        public HomeController(RMallContext context, IConfiguration config, IUserRepository<Customer> userRepository, IMapper mapper)
         {
             _context = context;
             _config = config;

@@ -10,6 +10,7 @@ using RMall_BE.Interfaces.MovieInterfaces;
 using RMall_BE.Interfaces.OrderInterfaces;
 using RMall_BE.Models;
 using RMall_BE.Models.Orders;
+using RMall_BE.Models.User;
 using RMall_BE.Repositories;
 using RMall_BE.Repositories.OrderRepositories;
 
@@ -21,10 +22,10 @@ namespace RMall_BE.Controllers.Orders
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IMapper _mapper;
-        private readonly IUserRepository _userRepository;
+        private readonly IUserRepository<Customer> _userRepository;
         private readonly IShowRepository _showRepository;
 
-        public OrdersController(IOrderRepository orderRepository, IMapper mapper, IUserRepository userRepository, IShowRepository showRepository)
+        public OrdersController(IOrderRepository orderRepository, IMapper mapper, IUserRepository<Customer> userRepository, IShowRepository showRepository)
         {
             _orderRepository = orderRepository;
             _mapper = mapper;

@@ -6,6 +6,7 @@ using RMall_BE.Models.Movies.Languages;
 using RMall_BE.Models.Movies.Seats;
 using RMall_BE.Models.Orders;
 using RMall_BE.Models.Shops;
+using RMall_BE.Models.User;
 
 namespace RMall_BE.Data
 {
@@ -17,7 +18,9 @@ namespace RMall_BE.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Floor> Floors { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Admin> Admins { get; set; }
+        public DbSet<Tenant> Tenants { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<Map> Maps { get; set; }
         public DbSet<ContactInfo> ContactInfos { get; set; }
