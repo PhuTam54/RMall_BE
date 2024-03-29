@@ -16,6 +16,7 @@ namespace RMall_BE.Data
 
         public DbSet<Shop> Shops { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Contract> Contracts { get; set; }
         public DbSet<Floor> Floors { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Customer> Customers { get; set; }

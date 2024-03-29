@@ -28,6 +28,8 @@ namespace RMall_BE.Helpers
             CreateMap<FloorDto, Floor>();
             CreateMap<Category, CategoryDto>();
             CreateMap<CategoryDto, Category>();
+            CreateMap<Contract, ContractDto>();
+            CreateMap<ContractDto, Contract>();
             CreateMap<Product, ProductDto>();
             CreateMap<ProductDto, Product>();
             #endregion

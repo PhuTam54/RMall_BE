@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using RMall_BE.Models.Movies;
-using RMall_BE.Models.Orders;
+﻿using RMall_BE.Models.Shops;
 
 namespace RMall_BE.Models.User
 {
@@ -10,8 +8,6 @@ namespace RMall_BE.Models.User
         public DateTime Date_Of_Birth { get; set; }
         public string Phone_Number { get; set; }
         public string Address { get; set; }
-        // Contracts...
-        // public ICollection<Contract> Contracts { get; set; }
-
+        public ICollection<Contract>? Contracts { get; set; }
     }
 }
