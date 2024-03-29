@@ -62,6 +62,7 @@ builder.Services.AddScoped<IUserRepository<Customer>, CustomerRepository>();
 builder.Services.AddScoped<IUserRepository<Admin>, AdminRepository>();
 builder.Services.AddScoped<IUserRepository<Tenant>, TenantRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IContractRepository, ContractRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 builder.Services.AddScoped<ILanguageRepository, LanguageRepository>();

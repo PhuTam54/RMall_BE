@@ -728,6 +728,52 @@ namespace RMallBE.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("RMall_BE.Models.Shops.Contract", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Additional_notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("End_date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Rental_fee")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int>("ShopId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Shop_Id")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Start_date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Tenant_Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Terms_and_conditions")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShopId");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("Contracts");
+                });
+
             modelBuilder.Entity("RMall_BE.Models.Shops.Floor", b =>
                 {
                     b.Property<int>("Id")
@@ -1148,6 +1194,25 @@ namespace RMallBE.Migrations
                     b.Navigation("Card");
                 });
 
+            modelBuilder.Entity("RMall_BE.Models.Shops.Contract", b =>
+                {
+                    b.HasOne("RMall_BE.Models.Shops.Shop", "Shop")
+                        .WithMany("Contracts")
+                        .HasForeignKey("ShopId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RMall_BE.Models.User.Tenant", "Tenant")
+                        .WithMany("Contracts")
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Shop");
+
+                    b.Navigation("Tenant");
+                });
+
             modelBuilder.Entity("RMall_BE.Models.Shops.Product", b =>
                 {
                     b.HasOne("RMall_BE.Models.Shops.Shop", "Shop")
@@ -1249,6 +1314,8 @@ namespace RMallBE.Migrations
 
             modelBuilder.Entity("RMall_BE.Models.Shops.Shop", b =>
                 {
+                    b.Navigation("Contracts");
+
                     b.Navigation("Products");
                 });
 
@@ -1259,6 +1326,11 @@ namespace RMallBE.Migrations
                     b.Navigation("Favorites");
 
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("RMall_BE.Models.User.Tenant", b =>
+                {
+                    b.Navigation("Contracts");
                 });
 #pragma warning restore 612, 618
         }
