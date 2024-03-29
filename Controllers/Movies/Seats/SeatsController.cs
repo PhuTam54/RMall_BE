@@ -20,16 +20,14 @@ namespace RMall_BE.Controllers.Movies.Seats
         private readonly IMapper _mapper;
         private readonly IRoomRepository _roomRepository;
         private readonly ISeatTypeRepository _seatTypeRepository;
-        private readonly ISeatReservationRepository _seatReservationRepository;
 
-        public SeatsController(RMallContext context ,ISeatRepository seatRepository, IMapper mapper,IRoomRepository roomRepository,ISeatTypeRepository seatTypeRepository,ISeatReservationRepository seatReservationRepository)
+        public SeatsController(RMallContext context ,ISeatRepository seatRepository, IMapper mapper,IRoomRepository roomRepository,ISeatTypeRepository seatTypeRepository)
         {
             _context = context;
             _seatRepository = seatRepository;
             _mapper = mapper;
             _roomRepository = roomRepository;
             _seatTypeRepository = seatTypeRepository;
-            _seatReservationRepository = seatReservationRepository;
         }
 
         [HttpGet]
@@ -49,27 +47,26 @@ namespace RMall_BE.Controllers.Movies.Seats
         {
             if (!_seatRepository.SeatExist(id))
                 return NotFound();
-            var movie = _mapper.Map<SeatDto>(_seatRepository.GetSeatById(id));
+            var seat = _seatRepository.GetSeatById(id);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(movie);
+            return Ok(seat);
         }
 
+         
 
 
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateSeat([FromQuery]int roomId, [FromQuery]int seatTypeId, [FromQuery]int seatReservationId ,[FromBody] SeatDto seatCreate)
+        public IActionResult CreateSeat([FromQuery]int roomId, [FromQuery]int seatTypeId,[FromBody] SeatDto seatCreate)
         {
             if (!_roomRepository.RoomExist(roomId))
                 return NotFound("Room Not Found!");
             if (!_seatTypeRepository.SeatTypeExist(seatTypeId))
                 return NotFound("Set Type Not Found!");
-            if(!_seatReservationRepository.SeatReservationExist(seatReservationId))
-                return NotFound("Set Reservation Not Found!");
 
             if (seatCreate == null)
                 return BadRequest(ModelState);
@@ -79,8 +76,7 @@ namespace RMall_BE.Controllers.Movies.Seats
 
             var seatMap = _mapper.Map<Seat>(seatCreate);
             seatMap.Room = _roomRepository.GetRoomById(roomId);
-            seatMap.SeatType = _seatTypeRepository.GetSeatTypeById(seatTypeId);
-            seatMap.SeatReservation = _seatReservationRepository.GetSeatReservationById(seatReservationId);
+            //seatMap.SeatType = _seatTypeRepository.GetSeatTypeById(seatTypeId);
 
             if (!_seatRepository.CreateSeat(seatMap))
             {

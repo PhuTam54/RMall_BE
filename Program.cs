@@ -22,6 +22,11 @@ using RMall_BE.Identity;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using RMall_BE.Swagger;
+using RMall_BE.Services.Momo;
+using RMall_BE.Services.VNPay;
+using RMall_BE.Dto.Momo;
+using RMall_BE.Services.PayPal;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,7 +77,11 @@ builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IShowRepository, ShowRepository>();
 builder.Services.AddScoped<ISeatTypeRepository, SeatTypeRepository>();
-builder.Services.AddScoped<ISeatReservationRepository, SeatReservationRepository>();
+
+builder.Services.Configure<MomoOptionModel>(builder.Configuration.GetSection("MomoAPI"));
+builder.Services.AddScoped<IMomoService, MomoService>();
+builder.Services.AddSingleton<IVnPay, VnPay>();
+builder.Services.AddScoped<IPayPalService, PayPalService>();
 
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 

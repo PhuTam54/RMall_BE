@@ -1,4 +1,5 @@
-﻿using RMall_BE.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using RMall_BE.Data;
 using RMall_BE.Interfaces.MovieInterfaces;
 using RMall_BE.Models;
 using RMall_BE.Models.Movies;
@@ -31,7 +32,10 @@ namespace RMall_BE.Repositories.MovieRepositories
 
         public ICollection<Show> GetAllShow()
         {
-            var shows = _context.Shows.ToList();
+            var shows = _context.Shows
+                .Include(r => r.Room)
+                .ThenInclude(s => s.Seats)
+                .ToList();
             return shows;
         }
 
@@ -39,7 +43,11 @@ namespace RMall_BE.Repositories.MovieRepositories
         {
             return _context.Shows.FirstOrDefault(s => s.Id == id);
         }
-
+        public ICollection<Show> GetShowByMovieID(int movieId)
+        {
+            var shows = _context.Shows.Where(s => s.Movie.Id == movieId).ToList();
+            return shows;
+        }
         public bool Save()
         {
             var saved = _context.SaveChanges();

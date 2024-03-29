@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using RMall_BE.Data;
 using RMall_BE.Interfaces.MovieInterfaces.SeatInterfaces;
 using RMall_BE.Models.Movies.Seats;
@@ -20,14 +21,19 @@ namespace RMall_BE.Repositories.MovieRepositories.SeatRepositories
 
         public ICollection<Seat> GetAllSeat()
         {
-            var seats = _context.Seats.ToList();
+            var seats = _context.Seats
+
+                .ToList();
             return seats;
         }
 
 
         public Seat GetSeatById(int id)
         {
-            return _context.Seats.FirstOrDefault(x => x.Id == id);
+            var seat = _context.Seats
+
+                .FirstOrDefault(x => x.Id == id);
+            return seat;
         }
         public bool CreateSeat(Seat seat)
         {
@@ -56,7 +62,6 @@ namespace RMall_BE.Repositories.MovieRepositories.SeatRepositories
         {
             return _context.Seats.Any(f => f.Id == id);
         }
-
 
     }
 }

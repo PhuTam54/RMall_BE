@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using RMall_BE.Data;
 using RMall_BE.Interfaces.MovieInterfaces;
 using RMall_BE.Models.Movies;
+using RMall_BE.Models.Movies.Genres;
+using RMall_BE.Models.Movies.Languages;
 
 namespace RMall_BE.Repositories.MovieRepositories
 {
@@ -29,6 +32,19 @@ namespace RMall_BE.Repositories.MovieRepositories
         {
             return _context.Movies.FirstOrDefault(x => x.Id == id);
         }
+
+        public ICollection<Movie> GetMovieByGenreId(int genreId)
+        {
+            var genreMovies = _context.MovieGenres.Include(m => m.Movie).Where(mg => mg.Genre.Id == genreId).ToList();
+            var movieList = new List<Movie>();
+            foreach(var movieGenre in genreMovies)
+            {
+                Movie movie = _context.Movies.FirstOrDefault(m => m.Id == movieGenre.Movie_Id);
+                movieList.Add(movie);
+            }
+            return movieList;
+        }
+
         public bool CreateMovie(Movie movie)
         {
             _context.Add(movie);
@@ -47,6 +63,17 @@ namespace RMall_BE.Repositories.MovieRepositories
             _context.Update(movie);
             return Save();
         }
+
+        public bool CreateMovieGenre(MovieGenre movieGenre)
+        {
+            _context.MovieGenres.Add(movieGenre);
+            return Save();
+        }
+        public bool CreateMovieLanguage(MovieLanguage movieLanguage)
+        {
+            _context.MovieLanguages.Add(movieLanguage);
+            return Save();
+        }
         public bool Save()
         {
             var saved = _context.SaveChanges();
@@ -56,5 +83,7 @@ namespace RMall_BE.Repositories.MovieRepositories
         {
             return _context.Movies.Any(f => f.Id == id);
         }
+
+        
     }
 }

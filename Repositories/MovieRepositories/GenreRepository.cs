@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using RMall_BE.Data;
 using RMall_BE.Interfaces.MovieInterfaces;
 using RMall_BE.Models.Movies.Genres;
@@ -29,6 +30,24 @@ namespace RMall_BE.Repositories.MovieRepositories
         {
             return _context.Genres.FirstOrDefault(x => x.Id == id);
         }
+
+        public ICollection<Genre> GetGenresbyMovieId(int movieId)
+        {
+            var genreMovies = _context.MovieGenres
+                .Include(g => g.Genre)
+                .Include(m => m.Movie)
+                .Where(mg => mg.Movie.Id == movieId).ToList();
+            var genres = new List<Genre>();
+            foreach (var genreMovie in genreMovies)
+            {
+                var genre = _context.Genres.FirstOrDefault(g => g.Id == genreMovie.Genre_Id);
+                genres.Add(genre);
+            }
+
+            return genres;
+
+        }
+
         public bool CreateGenre(Genre genre)
         {
             _context.Add(genre);
@@ -56,5 +75,7 @@ namespace RMall_BE.Repositories.MovieRepositories
         {
             return _context.Genres.Any(f => f.Id == id);
         }
+
+        
     }
 }

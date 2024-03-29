@@ -39,6 +39,16 @@ namespace RMall_BE.Repositories.OrderRepositories
         {
             return _context.Orders.FirstOrDefault(o => o.Id == id);
         }
+        public ICollection<Order> GetOrderByUserId(int userId)
+        {
+            return _context.Orders.Where(o => o.User.Id == userId).ToList();
+        }
+
+        public bool CreateOrderFood(OrderFood orderFood)
+        {
+            _context.OrderFoods.Add(orderFood);
+            return Save();
+        }
 
         public bool OrderExist(int id)
         {

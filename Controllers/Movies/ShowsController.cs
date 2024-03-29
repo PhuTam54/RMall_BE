@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RMall_BE.Dto;
 using RMall_BE.Dto.MoviesDto;
+using RMall_BE.Dto.OrdersDto;
 using RMall_BE.Interfaces;
 using RMall_BE.Interfaces.MovieInterfaces;
+using RMall_BE.Interfaces.OrderInterfaces;
 using RMall_BE.Models;
 using RMall_BE.Models.Movies;
 using RMall_BE.Repositories.MovieRepositories;
@@ -19,20 +21,22 @@ namespace RMall_BE.Controllers.Movies
         private readonly IMapper _mapper;
         private readonly IMovieRepository _movieRepository;
         private readonly IRoomRepository _roomRepository;
+        private readonly IFoodRepository _foodRepository;
 
-        public ShowsController(IShowRepository showRepository, IMapper mapper, IMovieRepository movieRepository, IRoomRepository roomRepository)
+        public ShowsController(IShowRepository showRepository, IMapper mapper, IMovieRepository movieRepository, IRoomRepository roomRepository, IFoodRepository foodRepository)
         {
             _showRepository = showRepository;
             _mapper = mapper;
             _movieRepository = movieRepository;
             _roomRepository = roomRepository;
+            _foodRepository = foodRepository;
         }
 
         [HttpGet]
         public IActionResult GetAllShow()
         {
 
-            var shows = _mapper.Map<List<ShowDto>>(_showRepository.GetAllShow());
+            var shows = _showRepository.GetAllShow();
 
             return Ok(shows);
         }
@@ -52,6 +56,21 @@ namespace RMall_BE.Controllers.Movies
                 return BadRequest(ModelState);
 
             return Ok(show);
+        }
+
+        [HttpGet]
+        [Route("movieId")]
+        [ProducesResponseType(200, Type = typeof(Show))]
+        [ProducesResponseType(400)]
+        public IActionResult GetShowByMovieID(int movieId)
+        {
+            if (!_movieRepository.MovieExist(movieId))
+                return NotFound("Movie Not Found!");
+
+            var shows = _mapper.Map<List<ShowDto>>(_showRepository.GetShowByMovieID(movieId));
+
+
+            return Ok(shows);
         }
 
 

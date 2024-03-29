@@ -12,7 +12,7 @@ using RMall_BE.Data;
 namespace RMallBE.Migrations
 {
     [DbContext(typeof(RMallContext))]
-    [Migration("20240321174442_InitialCreateTable")]
+    [Migration("20240324141004_InitialCreateTable")]
     partial class InitialCreateTable
     {
         /// <inheritdoc />
@@ -169,7 +169,7 @@ namespace RMallBE.Migrations
                     b.ToTable("Favorites");
                 });
 
-            modelBuilder.Entity("RMall_BE.Models.Movies.GalleryMovie", b =>
+            modelBuilder.Entity("RMall_BE.Models.Movies.Genres.GalleryMovie", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -194,7 +194,7 @@ namespace RMallBE.Migrations
                     b.ToTable("GalleryMovies");
                 });
 
-            modelBuilder.Entity("RMall_BE.Models.Movies.Genre", b =>
+            modelBuilder.Entity("RMall_BE.Models.Movies.Genres.Genre", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -215,7 +215,36 @@ namespace RMallBE.Migrations
                     b.ToTable("Genres");
                 });
 
-            modelBuilder.Entity("RMall_BE.Models.Movies.Language", b =>
+            modelBuilder.Entity("RMall_BE.Models.Movies.Genres.MovieGenre", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("GenreId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Genre_Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Movie_Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GenreId");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("MovieGenres");
+                });
+
+            modelBuilder.Entity("RMall_BE.Models.Movies.Languages.Language", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -230,6 +259,35 @@ namespace RMallBE.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Languages");
+                });
+
+            modelBuilder.Entity("RMall_BE.Models.Movies.Languages.MovieLanguage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Language_id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Movie_id")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LanguageId");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("MovieLanguages");
                 });
 
             modelBuilder.Entity("RMall_BE.Models.Movies.Movie", b =>
@@ -280,64 +338,6 @@ namespace RMallBE.Migrations
                     b.ToTable("Movies");
                 });
 
-            modelBuilder.Entity("RMall_BE.Models.Movies.MovieGenre", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("GenreId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Genre_Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MovieId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Movie_Id")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GenreId");
-
-                    b.HasIndex("MovieId");
-
-                    b.ToTable("MovieGenres");
-                });
-
-            modelBuilder.Entity("RMall_BE.Models.Movies.MovieLanguage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("LanguageId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Language_id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MovieId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Movie_id")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LanguageId");
-
-                    b.HasIndex("MovieId");
-
-                    b.ToTable("MovieLanguages");
-                });
-
             modelBuilder.Entity("RMall_BE.Models.Movies.Room", b =>
                 {
                     b.Property<int>("Id")
@@ -382,13 +382,10 @@ namespace RMallBE.Migrations
                     b.Property<int>("Row_Number")
                         .HasColumnType("int");
 
-                    b.Property<int>("SeatReservationId")
-                        .HasColumnType("int");
-
                     b.Property<int>("SeatTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Seat_Id")
+                    b.Property<int>("SeatType_Id")
                         .HasColumnType("int");
 
                     b.Property<int>("Seat_Number")
@@ -401,14 +398,12 @@ namespace RMallBE.Migrations
 
                     b.HasIndex("RoomId");
 
-                    b.HasIndex("SeatReservationId");
-
                     b.HasIndex("SeatTypeId");
 
                     b.ToTable("Seats");
                 });
 
-            modelBuilder.Entity("RMall_BE.Models.Movies.Seats.SeatPricing", b =>
+            modelBuilder.Entity("RMall_BE.Models.Movies.Seats.SeatShow", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -422,7 +417,7 @@ namespace RMallBE.Migrations
                     b.Property<int>("SeatTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Seat_Type_Id")
+                    b.Property<int>("SeatType_Id")
                         .HasColumnType("int");
 
                     b.Property<int>("ShowId")
@@ -437,23 +432,7 @@ namespace RMallBE.Migrations
 
                     b.HasIndex("ShowId");
 
-                    b.ToTable("SeatPricings");
-                });
-
-            modelBuilder.Entity("RMall_BE.Models.Movies.Seats.SeatReservation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Reservation_Expires_At")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SeatReservations");
+                    b.ToTable("SeatShows");
                 });
 
             modelBuilder.Entity("RMall_BE.Models.Movies.Seats.SeatType", b =>
@@ -536,6 +515,9 @@ namespace RMallBE.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int>("Seat_Id")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Start_Date")
                         .HasColumnType("datetime2");
@@ -897,7 +879,7 @@ namespace RMallBE.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("RMall_BE.Models.Movies.GalleryMovie", b =>
+            modelBuilder.Entity("RMall_BE.Models.Movies.Genres.GalleryMovie", b =>
                 {
                     b.HasOne("RMall_BE.Models.Movies.Movie", "Movie")
                         .WithMany("GalleryMovies")
@@ -908,9 +890,9 @@ namespace RMallBE.Migrations
                     b.Navigation("Movie");
                 });
 
-            modelBuilder.Entity("RMall_BE.Models.Movies.MovieGenre", b =>
+            modelBuilder.Entity("RMall_BE.Models.Movies.Genres.MovieGenre", b =>
                 {
-                    b.HasOne("RMall_BE.Models.Movies.Genre", "Genre")
+                    b.HasOne("RMall_BE.Models.Movies.Genres.Genre", "Genre")
                         .WithMany("MovieGenres")
                         .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -927,9 +909,9 @@ namespace RMallBE.Migrations
                     b.Navigation("Movie");
                 });
 
-            modelBuilder.Entity("RMall_BE.Models.Movies.MovieLanguage", b =>
+            modelBuilder.Entity("RMall_BE.Models.Movies.Languages.MovieLanguage", b =>
                 {
-                    b.HasOne("RMall_BE.Models.Movies.Language", "Language")
+                    b.HasOne("RMall_BE.Models.Movies.Languages.Language", "Language")
                         .WithMany("MovieLanguages")
                         .HasForeignKey("LanguageId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -954,12 +936,6 @@ namespace RMallBE.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RMall_BE.Models.Movies.Seats.SeatReservation", "SeatReservation")
-                        .WithMany("Seats")
-                        .HasForeignKey("SeatReservationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("RMall_BE.Models.Movies.Seats.SeatType", "SeatType")
                         .WithMany("Seats")
                         .HasForeignKey("SeatTypeId")
@@ -968,21 +944,19 @@ namespace RMallBE.Migrations
 
                     b.Navigation("Room");
 
-                    b.Navigation("SeatReservation");
-
                     b.Navigation("SeatType");
                 });
 
-            modelBuilder.Entity("RMall_BE.Models.Movies.Seats.SeatPricing", b =>
+            modelBuilder.Entity("RMall_BE.Models.Movies.Seats.SeatShow", b =>
                 {
                     b.HasOne("RMall_BE.Models.Movies.Seats.SeatType", "SeatType")
-                        .WithMany("SeatPricings")
+                        .WithMany("SeatShows")
                         .HasForeignKey("SeatTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("RMall_BE.Models.Movies.Show", "Show")
-                        .WithMany("SeatPricings")
+                        .WithMany()
                         .HasForeignKey("ShowId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1106,12 +1080,12 @@ namespace RMallBE.Migrations
                     b.Navigation("Payments");
                 });
 
-            modelBuilder.Entity("RMall_BE.Models.Movies.Genre", b =>
+            modelBuilder.Entity("RMall_BE.Models.Movies.Genres.Genre", b =>
                 {
                     b.Navigation("MovieGenres");
                 });
 
-            modelBuilder.Entity("RMall_BE.Models.Movies.Language", b =>
+            modelBuilder.Entity("RMall_BE.Models.Movies.Languages.Language", b =>
                 {
                     b.Navigation("MovieLanguages");
                 });
@@ -1136,14 +1110,9 @@ namespace RMallBE.Migrations
                     b.Navigation("Shows");
                 });
 
-            modelBuilder.Entity("RMall_BE.Models.Movies.Seats.SeatReservation", b =>
-                {
-                    b.Navigation("Seats");
-                });
-
             modelBuilder.Entity("RMall_BE.Models.Movies.Seats.SeatType", b =>
                 {
-                    b.Navigation("SeatPricings");
+                    b.Navigation("SeatShows");
 
                     b.Navigation("Seats");
                 });
@@ -1151,8 +1120,6 @@ namespace RMallBE.Migrations
             modelBuilder.Entity("RMall_BE.Models.Movies.Show", b =>
                 {
                     b.Navigation("Orders");
-
-                    b.Navigation("SeatPricings");
                 });
 
             modelBuilder.Entity("RMall_BE.Models.Orders.Food", b =>
