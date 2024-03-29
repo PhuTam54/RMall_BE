@@ -9,9 +9,12 @@ using RMall_BE.Interfaces;
 using RMall_BE.Interfaces.MovieInterfaces;
 using RMall_BE.Interfaces.OrderInterfaces;
 using RMall_BE.Models;
+using RMall_BE.Models.Movies;
+using RMall_BE.Models.Movies.Genres;
 using RMall_BE.Models.Orders;
 using RMall_BE.Models.User;
 using RMall_BE.Repositories;
+using RMall_BE.Repositories.MovieRepositories;
 using RMall_BE.Repositories.OrderRepositories;
 
 namespace RMall_BE.Controllers.Orders
@@ -24,6 +27,7 @@ namespace RMall_BE.Controllers.Orders
         private readonly IMapper _mapper;
         private readonly IUserRepository<Customer> _userRepository;
         private readonly IShowRepository _showRepository;
+        private readonly IFoodRepository _foodRepository;
 
         public OrdersController(IOrderRepository orderRepository, IMapper mapper, IUserRepository<Customer> userRepository, IShowRepository showRepository)
         {
@@ -31,6 +35,7 @@ namespace RMall_BE.Controllers.Orders
             _mapper = mapper;
             _userRepository = userRepository;
             _showRepository = showRepository;
+            _foodRepository = foodRepository;
         }
 
         [HttpGet]
@@ -84,7 +89,22 @@ namespace RMall_BE.Controllers.Orders
                 return StatusCode(500, ModelState);
             }
 
-            return Ok("Successfully created");
+            foreach (int foodId in orderCreate.FoodIds)
+            {
+                Food food = _foodRepository.GetFoodById(foodId);
+                if (food != null)
+                {
+                    var foodOrder = new OrderFood { Order_Id = orderMap.Id, Food_Id = food.Id, Order = orderMap, Food = food };
+                    _orderRepository.CreateOrderFood(foodOrder);
+                }
+                else
+                {
+                    return NotFound("Food Not Found!");
+                }
+            }
+
+
+            return Created("", orderCreate);
         }
 
         [Authorize]

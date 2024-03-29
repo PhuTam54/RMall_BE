@@ -6,6 +6,7 @@ namespace RMall_BE.Interfaces.MovieInterfaces
     {
         ICollection<Genre> GetAllGenre();
         Genre GetGenreById(int id);
+        ICollection<Genre> GetGenresbyMovieId(int movieId);
         bool CreateGenre(Genre genre);
         bool UpdateGenre(Genre genre);
         bool DeleteGenre(Genre genre);

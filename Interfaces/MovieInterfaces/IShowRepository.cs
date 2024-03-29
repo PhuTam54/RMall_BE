@@ -7,6 +7,7 @@ namespace RMall_BE.Interfaces.MovieInterfaces
     {
         ICollection<Show> GetAllShow();
         Show GetShowById(int id);
+        ICollection<Show> GetShowByMovieID(int movieId);
         bool CreateShow(Show show);
         bool UpdateShow(Show show);
         bool DeleteShow(Show show);

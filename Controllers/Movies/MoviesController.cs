@@ -6,7 +6,10 @@ using RMall_BE.Dto.MoviesDto;
 using RMall_BE.Identity;
 using RMall_BE.Interfaces.MovieInterfaces;
 using RMall_BE.Models.Movies;
+using RMall_BE.Models.Movies.Genres;
+using RMall_BE.Models.Movies.Languages;
 using RMall_BE.Repositories;
+using RMall_BE.Repositories.MovieRepositories;
 
 namespace RMall_BE.Controllers.Movies
 {
@@ -17,11 +20,15 @@ namespace RMall_BE.Controllers.Movies
     {
         private readonly IMovieRepository _movieRepository;
         private readonly IMapper _mapper;
+        private readonly IGenreRepository _genreRepository;
+        private readonly ILanguageRepository _languageRepository;
 
-        public MoviesController(IMovieRepository movieRepository, IMapper mapper)
+        public MoviesController(IMovieRepository movieRepository, IMapper mapper, IGenreRepository genreRepository, ILanguageRepository languageRepository)
         {
             _movieRepository = movieRepository;
             _mapper = mapper;
+            _genreRepository = genreRepository;
+            _languageRepository = languageRepository;
         }
 
         [HttpGet]
@@ -70,6 +77,34 @@ namespace RMall_BE.Controllers.Movies
             {
                 ModelState.AddModelError("", "Something went wrong while savin");
                 return StatusCode(500, ModelState);
+            }
+
+            foreach (int genreId in movieCreate.GenreIds)
+            {
+                Genre genre = _genreRepository.GetGenreById(genreId);
+                if (genre != null)
+                {
+                    var movieGenre = new MovieGenre { Movie_Id = movieMap.Id, Genre_Id = genre.Id, Movie = movieMap, Genre = genre };
+                    _movieRepository.CreateMovieGenre(movieGenre);
+                }
+                else
+                {
+                    return NotFound("Genre Not Found!");
+                }
+            }
+
+            foreach (int languageId in movieCreate.LanguageIds)
+            {
+                Language language = _languageRepository.GetLanguageById(languageId);
+                if (language != null)
+                {
+                    var languageMovie = new MovieLanguage { Movie_id = movieMap.Id, Language_id = language.Id, Movie = movieMap, Language = language };
+                    _movieRepository.CreateMovieLanguage(languageMovie);
+                }
+                else
+                {
+                    return NotFound("Language Not Found!");
+                }
             }
 
             return Ok("Successfully created");

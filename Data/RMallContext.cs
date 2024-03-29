@@ -42,9 +42,8 @@ namespace RMall_BE.Data
         public DbSet<Language> Languages { get; set; }
         public DbSet<MovieLanguage> MovieLanguages { get; set; }
         public DbSet<Seat> Seats { get; set; }
-        public DbSet<SeatPricing> SeatPricings { get; set; }
+        public DbSet<SeatShow> SeatShows { get; set; }
         public DbSet<SeatType> SeatTypes { get; set; }
-        public DbSet<SeatReservation> SeatReservations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) { }
     }

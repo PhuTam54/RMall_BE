@@ -17,5 +17,6 @@ namespace RMall_BE.Dto.OrdersDto
         public string Payment_Method { get; set; }
         public bool Is_Paid { get; set; }
         public string QR_Code { get; set; }
+        public List<int> FoodIds { get; set; }
     }
 }

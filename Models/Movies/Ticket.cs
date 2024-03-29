@@ -13,8 +13,7 @@ namespace RMall_BE.Models.Movies
         public decimal Price { get; set; }
         public bool Is_Used { get; set; }
         public int Order_Id { get; set; }
-        //public int Seat_Id { get; set; }
+        public int Seat_Id { get; set; }
         public Order Order { get; set; }
-        //public Seat Seat { get; set; }
     }
 }

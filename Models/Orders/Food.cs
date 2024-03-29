@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using RMall_BE.Models.Movies;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RMall_BE.Models.Orders
 {
@@ -10,6 +11,8 @@ namespace RMall_BE.Models.Orders
         [Column(TypeName = "decimal(18, 2)")]
         public decimal Price { get; set; }
         public string Description { get; set; }
+        //public int Show_Id { get; set; }
+        //public Show Show { get; set; }
         public ICollection<OrderFood> OrderFoods { get; set; }
     }
 }

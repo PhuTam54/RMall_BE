@@ -1,4 +1,6 @@
 ﻿using RMall_BE.Models.Movies;
+using RMall_BE.Models.Movies.Genres;
+using RMall_BE.Models.Movies.Languages;
 
 namespace RMall_BE.Interfaces.MovieInterfaces
 {
@@ -6,6 +8,9 @@ namespace RMall_BE.Interfaces.MovieInterfaces
     {
         ICollection<Movie> GetAllMovie();
         Movie GetMovieById(int id);
+        ICollection<Movie> GetMovieByGenreId(int genreId);
+        bool CreateMovieGenre(MovieGenre movieGenre);
+        bool CreateMovieLanguage(MovieLanguage movieLanguage);
         bool CreateMovie(Movie movie);
         bool UpdateMovie(Movie movie);
         bool DeleteMovie(Movie movie);

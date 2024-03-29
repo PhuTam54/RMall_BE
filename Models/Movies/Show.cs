@@ -13,8 +13,8 @@ namespace RMall_BE.Models.Movies
         public int Room_Id { get; set; }
         public Movie Movie { get; set; }
         public Room Room { get; set; }
+        //public ICollection<Food> Foods { get; set; }
         public ICollection<Order> Orders { get; set;}
-        public ICollection<SeatPricing> SeatPricings { get; set; }
         //public ICollection<SeatReservation> SeatReservations { get; set; }
 
 

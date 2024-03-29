@@ -12,5 +12,7 @@
         public string Director { get; set; }
         public int Favorite_Count { get; set; }
         public string Trailer { get; set; }
+        public List<int> GenreIds { get; set; }
+        public List<int> LanguageIds { get; set; }
     }
 }

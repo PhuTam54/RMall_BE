@@ -76,7 +76,11 @@ builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IShowRepository, ShowRepository>();
 builder.Services.AddScoped<ISeatTypeRepository, SeatTypeRepository>();
-builder.Services.AddScoped<ISeatReservationRepository, SeatReservationRepository>();
+
+builder.Services.Configure<MomoOptionModel>(builder.Configuration.GetSection("MomoAPI"));
+builder.Services.AddScoped<IMomoService, MomoService>();
+builder.Services.AddSingleton<IVnPay, VnPay>();
+builder.Services.AddScoped<IPayPalService, PayPalService>();
 
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 

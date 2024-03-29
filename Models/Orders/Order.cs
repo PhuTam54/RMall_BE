@@ -26,6 +26,5 @@ namespace RMall_BE.Models.Orders
         public Show Show { get; set; }
         public ICollection<OrderFood>? OrderFoods { get; set; }
         public ICollection<Ticket>? Tickets { get; set; }
-
     }
 }
