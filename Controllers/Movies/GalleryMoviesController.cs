@@ -1,25 +1,27 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RMall_BE.Dto;
 using RMall_BE.Dto.MoviesDto;
+using RMall_BE.Identity;
 using RMall_BE.Interfaces;
 using RMall_BE.Interfaces.MovieInterfaces;
 using RMall_BE.Models;
-using RMall_BE.Models.Movies.Genres;
+using RMall_BE.Models.Movies;
 using RMall_BE.Repositories.MovieRepositories;
 
 namespace RMall_BE.Controllers.Movies
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class GalleryMoviesController : Controller
+    public class GalleryMovieController : Controller
     {
         private readonly IGalleryMovieRepository _galleryMovieRepository;
         private readonly IMapper _mapper;
         private readonly IMovieRepository _movieRepository;
 
-        public GalleryMoviesController(IGalleryMovieRepository galleryMovieRepository, IMapper mapper, IMovieRepository movieRepository)
+        public GalleryMovieController(IGalleryMovieRepository galleryMovieRepository, IMapper mapper, IMovieRepository movieRepository)
         {
             _galleryMovieRepository = galleryMovieRepository;
             _mapper = mapper;
@@ -63,6 +65,9 @@ namespace RMall_BE.Controllers.Movies
         /// 
         /// }
         /// </remarks>
+
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -88,6 +93,8 @@ namespace RMall_BE.Controllers.Movies
             return Ok("Successfully created");
         }
 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
         [ProducesResponseType(400)]
@@ -116,6 +123,8 @@ namespace RMall_BE.Controllers.Movies
             return NoContent();
         }
 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
         [ProducesResponseType(400)]

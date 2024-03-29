@@ -1,5 +1,5 @@
 ﻿using RMall_BE.Models.Movies;
-using RMall_BE.Models.Movies.Seats;
+using RMall_BE.Models.User;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RMall_BE.Models.Orders
@@ -22,7 +22,7 @@ namespace RMall_BE.Models.Orders
         public DateTime Timestamp { get; set; }
         public int User_Id { get; set; }
         public int Show_Id { get; set; }
-        public User User { get; set; }
+        public Customer User { get; set; }
         public Show Show { get; set; }
         public ICollection<OrderFood>? OrderFoods { get; set; }
         public ICollection<Ticket>? Tickets { get; set; }

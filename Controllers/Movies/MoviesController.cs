@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RMall_BE.Data;
 using RMall_BE.Dto.MoviesDto;
+using RMall_BE.Identity;
 using RMall_BE.Interfaces.MovieInterfaces;
 using RMall_BE.Models.Movies;
 using RMall_BE.Models.Movies.Genres;
@@ -55,23 +57,8 @@ namespace RMall_BE.Controllers.Movies
             return Ok(movie);
         }
 
-        [HttpGet]
-        [Route("genreId")]
-        [ProducesResponseType(200, Type = typeof(Movie))]
-        [ProducesResponseType(400)]
-        public IActionResult GetMovieByGenreId(int genreId)
-        {
-            if (!_genreRepository.GenreExist(genreId))
-                return NotFound("Genre Not Found!");
-
-            var movies = _mapper.Map<List<MovieDto>>(_movieRepository.GetMovieByGenreId(genreId));
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            return Ok(movies);
-        }
-
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -123,6 +110,8 @@ namespace RMall_BE.Controllers.Movies
             return Ok("Successfully created");
         }
 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
         [ProducesResponseType(400)]
@@ -149,6 +138,8 @@ namespace RMall_BE.Controllers.Movies
             return NoContent();
         }
 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
         [ProducesResponseType(400)]

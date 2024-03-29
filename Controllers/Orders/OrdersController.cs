@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RMall_BE.Dto;
 using RMall_BE.Dto.OrdersDto;
+using RMall_BE.Identity;
 using RMall_BE.Interfaces;
 using RMall_BE.Interfaces.MovieInterfaces;
 using RMall_BE.Interfaces.OrderInterfaces;
@@ -10,6 +12,7 @@ using RMall_BE.Models;
 using RMall_BE.Models.Movies;
 using RMall_BE.Models.Movies.Genres;
 using RMall_BE.Models.Orders;
+using RMall_BE.Models.User;
 using RMall_BE.Repositories;
 using RMall_BE.Repositories.MovieRepositories;
 using RMall_BE.Repositories.OrderRepositories;
@@ -22,11 +25,11 @@ namespace RMall_BE.Controllers.Orders
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IMapper _mapper;
-        private readonly IUserRepository _userRepository;
+        private readonly IUserRepository<Customer> _userRepository;
         private readonly IShowRepository _showRepository;
         private readonly IFoodRepository _foodRepository;
 
-        public OrdersController(IOrderRepository orderRepository, IMapper mapper, IUserRepository userRepository, IShowRepository showRepository,IFoodRepository foodRepository)
+        public OrdersController(IOrderRepository orderRepository, IMapper mapper, IUserRepository<Customer> userRepository, IShowRepository showRepository)
         {
             _orderRepository = orderRepository;
             _mapper = mapper;
@@ -60,22 +63,6 @@ namespace RMall_BE.Controllers.Orders
 
             return Ok(order);
         }
-
-        [HttpGet]
-        [Route("userId")]
-        public IActionResult GetOrderByUserId(int userId)
-        {
-            if (!_userRepository.UserExist(userId))
-                return NotFound("User Not Found!");
-
-            var orders = _mapper.Map<List<OrderDto>>(_orderRepository.GetOrderByUserId(userId));
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            return Ok(orders);
-        }
-
 
         [HttpPost]
         [ProducesResponseType(204)]
@@ -120,6 +107,8 @@ namespace RMall_BE.Controllers.Orders
             return Created("", orderCreate);
         }
 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
         [ProducesResponseType(400)]
@@ -148,6 +137,8 @@ namespace RMall_BE.Controllers.Orders
             return NoContent();
         }
 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
         [ProducesResponseType(400)]

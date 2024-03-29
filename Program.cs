@@ -1,11 +1,8 @@
-﻿using RMall_BE;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RMall_BE.Data;
 using System.Text.Json.Serialization;
-using System.Reflection;
 using RMall_BE.Interfaces;
 using RMall_BE.Repositories;
-using Microsoft.OpenApi.Models;
 using RMall_BE.Interfaces.ShopInterfaces;
 using RMall_BE.Interfaces.MovieInterfaces;
 using RMall_BE.Interfaces.MovieInterfaces.SeatInterfaces;
@@ -17,16 +14,14 @@ using RMall_BE.Repositories.MovieRepositories.SeatRepositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.AspNetCore.Cors.Infrastructure;
-using RMall_BE.Identity;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using RMall_BE.Swagger;
-using RMall_BE.Services.Momo;
-using RMall_BE.Services.VNPay;
-using RMall_BE.Dto.Momo;
-using RMall_BE.Services.PayPal;
-
+using RMall_BE.Interfaces.MallInterfaces;
+using RMall_BE.Repositories.MallRepositories;
+using RMall_BE.Repositories.UserRepositories;
+using RMall_BE.Models.User;
+using RMall_BE.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,7 +58,9 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
 builder.Services.AddScoped<IShopRepository, ShopRepository>();
 builder.Services.AddScoped<IFloorRepository, FloorRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserRepository<Customer>, CustomerRepository>();
+builder.Services.AddScoped<IUserRepository<Admin>, AdminRepository>();
+builder.Services.AddScoped<IUserRepository<Tenant>, TenantRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
@@ -73,6 +70,7 @@ builder.Services.AddScoped<IFoodRepository, FoodRepository>();
 builder.Services.AddScoped<ISeatRepository, SeatRepository>();
 builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 builder.Services.AddScoped<IGalleryMovieRepository, GalleryMovieRepository>();
+builder.Services.AddScoped<IGalleryMallRepository, GalleryMallRepository>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IShowRepository, ShowRepository>();
@@ -126,25 +124,29 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
-app.UseCors();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseCors();
+
+    // global error handler
+    app.UseMiddleware<ErrorHandlerMiddleware>();
+
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.UseHttpsRedirection();
+
+    // Authentication
+    app.UseAuthentication();
+
+    app.UseRouting();
+
+    // Authorization
+    app.UseAuthorization();
+
+    app.MapControllers();
 }
-
-app.UseHttpsRedirection();
-
-// Authentication
-app.UseAuthentication();
-
-app.UseRouting();
-
-// Authorization
-app.UseAuthorization();
-
-app.MapControllers();
-
 app.Run();

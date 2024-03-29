@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using AutoMapper.Configuration.Annotations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RMall_BE.Data;
 using RMall_BE.Dto.ShopsDto;
+using RMall_BE.Identity;
 using RMall_BE.Interfaces.ShopInterfaces;
 using RMall_BE.Models.Shops;
 using RMall_BE.Repositories;
@@ -81,6 +83,9 @@ namespace RMall_BE.Controllers.Shops
         /// }
         /// 
         /// </remarks>
+
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
         public IActionResult CreateShop([FromQuery] int categoryId, [FromQuery] int floorId, [FromBody] ShopDto shopCreate)
         {
@@ -109,6 +114,8 @@ namespace RMall_BE.Controllers.Shops
             return Ok("Successfully created");
         }
 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
         public IActionResult UpdateShop(int id, [FromBody] ShopDto updatedShop)
@@ -134,6 +141,8 @@ namespace RMall_BE.Controllers.Shops
             return NoContent();
         }
 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
         public IActionResult DeleteShop(int id)

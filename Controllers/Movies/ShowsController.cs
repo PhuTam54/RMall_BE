@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RMall_BE.Dto;
 using RMall_BE.Dto.MoviesDto;
-using RMall_BE.Dto.OrdersDto;
+using RMall_BE.Identity;
 using RMall_BE.Interfaces;
 using RMall_BE.Interfaces.MovieInterfaces;
 using RMall_BE.Interfaces.OrderInterfaces;
@@ -58,22 +59,8 @@ namespace RMall_BE.Controllers.Movies
             return Ok(show);
         }
 
-        [HttpGet]
-        [Route("movieId")]
-        [ProducesResponseType(200, Type = typeof(Show))]
-        [ProducesResponseType(400)]
-        public IActionResult GetShowByMovieID(int movieId)
-        {
-            if (!_movieRepository.MovieExist(movieId))
-                return NotFound("Movie Not Found!");
-
-            var shows = _mapper.Map<List<ShowDto>>(_showRepository.GetShowByMovieID(movieId));
-
-
-            return Ok(shows);
-        }
-
-
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -103,6 +90,8 @@ namespace RMall_BE.Controllers.Movies
             return Ok("Successfully created");
         }
 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
         [ProducesResponseType(400)]
@@ -131,6 +120,8 @@ namespace RMall_BE.Controllers.Movies
             return NoContent();
         }
 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
         [ProducesResponseType(400)]

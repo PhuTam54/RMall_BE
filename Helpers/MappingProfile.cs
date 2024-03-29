@@ -4,6 +4,8 @@ using RMall_BE.Dto.MoviesDto;
 using RMall_BE.Dto.MoviesDto.SeatsDto;
 using RMall_BE.Dto.OrdersDto;
 using RMall_BE.Dto.ShopsDto;
+using RMall_BE.Dto.UsersDto;
+using RMall_BE.Entities;
 using RMall_BE.Models;
 using RMall_BE.Models.Movies;
 using RMall_BE.Models.Movies.Genres;
@@ -11,6 +13,7 @@ using RMall_BE.Models.Movies.Languages;
 using RMall_BE.Models.Movies.Seats;
 using RMall_BE.Models.Orders;
 using RMall_BE.Models.Shops;
+using RMall_BE.Models.User;
 
 namespace RMall_BE.Helpers
 {
@@ -42,7 +45,7 @@ namespace RMall_BE.Helpers
             CreateMap<LanguageDto, Language>();
             CreateMap<Genre, GenreDto>();
             CreateMap<GenreDto, Genre>();
-            CreateMap<GalleryMovie, GalleryMovieDto>();
+            CreateMap<GalleryMovie, GalleryMallDto>();
             CreateMap<GalleryMovieDto, GalleryMovie>();
             #endregion
 
@@ -51,8 +54,8 @@ namespace RMall_BE.Helpers
             CreateMap<SeatDto, Seat>();
             CreateMap<SeatType, SeatTypeDto>();
             CreateMap<SeatTypeDto, SeatType>();
-            CreateMap<SeatShow, SeatShowDto>();
-            CreateMap<SeatShowDto, SeatShow>();
+            CreateMap<SeatReservation, SeatReservationDto>();
+            CreateMap<SeatReservationDto, SeatReservation>();
             #endregion
 
             #region Order
@@ -62,11 +65,21 @@ namespace RMall_BE.Helpers
             CreateMap<OrderDto, Order>();
             #endregion
 
-            CreateMap<User, UserDto>();
-            CreateMap<UserDto, User>();
+            #region User
+            CreateMap<Customer, CustomerDto>();
+            CreateMap<CustomerDto, Customer>();
+            CreateMap<Admin, AdminDto>();
+            CreateMap<AdminDto, Admin>();
+            CreateMap<Tenant, TenantDto>();
+            CreateMap<TenantDto, Tenant>();
+            CreateMap<RegisterRequest, Customer>();
+            #endregion
 
             CreateMap<Feedback, FeedbackDto>();
             CreateMap<FeedbackDto, Feedback>();
+
+            CreateMap<GalleryMallDto, GalleryMall>();
+            CreateMap<GalleryMall, GalleryMallDto>();
         }
     }
 }

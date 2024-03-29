@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RMall_BE.Dto.ShopsDto;
+using RMall_BE.Identity;
 using RMall_BE.Interfaces.ShopInterfaces;
 using RMall_BE.Models.Shops;
 using RMall_BE.Repositories;
@@ -58,6 +60,9 @@ namespace RMall_BE.Controllers.Shops
         /// "price": 222,
         /// "description": "Quan ao dep"
         /// </remarks>
+
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
         public IActionResult CreateProduct([FromQuery] int shopId, [FromBody] ProductDto productCreate)
         {
@@ -78,6 +83,8 @@ namespace RMall_BE.Controllers.Shops
             return Ok("Create Product Successfully!");
         }
 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
         public IActionResult UpdateProduct([FromQuery] int id, [FromBody] ProductDto productUpdate)
@@ -99,6 +106,8 @@ namespace RMall_BE.Controllers.Shops
             return Ok("Update Product Successfully!");
         }
 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
         public IActionResult DeleteProduct([FromQuery] int id)
@@ -117,8 +126,5 @@ namespace RMall_BE.Controllers.Shops
             }
             return Ok("Delete Product Successfully!");
         }
-
-
-
     }
 }

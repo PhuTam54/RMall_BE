@@ -1,7 +1,7 @@
 ﻿using RMall_BE.Data;
 using RMall_BE.Interfaces.MovieInterfaces;
 using RMall_BE.Models;
-using RMall_BE.Models.Movies.Genres;
+using RMall_BE.Models.Movies;
 
 namespace RMall_BE.Repositories.MovieRepositories
 {
@@ -50,7 +50,5 @@ namespace RMall_BE.Repositories.MovieRepositories
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
         }
-
-        
     }
 }
