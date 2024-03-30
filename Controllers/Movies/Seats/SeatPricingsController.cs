@@ -14,83 +14,79 @@ namespace RMall_BE.Controllers.Movies.Seats
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SeatShowsController : ControllerBase
+    public class SeatPricingsController : ControllerBase
     {
-        private readonly ISeatShowRepository _seatShowRepository;
+        private readonly ISeatPricingRepository _seatPricingRepository;
         private readonly IMapper _mapper;
         private readonly IShowRepository _showRepository;
         private readonly ISeatTypeRepository _seatTypeRepository;
 
-        public SeatShowsController(ISeatShowRepository seatShowRepository, IMapper mapper, IShowRepository showRepository, ISeatTypeRepository seatTypeRepository)
+        public SeatPricingsController(ISeatPricingRepository seatPricingRepository, IMapper mapper, IShowRepository showRepository, ISeatTypeRepository seatTypeRepository)
         {
-            _seatShowRepository = seatShowRepository;
+            _seatPricingRepository = seatPricingRepository;
             _mapper = mapper;
             _showRepository = showRepository;
             _seatTypeRepository = seatTypeRepository;
         }
 
         [HttpGet]
-        public IActionResult GetAllSeatShow()
+        public IActionResult GetAllSeatPricing()
         {
 
-            var seatShows = _mapper.Map<List<SeatShowDto>>(_seatShowRepository.GetAllSeatShow());
+            var seatPricings = _mapper.Map<List<SeatPricingDto>>(_seatPricingRepository.GetAllSeatPricing());
 
-            return Ok(seatShows);
+            return Ok(seatPricings);
         }
 
         [HttpGet]
         [Route("id")]
-        [ProducesResponseType(200, Type = typeof(SeatShow))]
-        [ProducesResponseType(400)]
-        public IActionResult GetSeatShowById(int id)
+        public IActionResult GetSeatPricingById(int id)
         {
-            if (!_seatShowRepository.SeatShowExist(id))
+            if (!_seatPricingRepository.SeatPricingExist(id))
                 return NotFound();
 
-            var seatShow = _mapper.Map<SeatShowDto>(_seatShowRepository.GetSeatShowById(id));
+            var seatPricing = _mapper.Map<SeatPricingDto>(_seatPricingRepository.GetSeatPricingById(id));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(seatShow);
+            return Ok(seatPricing);
         }
 
         [HttpGet]
         [Route("showId")]
-        public IActionResult GetSeatShowByShowId(int showId)
+        public IActionResult GetSeatPricingByShowId(int showId)
         {
             if (!_showRepository.ShowExist(showId))
                 return NotFound();
 
-            var seatShows = _mapper.Map<List<SeatShowDto>>(_seatShowRepository.GetSeatShowByShowId(showId));
+            var seatPricings = _mapper.Map<List<SeatPricingDto>>(_seatPricingRepository.GetSeatPricingByShowId(showId));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(seatShows);
+            return Ok(seatPricings);
         }
 
         [HttpPost]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        public IActionResult CreateSeatShow([FromQuery]int showId, [FromQuery]int seatTypeId,[FromBody] SeatShowDto seatShowCreate)
+        public IActionResult CreateSeatPricing([FromQuery]int showId, [FromQuery]int seatTypeId,[FromBody] SeatPricingDto seatPricingCreate)
         {
             if(!_showRepository.ShowExist(showId))
                 return NotFound("Show Not Found!");
             if(!_seatTypeRepository.SeatTypeExist(seatTypeId))
                 return NotFound("Seat Type Not Found!");
-            if (seatShowCreate == null)
+            if (seatPricingCreate == null)
                 return BadRequest(ModelState);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var seatShowMap = _mapper.Map<SeatShow>(seatShowCreate);
-            seatShowMap.Show = _showRepository.GetShowById(showId);
-            //seatShowMap.SeatType = _seatTypeRepository.GetSeatTypeById(seatTypeId);
+            var seatPricingMap = _mapper.Map<SeatPricing>(seatPricingCreate);
+            seatPricingMap.Show = _showRepository.GetShowById(showId);
+            seatPricingMap.SeatType = _seatTypeRepository.GetSeatTypeById(seatTypeId);
 
 
-            if (!_seatShowRepository.CreateSeatShow(seatShowMap))
+            if (!_seatPricingRepository.CreateSeatPricing(seatPricingMap))
             {
                 ModelState.AddModelError("", "Something went wrong while savin");
                 return StatusCode(500, ModelState);
@@ -101,26 +97,23 @@ namespace RMall_BE.Controllers.Movies.Seats
 
         [HttpPut]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
-        public IActionResult UpdateSeatShow(int id, [FromBody] SeatShowDto updatedSeatShow)
+        public IActionResult UpdateSeatPricing(int id, [FromBody] SeatPricingDto updatedSeatPricing)
         {
-            if (!_seatShowRepository.SeatShowExist(id))
+            if (!_seatPricingRepository.SeatPricingExist(id))
                 return NotFound();
-            if (updatedSeatShow == null)
+            if (updatedSeatPricing == null)
                 return BadRequest(ModelState);
 
-            if (id != updatedSeatShow.Id)
+            if (id != updatedSeatPricing.Id)
                 return BadRequest(ModelState);
 
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var seatShowMap = _mapper.Map<SeatShow>(updatedSeatShow);
-            if (!_seatShowRepository.UpdateSeatShow(seatShowMap))
+            var seatPricingMap = _mapper.Map<SeatPricing>(updatedSeatPricing);
+            if (!_seatPricingRepository.UpdateSeatPricing(seatPricingMap))
             {
-                ModelState.AddModelError("", "Something went wrong updating SeatShow!");
+                ModelState.AddModelError("", "Something went wrong updating SeatPricing!");
                 return StatusCode(500, ModelState);
             }
 
@@ -129,24 +122,21 @@ namespace RMall_BE.Controllers.Movies.Seats
 
         [HttpDelete]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
-        public IActionResult DeleteSeatShow(int id)
+        public IActionResult DeleteSeatPricing(int id)
         {
-            if (!_seatShowRepository.SeatShowExist(id))
+            if (!_seatPricingRepository.SeatPricingExist(id))
             {
                 return NotFound();
             }
 
-            var seatShowToDelete = _seatShowRepository.GetSeatShowById(id);
+            var seatPricingToDelete = _seatPricingRepository.GetSeatPricingById(id);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!_seatShowRepository.DeleteSeatShow(seatShowToDelete))
+            if (!_seatPricingRepository.DeleteSeatPricing(seatPricingToDelete))
             {
-                ModelState.AddModelError("", "Something went wrong deleting SeatShow!");
+                ModelState.AddModelError("", "Something went wrong deleting SeatPricing!");
             }
 
             return NoContent();

@@ -34,8 +34,6 @@ namespace RMall_BE.Controllers.Users
 
         [HttpGet]
         [Route("id")]
-        [ProducesResponseType(200, Type = typeof(Tenant))]
-        [ProducesResponseType(400)]
         public IActionResult GetUserById(int id)
         {
             if (!_userRepository.UserExist(id))
@@ -52,8 +50,6 @@ namespace RMall_BE.Controllers.Users
         [Authorize]
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
         public IActionResult CreateUser([FromBody] TenantDto userCreate)
         {
             if (userCreate == null)
@@ -79,9 +75,6 @@ namespace RMall_BE.Controllers.Users
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult UpdateUser(int id, [FromBody] TenantDto updatedUser)
         {
             if (!_userRepository.UserExist(id))
@@ -109,9 +102,6 @@ namespace RMall_BE.Controllers.Users
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult DeleteUser(int id)
         {
             if (!_userRepository.UserExist(id))

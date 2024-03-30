@@ -17,11 +17,13 @@ namespace RMall_BE.Controllers.Movies.Seats
     {
         private readonly ISeatReservationRepository _seatReservationRepository;
         private readonly IMapper _mapper;
+        private readonly ISeatRepository _seatRepository;
 
-        public SeatReservationsController(ISeatReservationRepository seatReservationRepository, IMapper mapper)
+        public SeatReservationsController(ISeatReservationRepository seatReservationRepository, IMapper mapper, ISeatRepository seatRepository)
         {
             _seatReservationRepository = seatReservationRepository;
             _mapper = mapper;
+            _seatRepository = seatRepository;
         }
 
         [HttpGet]
@@ -35,8 +37,6 @@ namespace RMall_BE.Controllers.Movies.Seats
 
         [HttpGet]
         [Route("id")]
-        [ProducesResponseType(200, Type = typeof(SeatReservation))]
-        [ProducesResponseType(400)]
         public IActionResult GetSeatReservationById(int id)
         {
             if (!_seatReservationRepository.SeatReservationExist(id))
@@ -51,10 +51,10 @@ namespace RMall_BE.Controllers.Movies.Seats
         }
 
         [HttpPost]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        public IActionResult CreateSeatReservation([FromBody] SeatReservationDto seatReservationCreate)
+        public IActionResult CreateSeatReservation([FromQuery] int seatId,[FromBody] SeatReservationDto seatReservationCreate)
         {
+            if (!_seatRepository.SeatExist(seatId))
+                return NotFound("Seat Not Found");
             if (seatReservationCreate == null)
                 return BadRequest(ModelState);
 
@@ -62,6 +62,7 @@ namespace RMall_BE.Controllers.Movies.Seats
                 return BadRequest(ModelState);
 
             var seatReservationMap = _mapper.Map<SeatReservation>(seatReservationCreate);
+            seatReservationMap.Seat = _seatRepository.GetSeatById(seatId);
 
 
             if (!_seatReservationRepository.CreateSeatReservation(seatReservationMap))
@@ -75,9 +76,6 @@ namespace RMall_BE.Controllers.Movies.Seats
 
         [HttpPut]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult UpdateSeatReservation(int id, [FromBody] SeatReservationDto updatedSeatReservation)
         {
             if (!_seatReservationRepository.SeatReservationExist(id))
@@ -103,9 +101,6 @@ namespace RMall_BE.Controllers.Movies.Seats
 
         [HttpDelete]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult DeleteSeatReservation(int id)
         {
             if (!_seatReservationRepository.SeatReservationExist(id))

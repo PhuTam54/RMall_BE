@@ -1,4 +1,4 @@
-﻿namespace RMall_BE.Dto.VNPay
+﻿namespace RMall_BE.Dto.Payments.VNPay
 {
     public class VnPaymentResponseModel
     {

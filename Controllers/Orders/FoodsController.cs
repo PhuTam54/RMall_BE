@@ -32,8 +32,6 @@ namespace RMall_BE.Controllers.Orders
 
         [HttpGet]
         [Route("id")]
-        [ProducesResponseType(200, Type = typeof(Food))]
-        [ProducesResponseType(400)]
         public IActionResult GetFoodById(int id)
         {
             if (!_foodRepository.FoodExist(id))
@@ -47,11 +45,18 @@ namespace RMall_BE.Controllers.Orders
             return Ok(food);
         }
 
+        /// <summary>
+        /// Create Food
+        /// </summary>
+        /// <param name="foodCreate"></param>
+        /// <remarks>
+        /// "name": "KeoLocXoay",
+        /// "description": "KeoLocXoay sieu ngon!"
+        /// </remarks>
+        /// <returns></returns>
         [Authorize]
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
         public IActionResult CreateFood([FromBody] FoodDto foodCreate)
         {
             if (foodCreate == null)
@@ -75,9 +80,6 @@ namespace RMall_BE.Controllers.Orders
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult UpdateFood(int id, [FromBody] FoodDto updatedFood)
         {
             if (!_foodRepository.FoodExist(id))
@@ -103,9 +105,6 @@ namespace RMall_BE.Controllers.Orders
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult DeleteFood(int id)
         {
             if (!_foodRepository.FoodExist(id))

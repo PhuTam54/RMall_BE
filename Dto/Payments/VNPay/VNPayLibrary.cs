@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Security.Policy;
 using System.Text;
 
-namespace RMall_BE.Dto.VNPay;
+namespace RMall_BE.Dto.Payments.VNPay;
 
 public class VnPayLibrary
 {

@@ -11,6 +11,7 @@ using RMall_BE.Interfaces.OrderInterfaces;
 using RMall_BE.Models;
 using RMall_BE.Models.Movies;
 using RMall_BE.Models.Movies.Genres;
+using RMall_BE.Models.Movies.Languages;
 using RMall_BE.Models.Orders;
 using RMall_BE.Models.User;
 using RMall_BE.Repositories;
@@ -29,7 +30,7 @@ namespace RMall_BE.Controllers.Orders
         private readonly IShowRepository _showRepository;
         private readonly IFoodRepository _foodRepository;
 
-        public OrdersController(IOrderRepository orderRepository, IMapper mapper, IUserRepository<Customer> userRepository, IShowRepository showRepository)
+        public OrdersController(IOrderRepository orderRepository, IMapper mapper, IUserRepository<Customer> userRepository, IShowRepository showRepository, IFoodRepository foodRepository)
         {
             _orderRepository = orderRepository;
             _mapper = mapper;
@@ -49,8 +50,6 @@ namespace RMall_BE.Controllers.Orders
 
         [HttpGet]
         [Route("id")]
-        [ProducesResponseType(200, Type = typeof(Order))]
-        [ProducesResponseType(400)]
         public IActionResult GetOrderById(int id)
         {
             if (!_orderRepository.OrderExist(id))
@@ -64,9 +63,38 @@ namespace RMall_BE.Controllers.Orders
             return Ok(order);
         }
 
+        [HttpGet]
+        [Route("userId")]
+        public IActionResult GetOrderByUserId(int userId)
+        {
+            if (!_userRepository.UserExist(userId))
+                return NotFound("User Not Found!");
+
+            var orders = _mapper.Map<List<OrderDto>>(_orderRepository.GetOrderByUserId(userId));
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(orders);
+        }
+
+        /// <summary>
+        /// Create Order
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="showId"></param>
+        /// <param name="orderCreate"></param>
+        /// <remarks>
+        /// "order_Code": "abcdxyzQuanDangCap123",
+        /// "total": 23456,
+        /// "discount_Amount": 11111,
+        /// "discount_Code": "321paCgnaDnauQzyxdcba",
+        /// "final_Total": 12345,
+        /// "payment_Method": "momo",
+        /// "qR_Code": "octimuspraiseueueueueue",
+        /// </remarks>
+        /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
         public IActionResult CreateOrder([FromQuery]int userId, [FromQuery]int showId,[FromBody] OrderDto orderCreate)
         {
             if (!_userRepository.UserExist(userId))
@@ -83,37 +111,36 @@ namespace RMall_BE.Controllers.Orders
             orderMap.User = _userRepository.GetUserById(userId);
             orderMap.Show = _showRepository.GetShowById(showId);
 
+            var foods = new List<Food>();
+            foreach (var foodId in orderCreate.FoodIds)
+            {
+                Food food = _foodRepository.GetFoodById(foodId);
+                if(food == null)
+                {
+                    return NotFound("Food Not Found!");
+                }
+                foods.Add(food);
+            }
+
             if (!_orderRepository.CreateOrder(orderMap))
             {
                 ModelState.AddModelError("", "Something went wrong while savin");
                 return StatusCode(500, ModelState);
             }
+            //foreach (var item in foods)
+            //{
+            //    var orderFood = new OrderFood { Order_Id = orderMap.Id, Food_Id = item.Id, Order = orderMap, Food = item, Price = 1, Qty =  1};
+            //    _orderRepository.CreateOrderFood(orderFood);
+            //}
 
-            foreach (int foodId in orderCreate.FoodIds)
-            {
-                Food food = _foodRepository.GetFoodById(foodId);
-                if (food != null)
-                {
-                    var foodOrder = new OrderFood { Order_Id = orderMap.Id, Food_Id = food.Id, Order = orderMap, Food = food };
-                    _orderRepository.CreateOrderFood(foodOrder);
-                }
-                else
-                {
-                    return NotFound("Food Not Found!");
-                }
-            }
-
-
-            return Created("", orderCreate);
+            return Created("Ok fine quenchana", orderCreate);
         }
+
 
         [Authorize]
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult UpdateOrder(int id, [FromBody] OrderDto updatedOrder)
         {
             if (!_orderRepository.OrderExist(id))
@@ -141,9 +168,6 @@ namespace RMall_BE.Controllers.Orders
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult DeleteOrder(int id)
         {
             if (!_orderRepository.OrderExist(id))

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RMall_BE.Data;
 
@@ -11,9 +12,11 @@ using RMall_BE.Data;
 namespace RMallBE.Migrations
 {
     [DbContext(typeof(RMallContext))]
-    partial class RMallContextModelSnapshot : ModelSnapshot
+    [Migration("20240330085558_changeForeignkeySeat")]
+    partial class changeForeignkeySeat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -468,15 +471,15 @@ namespace RMallBE.Migrations
                     b.Property<DateTime>("Reservation_Expires_At")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SeatId")
+                    b.Property<int>("Seat_Id")
                         .HasColumnType("int");
 
-                    b.Property<int>("Seat_Id")
+                    b.Property<int>("SeatsId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SeatId");
+                    b.HasIndex("SeatsId");
 
                     b.ToTable("SeatReservations");
                 });
@@ -1141,13 +1144,13 @@ namespace RMallBE.Migrations
 
             modelBuilder.Entity("RMall_BE.Models.Movies.Seats.SeatReservation", b =>
                 {
-                    b.HasOne("RMall_BE.Models.Movies.Seats.Seat", "Seat")
+                    b.HasOne("RMall_BE.Models.Movies.Seats.Seat", "Seats")
                         .WithMany("SeatReservations")
-                        .HasForeignKey("SeatId")
+                        .HasForeignKey("SeatsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Seat");
+                    b.Navigation("Seats");
                 });
 
             modelBuilder.Entity("RMall_BE.Models.Movies.Show", b =>

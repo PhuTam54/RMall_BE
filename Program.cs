@@ -22,6 +22,11 @@ using RMall_BE.Repositories.MallRepositories;
 using RMall_BE.Repositories.UserRepositories;
 using RMall_BE.Models.User;
 using RMall_BE.Helpers;
+using RMall_BE.Services.Momo;
+using RMall_BE.Services.VNPay;
+using RMall_BE.Services.PayPal;
+using System.Reflection;
+using RMall_BE.Dto.Payments.Momo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,8 +49,10 @@ builder.Services.AddSwaggerGen(options =>
         //    Url = new Uri("https://localhost:7168")
         //}
     });
-
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
+
 
 // Config Swagger to Authentication
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
@@ -76,6 +83,8 @@ builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IShowRepository, ShowRepository>();
 builder.Services.AddScoped<ISeatTypeRepository, SeatTypeRepository>();
+builder.Services.AddScoped<ISeatPricingRepository, SeatPricingRepository>();
+builder.Services.AddScoped<ISeatReservationRepository, SeatReservationRepository>();
 
 builder.Services.Configure<MomoOptionModel>(builder.Configuration.GetSection("MomoAPI"));
 builder.Services.AddScoped<IMomoService, MomoService>();
@@ -124,6 +133,13 @@ builder.Services.AddAuthentication(options =>
 //builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+//using (var scope = app.Services.CreateScope())
+//{
+//var services = scope.ServiceProvider;
+
+//Seed.Initialize(services);
+//}
 
 {
     app.UseCors();

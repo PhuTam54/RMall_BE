@@ -34,8 +34,6 @@ namespace RMall_BE.Controllers.Movies
 
         [HttpGet]
         [Route("id")]
-        [ProducesResponseType(200, Type = typeof(Language))]
-        [ProducesResponseType(400)]
         public IActionResult GetLanguageById(int id)
         {
             if (!_languageRepository.LanguageExist(id))
@@ -57,18 +55,13 @@ namespace RMall_BE.Controllers.Movies
         /// <remarks>
         /// POST/Language
         /// {
-        /// "name": "Quan",
-        /// "email": "quan123@gmail.com",
-        /// "phone": "0987654321",
-        /// "message": "Nice!"
+        /// "name": "Vietnamese",
         /// }
         /// </remarks>
 
         [Authorize]
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
         public IActionResult CreateLanguage([FromBody] LanguageDto languageCreate)
         {
             if (languageCreate == null)
@@ -93,9 +86,6 @@ namespace RMall_BE.Controllers.Movies
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult UpdateLanguage(int id, [FromBody] LanguageDto updatedLanguage)
         {
             if (!_languageRepository.LanguageExist(id))
@@ -123,9 +113,6 @@ namespace RMall_BE.Controllers.Movies
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult DeleteLanguage(int id)
         {
             if (!_languageRepository.LanguageExist(id))

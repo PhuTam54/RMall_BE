@@ -41,8 +41,6 @@ namespace RMall_BE.Controllers.Movies
 
         [HttpGet]
         [Route("id")]
-        [ProducesResponseType(200, Type = typeof(Ticket))]
-        [ProducesResponseType(400)]
         public IActionResult GetTicketById(int id)
         {
             if (!_ticketRepository.TicketExist(id))
@@ -56,9 +54,16 @@ namespace RMall_BE.Controllers.Movies
             return Ok(ticket);
         }
 
+        /// <summary>
+        /// Create Ticket
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="ticketCreate"></param>
+        /// <remarks>
+        /// "code": "QuanDangCap123"
+        /// </remarks>
+        /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
         public IActionResult CreateTicket([FromQuery] int orderId, [FromBody] TicketDto ticketCreate)
         {
             if (!_orderRepository.OrderExist(orderId))
@@ -85,9 +90,6 @@ namespace RMall_BE.Controllers.Movies
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult UpdateTicket(int id, [FromBody] TicketDto updatedTicket)
         {
             if (!_ticketRepository.TicketExist(id))
@@ -115,9 +117,6 @@ namespace RMall_BE.Controllers.Movies
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult DeleteTicket(int id)
         {
             if (!_ticketRepository.TicketExist(id))

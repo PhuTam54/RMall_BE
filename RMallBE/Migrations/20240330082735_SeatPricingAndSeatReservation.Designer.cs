@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RMall_BE.Data;
 
@@ -11,9 +12,11 @@ using RMall_BE.Data;
 namespace RMallBE.Migrations
 {
     [DbContext(typeof(RMallContext))]
-    partial class RMallContextModelSnapshot : ModelSnapshot
+    [Migration("20240330082735_SeatPricingAndSeatReservation")]
+    partial class SeatPricingAndSeatReservation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -404,6 +407,9 @@ namespace RMallBE.Migrations
                     b.Property<int>("Row_Number")
                         .HasColumnType("int");
 
+                    b.Property<int>("SeatReservationId")
+                        .HasColumnType("int");
+
                     b.Property<int>("SeatTypeId")
                         .HasColumnType("int");
 
@@ -419,6 +425,8 @@ namespace RMallBE.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("RoomId");
+
+                    b.HasIndex("SeatReservationId");
 
                     b.HasIndex("SeatTypeId");
 
@@ -468,15 +476,7 @@ namespace RMallBE.Migrations
                     b.Property<DateTime>("Reservation_Expires_At")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SeatId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Seat_Id")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("SeatId");
 
                     b.ToTable("SeatReservations");
                 });
@@ -1109,6 +1109,12 @@ namespace RMallBE.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("RMall_BE.Models.Movies.Seats.SeatReservation", "SeatReservation")
+                        .WithMany("Seats")
+                        .HasForeignKey("SeatReservationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("RMall_BE.Models.Movies.Seats.SeatType", "SeatType")
                         .WithMany("Seats")
                         .HasForeignKey("SeatTypeId")
@@ -1116,6 +1122,8 @@ namespace RMallBE.Migrations
                         .IsRequired();
 
                     b.Navigation("Room");
+
+                    b.Navigation("SeatReservation");
 
                     b.Navigation("SeatType");
                 });
@@ -1137,17 +1145,6 @@ namespace RMallBE.Migrations
                     b.Navigation("SeatType");
 
                     b.Navigation("Show");
-                });
-
-            modelBuilder.Entity("RMall_BE.Models.Movies.Seats.SeatReservation", b =>
-                {
-                    b.HasOne("RMall_BE.Models.Movies.Seats.Seat", "Seat")
-                        .WithMany("SeatReservations")
-                        .HasForeignKey("SeatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Seat");
                 });
 
             modelBuilder.Entity("RMall_BE.Models.Movies.Show", b =>
@@ -1313,9 +1310,9 @@ namespace RMallBE.Migrations
                     b.Navigation("Shows");
                 });
 
-            modelBuilder.Entity("RMall_BE.Models.Movies.Seats.Seat", b =>
+            modelBuilder.Entity("RMall_BE.Models.Movies.Seats.SeatReservation", b =>
                 {
-                    b.Navigation("SeatReservations");
+                    b.Navigation("Seats");
                 });
 
             modelBuilder.Entity("RMall_BE.Models.Movies.Seats.SeatType", b =>

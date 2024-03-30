@@ -39,8 +39,6 @@ namespace RMall_BE.Controllers.Movies
 
         [HttpGet]
         [Route("id")]
-        [ProducesResponseType(200, Type = typeof(GalleryMovie))]
-        [ProducesResponseType(400)]
         public IActionResult GetGalleryMovieById(int id)
         {
             if (!_galleryMovieRepository.GalleryMovieExist(id))
@@ -62,15 +60,12 @@ namespace RMall_BE.Controllers.Movies
         /// <remarks>
         /// POST/GalleryMovie
         /// {
-        /// 
+        /// "image_Path": "abcd.png"
         /// }
         /// </remarks>
-
         [Authorize]
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
         public IActionResult CreateGalleryMovie([FromQuery]int movieId,[FromBody] GalleryMovieDto galleryMovieCreate)
         {
             if (!_movieRepository.MovieExist(movieId))
@@ -97,9 +92,6 @@ namespace RMall_BE.Controllers.Movies
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult UpdateGalleryMovie(int id, [FromBody] GalleryMovieDto updatedGalleryMovie)
         {
             if (!_galleryMovieRepository.GalleryMovieExist(id))
@@ -127,9 +119,6 @@ namespace RMall_BE.Controllers.Movies
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult DeleteGalleryMovie(int id)
         {
             if (!_galleryMovieRepository.GalleryMovieExist(id))

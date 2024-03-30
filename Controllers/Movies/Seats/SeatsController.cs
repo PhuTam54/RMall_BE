@@ -17,15 +17,13 @@ namespace RMall_BE.Controllers.Movies.Seats
     [ApiController]
     public class SeatsController : Controller
     {
-        private readonly RMallContext _context;
         private readonly ISeatRepository _seatRepository;
         private readonly IMapper _mapper;
         private readonly IRoomRepository _roomRepository;
         private readonly ISeatTypeRepository _seatTypeRepository;
 
-        public SeatsController(RMallContext context ,ISeatRepository seatRepository, IMapper mapper,IRoomRepository roomRepository,ISeatTypeRepository seatTypeRepository)
+        public SeatsController(ISeatRepository seatRepository, IMapper mapper,IRoomRepository roomRepository,ISeatTypeRepository seatTypeRepository)
         {
-            _context = context;
             _seatRepository = seatRepository;
             _mapper = mapper;
             _roomRepository = roomRepository;
@@ -43,8 +41,6 @@ namespace RMall_BE.Controllers.Movies.Seats
 
         [HttpGet]
         [Route("id")]
-        [ProducesResponseType(200, Type = typeof(Seat))]
-        [ProducesResponseType(400)]
         public IActionResult GetSeatById(int id)
         {
             if (!_seatRepository.SeatExist(id))
@@ -57,11 +53,10 @@ namespace RMall_BE.Controllers.Movies.Seats
             return Ok(seat);
         }
 
+
         [Authorize]
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
         public IActionResult CreateSeat([FromQuery]int roomId, [FromQuery]int seatTypeId,[FromBody] SeatDto seatCreate)
         {
             if (!_roomRepository.RoomExist(roomId))
@@ -77,7 +72,7 @@ namespace RMall_BE.Controllers.Movies.Seats
 
             var seatMap = _mapper.Map<Seat>(seatCreate);
             seatMap.Room = _roomRepository.GetRoomById(roomId);
-            //seatMap.SeatType = _seatTypeRepository.GetSeatTypeById(seatTypeId);
+            seatMap.SeatType = _seatTypeRepository.GetSeatTypeById(seatTypeId);
 
             if (!_seatRepository.CreateSeat(seatMap))
             {
@@ -92,9 +87,6 @@ namespace RMall_BE.Controllers.Movies.Seats
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult UpdateSeat(int id, [FromBody] SeatDto updatedSeat)
         {
             if (!_seatRepository.SeatExist(id))
@@ -120,9 +112,6 @@ namespace RMall_BE.Controllers.Movies.Seats
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult DeleteSeat(int id)
         {
             if (!_seatRepository.SeatExist(id))

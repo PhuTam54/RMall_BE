@@ -9,6 +9,7 @@ namespace RMall_BE.Interfaces.MovieInterfaces
         ICollection<Movie> GetAllMovie();
         Movie GetMovieById(int id);
         ICollection<Movie> GetMovieByGenreId(int genreId);
+        ICollection<Movie> GetMovieByLanguageId(int languageId);
         bool CreateMovieGenre(MovieGenre movieGenre);
         bool CreateMovieLanguage(MovieLanguage movieLanguage);
         bool CreateMovie(Movie movie);

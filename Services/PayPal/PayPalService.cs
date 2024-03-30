@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using PayPal.Core;
 using PayPal.v1.Payments;
-using RMall_BE.Dto.PayPal;
+using RMall_BE.Dto.Payments.PayPal;
 
 namespace RMall_BE.Services.PayPal
 {

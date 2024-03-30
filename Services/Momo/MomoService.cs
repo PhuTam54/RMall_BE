@@ -3,7 +3,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RestSharp;
-using RMall_BE.Dto.Momo;
+using RMall_BE.Dto.Payments.Momo;
 
 namespace RMall_BE.Services.Momo;
 

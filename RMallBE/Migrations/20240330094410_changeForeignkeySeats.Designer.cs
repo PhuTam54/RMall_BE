@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RMall_BE.Data;
 
@@ -11,9 +12,11 @@ using RMall_BE.Data;
 namespace RMallBE.Migrations
 {
     [DbContext(typeof(RMallContext))]
-    partial class RMallContextModelSnapshot : ModelSnapshot
+    [Migration("20240330094410_changeForeignkeySeats")]
+    partial class changeForeignkeySeats
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

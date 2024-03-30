@@ -1,5 +1,5 @@
 ﻿
-using RMall_BE.Dto.VNPay;
+using RMall_BE.Dto.Payments.VNPay;
 
 namespace RMall_BE.Services.VNPay
 {

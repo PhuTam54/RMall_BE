@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RMall_BE.Dto.MoviesDto;
+using RMall_BE.Helpers;
 using RMall_BE.Identity;
 using RMall_BE.Interfaces.MovieInterfaces;
 using RMall_BE.Models.Movies;
@@ -34,8 +35,6 @@ namespace RMall_BE.Controllers.Movies
 
         [HttpGet]
         [Route("id")]
-        [ProducesResponseType(200, Type = typeof(Room))]
-        [ProducesResponseType(400)]
         public IActionResult GetRoomById([FromQuery] int id)
         {
             if (!_roomRepository.RoomExist(id))
@@ -51,8 +50,6 @@ namespace RMall_BE.Controllers.Movies
 
         [HttpGet]
         [Route("name")]
-        [ProducesResponseType(200, Type = typeof(Room))]
-        [ProducesResponseType(400)]
         public IActionResult GetRoomByName([FromQuery] string name)
         {
             var room = _roomRepository.GetRoomByName(name);
@@ -67,11 +64,10 @@ namespace RMall_BE.Controllers.Movies
             return Ok(roomMap);
         }
 
+
         [Authorize]
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
         public IActionResult CreateRoom([FromBody] RoomDto roomCreate)
         {
             if (roomCreate == null)
@@ -81,7 +77,7 @@ namespace RMall_BE.Controllers.Movies
                 return BadRequest(ModelState);
 
             var roomMap = _mapper.Map<Room>(roomCreate);
-
+            roomMap.Slug = CreateSlug.Init_Slug(roomCreate.Name);
 
             if (!_roomRepository.CreateRoom(roomMap))
             {
@@ -96,9 +92,6 @@ namespace RMall_BE.Controllers.Movies
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult UpdateRoom([FromQuery] int id, [FromBody] RoomDto updatedRoom)
         {
             if (!_roomRepository.RoomExist(id))
@@ -126,9 +119,6 @@ namespace RMall_BE.Controllers.Movies
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult DeleteRoom([FromQuery] int id)
         {
             if (!_roomRepository.RoomExist(id))

@@ -33,8 +33,6 @@ namespace RMall_BE.Controllers.Shops
 
         [HttpGet]
         [Route("id")]
-        [ProducesResponseType(200, Type = typeof(Floor))]
-        [ProducesResponseType(400)]
         public IActionResult GetFloorById(int id)
         {
             if (!_floorRepository.FloorExist(id))
@@ -51,8 +49,6 @@ namespace RMall_BE.Controllers.Shops
         [Authorize]
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
         public IActionResult CreateFloor([FromBody] FloorDto floorCreate)
         {
             if (floorCreate == null)
@@ -77,9 +73,6 @@ namespace RMall_BE.Controllers.Shops
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult UpdateFloor(int id, [FromBody] FloorDto updatedFloor)
         {
             if (!_floorRepository.FloorExist(id))
@@ -107,9 +100,6 @@ namespace RMall_BE.Controllers.Shops
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult DeleteFloor(int id)
         {
             if (!_floorRepository.FloorExist(id))

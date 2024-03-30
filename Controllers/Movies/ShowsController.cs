@@ -37,15 +37,13 @@ namespace RMall_BE.Controllers.Movies
         public IActionResult GetAllShow()
         {
 
-            var shows = _showRepository.GetAllShow();
+            var shows = _mapper.Map<List<ShowDto>>(_showRepository.GetAllShow()); 
 
             return Ok(shows);
         }
 
         [HttpGet]
         [Route("id")]
-        [ProducesResponseType(200, Type = typeof(Show))]
-        [ProducesResponseType(400)]
         public IActionResult GetShowById(int id)
         {
             if (!_showRepository.ShowExist(id))
@@ -59,11 +57,31 @@ namespace RMall_BE.Controllers.Movies
             return Ok(show);
         }
 
+        [HttpGet]
+        [Route("movieId")]
+        public IActionResult GetShowByMovieID(int movieId)
+        {
+            if (!_movieRepository.MovieExist(movieId))
+                return NotFound("Movie Not Found!");
+
+            var shows = _mapper.Map<List<ShowDto>>(_showRepository.GetShowByMovieID(movieId));
+
+
+            return Ok(shows);
+        }
+
+        /// <summary>
+        /// Create Show
+        /// </summary>
+        /// <param name="movieId"></param>
+        /// <param name="roomId"></param>
+        /// <param name="showCreate"></param>
+        /// "show_Code": "QuanDangCap123",
+        /// "language": "Vietnamese"
+        /// <returns></returns>
         [Authorize]
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
         public IActionResult CreateShow([FromQuery]int movieId, [FromQuery]int roomId,[FromBody] ShowDto showCreate)
         {
             if(!_movieRepository.MovieExist(movieId))
@@ -94,9 +112,6 @@ namespace RMall_BE.Controllers.Movies
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult UpdateShow(int id, [FromBody] ShowDto updatedShow)
         {
             if (!_showRepository.ShowExist(id))
@@ -124,9 +139,6 @@ namespace RMall_BE.Controllers.Movies
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult DeleteShow(int id)
         {
             if (!_showRepository.ShowExist(id))

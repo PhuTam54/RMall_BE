@@ -1,4 +1,4 @@
-﻿using RMall_BE.Dto.PayPal;
+﻿using RMall_BE.Dto.Payments.PayPal;
 
 namespace RMall_BE.Services.PayPal;
 public interface IPayPalService
