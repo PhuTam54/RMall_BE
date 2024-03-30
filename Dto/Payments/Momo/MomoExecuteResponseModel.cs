@@ -1,4 +1,4 @@
-namespace RMall_BE.Dto.Momo;
+namespace RMall_BE.Dto.Payments.Momo;
 
 public class MomoExecuteResponseModel
 {

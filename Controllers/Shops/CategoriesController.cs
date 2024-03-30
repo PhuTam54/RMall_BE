@@ -45,6 +45,14 @@ namespace RMall_BE.Controllers.Shops
 
         }
 
+        /// <summary>
+        /// Create Category
+        /// </summary>
+        /// <param name="categoryCreate"></param>
+        /// <remarks>
+        /// "name": "Thoi Trang",
+        /// </remarks>
+        /// <returns></returns>
         [Authorize]
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]

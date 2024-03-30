@@ -37,6 +37,15 @@ namespace RMall_BE.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Login Information
+        /// </summary>
+        /// <param name="loginModel"></param>
+        /// <remarks>
+        /// "email": "string@gmail.com",
+        /// "password": "12345"
+        /// </remarks>
+        /// <returns></returns>
         // JWT Authentication
         [AllowAnonymous]
         [HttpPost]

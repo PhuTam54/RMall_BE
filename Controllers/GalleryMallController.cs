@@ -36,8 +36,6 @@ namespace RMall_BE.Controllers
 
         [HttpGet]
         [Route("id")]
-        [ProducesResponseType(200, Type = typeof(GalleryMall))]
-        [ProducesResponseType(400)]
         public IActionResult GetGalleryMallById(int id)
         {
             if (!_GalleryMallRepository.GalleryMallExist(id))
@@ -59,15 +57,14 @@ namespace RMall_BE.Controllers
         /// <remarks>
         /// POST/GalleryMall
         /// {
-        /// 
+        /// "image_Path": "QuanDangCap.png",
+        /// "product_Name": "Mall",
+        /// "description": "Mall Center"
         /// }
         /// </remarks>
-
         [Authorize]
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
         public IActionResult CreateGalleryMall([FromBody] GalleryMallDto GalleryMallCreate)
         {
             if (GalleryMallCreate == null)
@@ -91,9 +88,6 @@ namespace RMall_BE.Controllers
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult UpdateGalleryMall(int id, [FromBody] GalleryMallDto updatedGalleryMall)
         {
             if (!_GalleryMallRepository.GalleryMallExist(id))
@@ -121,9 +115,6 @@ namespace RMall_BE.Controllers
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult DeleteGalleryMall(int id)
         {
             if (!_GalleryMallRepository.GalleryMallExist(id))

@@ -33,8 +33,6 @@ namespace RMall_BE.Controllers.Movies
 
         [HttpGet]
         [Route("id")]
-        [ProducesResponseType(200, Type = typeof(Genre))]
-        [ProducesResponseType(400)]
         public IActionResult GetGenreById(int id)
         {
             if (!_genreRepository.GenreExist(id))
@@ -51,8 +49,6 @@ namespace RMall_BE.Controllers.Movies
         [Authorize]
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
         public IActionResult CreateGenre([FromBody] GenreDto genreCreate)
         {
             if (genreCreate == null)
@@ -77,9 +73,6 @@ namespace RMall_BE.Controllers.Movies
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult UpdateMovie(int id, [FromBody] MovieDto updatedGenre)
         {
             if (!_genreRepository.GenreExist(id))
@@ -105,9 +98,6 @@ namespace RMall_BE.Controllers.Movies
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult DeleteGenre(int id)
         {
             if (!_genreRepository.GenreExist(id))

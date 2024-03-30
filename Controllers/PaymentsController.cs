@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
-using RMall_BE.Dto.Momo;
-using RMall_BE.Dto.PayPal;
-using RMall_BE.Dto.VNPay;
+using RMall_BE.Dto.Payments.Momo;
+using RMall_BE.Dto.Payments.PayPal;
+using RMall_BE.Dto.Payments.VNPay;
 using RMall_BE.Services.Momo;
 using RMall_BE.Services.PayPal;
 using RMall_BE.Services.VNPay;
@@ -27,6 +27,17 @@ namespace RMall_BE.Controllers
             _payPalService = payPalService;
         }
 
+        /// <summary>
+        /// Create Momo
+        /// </summary>
+        /// <param name="model"></param>
+        /// <remarks>
+        /// "fullName": "QuanDangCapVipPro",
+        /// "orderId": "54321",
+        /// "orderInfo": "QuanDevSieucapVipPro",
+        /// "amount": 12345
+        /// </remarks>
+        /// <returns></returns>
         [HttpPost]
         [Route("Momo")]
         public async Task<IActionResult> Momo([FromBody]OrderInfoModel model)
@@ -42,6 +53,17 @@ namespace RMall_BE.Controllers
         //    return Ok(response);
         //}
 
+        /// <summary>
+        /// Create VNPay
+        /// </summary>
+        /// <param name="vnPaymentRequestModel"></param>
+        /// <remarks>
+        /// "orderId": 54321,
+        /// "fullName": "QuanDangCapVipPro",
+        /// "description": "QuanDevSieucapVipPro",
+        /// "amount": 12345,
+        /// </remarks>
+        /// <returns></returns>
         [HttpPost]
         [Route("VnPay")]
         public IActionResult VnPay([FromBody] VnPaymentRequestModel vnPaymentRequestModel)
@@ -70,6 +92,17 @@ namespace RMall_BE.Controllers
         //    return Ok(response);
         //}
 
+        /// <summary>
+        ///  Create PayPal
+        /// </summary>
+        /// <param name="model"></param>
+        /// <remarks>
+        /// "orderType": "Sandbox",
+        /// "amount": 999999,
+        /// "orderDescription": "QuanDevSieucapVipPro",
+        /// "name": "QuanDangCapVipPro"
+        /// </remarks>
+        /// <returns></returns>
         [HttpPost]
         [Route("PayPal")]
         public async Task<IActionResult> CreatePaymentUrl([FromBody] PaymentInformationModel model)

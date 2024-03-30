@@ -18,11 +18,10 @@ namespace RMall_BE.Repositories.OrderRepositories
             return foods;
         }
 
-        public Food GetFoodyById(int id)
+        public Food GetFoodById(int id)
         {
             return _context.Foods.FirstOrDefault(c => c.Id == id);
         }
-
 
         public bool CreateFood(Food food)
         {
@@ -52,9 +51,6 @@ namespace RMall_BE.Repositories.OrderRepositories
             return _context.Foods.Any(c => c.Id == id);
         }
 
-        public Food GetFoodById(int id)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

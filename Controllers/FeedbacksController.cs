@@ -56,7 +56,7 @@ namespace RMall_BE.Controllers
         /// <remarks>
         /// POST/Feedback
         /// {
-        /// "name": "Quan",
+        /// "name": "QuanDangCapVipPro",
         /// "email": "quan123@gmail.com",
         /// "phone": "0987654321",
         /// "message": "Nice!"

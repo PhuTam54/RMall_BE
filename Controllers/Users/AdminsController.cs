@@ -34,8 +34,6 @@ namespace RMall_BE.Controllers.Users
 
         [HttpGet]
         [Route("id")]
-        [ProducesResponseType(200, Type = typeof(Admin))]
-        [ProducesResponseType(400)]
         public IActionResult GetUserById(int id)
         {
             if (!_userRepository.UserExist(id))
@@ -49,12 +47,21 @@ namespace RMall_BE.Controllers.Users
             return Ok(user);
         }
 
+        /// <summary>
+        /// Create Admin
+        /// </summary>
+        /// <param name="userCreate"></param>
+        /// <remarks>
+        /// "email": "string@gmail.com",
+        /// "username": "QuanDangCap",
+        /// "password": "12345",
+        /// "role": 2,
+        /// </remarks>
+        /// <returns></returns>
         [AllowAnonymous]
         //[Authorize]
         //[RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
         public IActionResult CreateUser([FromBody] AdminDto userCreate)
         {
             if (userCreate == null)
@@ -80,9 +87,6 @@ namespace RMall_BE.Controllers.Users
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult UpdateUser(int id, [FromBody] AdminDto updatedUser)
         {
             if (!_userRepository.UserExist(id))
@@ -110,9 +114,6 @@ namespace RMall_BE.Controllers.Users
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult DeleteUser(int id)
         {
             if (!_userRepository.UserExist(id))

@@ -83,7 +83,6 @@ namespace RMall_BE.Controllers.Shops
         /// }
         /// 
         /// </remarks>
-
         [Authorize]
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]

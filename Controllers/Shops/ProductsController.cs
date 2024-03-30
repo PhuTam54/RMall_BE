@@ -56,7 +56,7 @@ namespace RMall_BE.Controllers.Shops
         /// <returns></returns>
         /// <remarks>
         /// "name": "Quan ao",
-        /// "image": "Quan -ao/img",
+        /// "image": "Quan - ao/img",
         /// "price": 222,
         /// "description": "Quan ao dep"
         /// </remarks>

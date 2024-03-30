@@ -44,7 +44,17 @@ namespace RMall_BE.Repositories.MovieRepositories
             }
             return movieList;
         }
-
+        public ICollection<Movie> GetMovieByLanguageId(int languageId)
+        {
+            var languageMovies = _context.MovieLanguages.Include(m => m.Movie).Where(lm => lm.Language.Id == languageId).ToList();
+            var movieList = new List<Movie>();
+            foreach(var  languageMovie in languageMovies)
+            {
+                Movie movie = _context.Movies.FirstOrDefault(m => m.Id == languageMovie.Movie_id);
+                movieList.Add(movie);
+            }    
+            return movieList;
+        }
         public bool CreateMovie(Movie movie)
         {
             _context.Add(movie);

@@ -1,4 +1,4 @@
-﻿namespace RMall_BE.Dto.PayPal;
+﻿namespace RMall_BE.Dto.Payments.PayPal;
 
 
 public class PaymentResponseModel

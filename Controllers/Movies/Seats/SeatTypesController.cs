@@ -37,8 +37,6 @@ namespace RMall_BE.Controllers.Movies.Seats
 
         [HttpGet]
         [Route("id")]
-        [ProducesResponseType(200, Type = typeof(SeatType))]
-        [ProducesResponseType(400)]
         public IActionResult GetSeatTypeById(int id)
         {
             if (!_seatTypeRepository.SeatTypeExist(id))
@@ -52,13 +50,20 @@ namespace RMall_BE.Controllers.Movies.Seats
             return Ok(seatType);
         }
 
+        /// <summary>
+        /// Create SeatType
+        /// </summary>
+        /// <param name="seatTypeCreate"></param>
+        /// <remarks>
+        /// "name": "VIP, Regular, double"
+        /// </remarks>
+        /// <returns></returns>
         [Authorize]
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
         public IActionResult CreateSeatType([FromBody] SeatTypeDto seatTypeCreate)
         {
+            
             if (seatTypeCreate == null)
                 return BadRequest(ModelState);
 
@@ -81,9 +86,6 @@ namespace RMall_BE.Controllers.Movies.Seats
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult UpdateSeatType(int id, [FromBody] SeatTypeDto updatedSeatType)
         {
             if (!_seatTypeRepository.SeatTypeExist(id))
@@ -111,9 +113,6 @@ namespace RMall_BE.Controllers.Movies.Seats
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
         public IActionResult DeleteSeatType(int id)
         {
             if (!_seatTypeRepository.SeatTypeExist(id))
