@@ -32,9 +32,9 @@ namespace RMall_BE.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <remarks>
-        /// "fullName": "QuanDangCapVipPro",
+        /// "fullName": "Customer",
         /// "orderId": "54321",
-        /// "orderInfo": "QuanDevSieucapVipPro",
+        /// "orderInfo": "Order movie ticket",
         /// "amount": 12345
         /// </remarks>
         /// <returns></returns>
@@ -59,8 +59,8 @@ namespace RMall_BE.Controllers
         /// <param name="vnPaymentRequestModel"></param>
         /// <remarks>
         /// "orderId": 54321,
-        /// "fullName": "QuanDangCapVipPro",
-        /// "description": "QuanDevSieucapVipPro",
+        /// "fullName": "Customer",
+        /// "description": "Order movie ticket",
         /// "amount": 12345,
         /// </remarks>
         /// <returns></returns>
@@ -99,8 +99,8 @@ namespace RMall_BE.Controllers
         /// <remarks>
         /// "orderType": "Sandbox",
         /// "amount": 999999,
-        /// "orderDescription": "QuanDevSieucapVipPro",
-        /// "name": "QuanDangCapVipPro"
+        /// "orderDescription": "Order movie ticket",
+        /// "name": "Customer"
         /// </remarks>
         /// <returns></returns>
         [HttpPost]

@@ -38,12 +38,12 @@ namespace RMall_BE.Controllers
         }
 
         /// <summary>
-        /// Login Information
+        /// Login As a Admin
         /// </summary>
         /// <param name="loginModel"></param>
         /// <remarks>
-        /// "email": "string@gmail.com",
-        /// "password": "12345"
+        /// "email": "admin@gmail.com",
+        /// "password": "123456"
         /// </remarks>
         /// <returns></returns>
         // JWT Authentication
@@ -126,6 +126,19 @@ namespace RMall_BE.Controllers
             return tokenHandler.WriteToken(token);
         }
 
+        /// <summary>
+        /// Register information
+        /// </summary>
+        /// <param name="registerModel"></param>
+        /// <remarks>
+        /// {
+        /// "email": "newuser@gmail.com",
+        /// "username": "newuser",
+        /// "password": "123456",
+        /// "confirmpassword": "123456"
+        /// }
+        /// </remarks>
+        /// <returns></returns>
         // Resgiter
         [AllowAnonymous]
         [HttpPost]

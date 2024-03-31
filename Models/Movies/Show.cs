@@ -7,7 +7,6 @@ namespace RMall_BE.Models.Movies
     {
         public int Id { get; set; }
         public string Show_Code { get; set; }
-        public string Language { get; set; }
         public DateTime Start_Date { get; set; }
         public int Movie_Id { get; set; }
         public int Room_Id { get; set; }

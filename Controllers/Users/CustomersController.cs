@@ -47,6 +47,17 @@ namespace RMall_BE.Controllers.Users
             return Ok(user);
         }
 
+        /// <summary>
+        /// Create Customer
+        /// </summary>
+        /// <param name="userCreate"></param>
+        /// <remarks>
+        /// "email": "customer@gmail.com",
+        /// "username": "customer",
+        /// "password": "123456",
+        /// "role": 2
+        /// </remarks>
+        /// <returns></returns>
         [Authorize]
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
@@ -59,6 +70,7 @@ namespace RMall_BE.Controllers.Users
                 return BadRequest(ModelState);
 
             var userMap = _mapper.Map<Customer>(userCreate);
+            userMap.Role = 1;
             // Hash và gán mật khẩu vào đối tượng Customer
             userMap.Password = LoginRegisterController.HashPassword(userMap.Password);
 

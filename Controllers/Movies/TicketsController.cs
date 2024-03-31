@@ -60,7 +60,7 @@ namespace RMall_BE.Controllers.Movies
         /// <param name="orderId"></param>
         /// <param name="ticketCreate"></param>
         /// <remarks>
-        /// "code": "QuanDangCap123"
+        /// "code": "ThisIsACode"
         /// </remarks>
         /// <returns></returns>
         [HttpPost]

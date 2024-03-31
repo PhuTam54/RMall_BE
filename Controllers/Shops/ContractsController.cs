@@ -48,6 +48,20 @@ namespace RMall_BE.Controllers.Shops
 
         }
 
+        /// <summary>
+        /// Create Contract
+        /// </summary>
+        /// <param name="contractCreate"></param>
+        /// <remarks>
+        /// Add Shop + Tenant first.
+        /// Start_date, End_date same.
+        /// {
+        /// "Rental_fee": "1000",
+        /// "Terms_and_conditions": "Do it by your self.",
+        /// "Additional_notes": "Good luck!"
+        /// }
+        /// </remarks>
+        /// <returns></returns>
         [Authorize]
         [RequiresClaim(IdentityData.RoleClaimName, "Tenant")]
         [HttpPost]

@@ -85,20 +85,22 @@ namespace RMall_BE.Controllers.Movies
             return Ok(movies);
         }
 
-
         /// <summary>
         /// Create Movie
         /// </summary>
         /// <param name="movieCreate"></param>
         /// <remarks>
-        /// "title": "Octimus",
-        /// "actor": "abcd",
-        /// "movie_Image": "octimus.png",
-        /// "cover_Image": "octimus.svg",
-        /// "description": "octimuspraiocococococ",
-        /// "duration": "...",
-        /// "director": "...",
-        /// "trailer": "https://www.youtube.com/",
+        ///  {
+        ///  "title": "Exhuma",
+        ///  "actor": "Lee Do-hyun2,Kim Go-eun2,...",
+        ///  "movie_Image": "Cinema/pixner.net/boleto/demo/assets/images/movie/exhuma.jpg",
+        ///  "cover_Image": "/assets/images/movie/exhuma.jpg",
+        ///  "description": "Exhuma is a refreshing film that introduces East Asian burial culture and Feng Shui. The actors all performed their roles excellently, bringing depth and authenticity to the film. I appreciated the frequent moments of humor, which added a light touch to the story. However, those unfamiliar with Feng Shui may find some aspects confusing.",
+        ///  "duration": "2 hrs 50 mins",
+        ///  "director": "Jang Jae-hyun",
+        ///  "favorite_Count": 987,
+        ///  "trailer": "https://www.youtube.com/"
+        ///  }
         /// </remarks>
         /// <returns></returns>
         [Authorize]

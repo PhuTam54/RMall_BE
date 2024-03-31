@@ -76,8 +76,10 @@ namespace RMall_BE.Controllers.Movies
         /// <param name="movieId"></param>
         /// <param name="roomId"></param>
         /// <param name="showCreate"></param>
-        /// "show_Code": "QuanDangCap123",
-        /// "language": "Vietnamese"
+        /// "Start_Date": "Same"
+        /// {
+        /// "show_Code": "ThisIsACode"
+        /// }
         /// <returns></returns>
         [Authorize]
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]

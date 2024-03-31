@@ -73,13 +73,12 @@ namespace RMall_BE.Controllers.Shops
         /// <param name="shopCreate"></param>
         /// <returns></returns>
         /// <remarks>
-        /// POST/Shop
         /// {
-        /// "name": "HuuQuanShop",
-        /// "image": "HuuQuanShop/img",
-        /// "address": "Ha Noi",
+        /// "name": "Gucci",
+        /// "image": "Gucci/img",
+        /// "address": "145A",
         /// "phone_Number": "0987654321",
-        /// "description": "HuuQuanShop Dang Cap So 1 The Gioi!"
+        /// "description": "Gucci in you area"
         /// }
         /// 
         /// </remarks>

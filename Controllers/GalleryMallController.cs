@@ -57,7 +57,7 @@ namespace RMall_BE.Controllers
         /// <remarks>
         /// POST/GalleryMall
         /// {
-        /// "image_Path": "QuanDangCap.png",
+        /// "image_Path": "Mall.png",
         /// "product_Name": "Mall",
         /// "description": "Mall Center"
         /// }

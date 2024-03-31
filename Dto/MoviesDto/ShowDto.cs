@@ -4,6 +4,6 @@
     {
         public int Id { get; set; }
         public string Show_Code { get; set; }
-        public string Language { get; set; }
+        public DateTime Start_Date { get; set; }
     }
 }

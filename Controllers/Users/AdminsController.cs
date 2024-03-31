@@ -52,10 +52,10 @@ namespace RMall_BE.Controllers.Users
         /// </summary>
         /// <param name="userCreate"></param>
         /// <remarks>
-        /// "email": "string@gmail.com",
-        /// "username": "QuanDangCap",
-        /// "password": "12345",
-        /// "role": 2,
+        /// "email": "admin@gmail.com",
+        /// "username": "admin",
+        /// "password": "123456",
+        /// "role": 2
         /// </remarks>
         /// <returns></returns>
         [AllowAnonymous]
@@ -73,6 +73,7 @@ namespace RMall_BE.Controllers.Users
             var userMap = _mapper.Map<Admin>(userCreate);
             // Hash và gán mật khẩu vào đối tượng Admin
             userMap.Password = LoginRegisterController.HashPassword(userMap.Password);
+            userMap.Role = 2;
 
             if (!_userRepository.CreateUser(userMap))
             {

@@ -50,7 +50,7 @@ namespace RMall_BE.Controllers.Movies
         /// <summary>
         /// Create Language
         /// </summary>
-        /// <param name="LanguageCreate"></param>
+        /// <param name="languageCreate"></param>
         /// <returns></returns>
         /// <remarks>
         /// POST/Language

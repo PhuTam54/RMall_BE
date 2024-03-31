@@ -47,6 +47,17 @@ namespace RMall_BE.Controllers.Users
             return Ok(user);
         }
 
+        /// <summary>
+        /// Create Tenant
+        /// </summary>
+        /// <param name="userCreate"></param>
+        /// <remarks>
+        /// "email": "tenant@gmail.com",
+        /// "username": "tenant",
+        /// "password": "123456",
+        /// "role": 2
+        /// </remarks>
+        /// <returns></returns>
         [Authorize]
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
@@ -61,6 +72,7 @@ namespace RMall_BE.Controllers.Users
             var userMap = _mapper.Map<Tenant>(userCreate);
             // Hash và gán mật khẩu vào đối tượng Tenant
             userMap.Password = LoginRegisterController.HashPassword(userMap.Password);
+            userMap.Role = 3;
 
             if (!_userRepository.CreateUser(userMap))
             {

@@ -50,7 +50,7 @@ namespace RMall_BE.Controllers.Shops
         /// </summary>
         /// <param name="categoryCreate"></param>
         /// <remarks>
-        /// "name": "Thoi Trang",
+        /// "name": "Clothes",
         /// </remarks>
         /// <returns></returns>
         [Authorize]

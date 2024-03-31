@@ -55,10 +55,10 @@ namespace RMall_BE.Controllers.Shops
         /// <param name="productCreate"></param>
         /// <returns></returns>
         /// <remarks>
-        /// "name": "Quan ao",
-        /// "image": "Quan - ao/img",
-        /// "price": 222,
-        /// "description": "Quan ao dep"
+        /// "name": "Gucci bag",
+        /// "image": "guccibag/img",
+        /// "price": 329,
+        /// "description": "Gucci bag"
         /// </remarks>
 
         [Authorize]

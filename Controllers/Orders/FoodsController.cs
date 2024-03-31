@@ -50,8 +50,10 @@ namespace RMall_BE.Controllers.Orders
         /// </summary>
         /// <param name="foodCreate"></param>
         /// <remarks>
-        /// "name": "KeoLocXoay",
-        /// "description": "KeoLocXoay sieu ngon!"
+        /// "name": "Popcorn",
+        /// "qty": "89",
+        /// "price": "3",
+        /// "description": "Popcorn is sweet"
         /// </remarks>
         /// <returns></returns>
         [Authorize]

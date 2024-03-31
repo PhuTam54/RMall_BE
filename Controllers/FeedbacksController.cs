@@ -56,10 +56,10 @@ namespace RMall_BE.Controllers
         /// <remarks>
         /// POST/Feedback
         /// {
-        /// "name": "QuanDangCapVipPro",
-        /// "email": "quan123@gmail.com",
+        /// "name": "Customer",
+        /// "email": "customer@gmail.com",
         /// "phone": "0987654321",
-        /// "message": "Nice!"
+        /// "message": "This is a very good mall"
         /// }
         /// </remarks>
         [HttpPost]

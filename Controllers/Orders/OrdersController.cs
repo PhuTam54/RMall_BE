@@ -85,13 +85,13 @@ namespace RMall_BE.Controllers.Orders
         /// <param name="showId"></param>
         /// <param name="orderCreate"></param>
         /// <remarks>
-        /// "order_Code": "abcdxyzQuanDangCap123",
+        /// "order_Code": "abcdxyzThisIsACode",
         /// "total": 23456,
         /// "discount_Amount": 11111,
         /// "discount_Code": "321paCgnaDnauQzyxdcba",
         /// "final_Total": 12345,
         /// "payment_Method": "momo",
-        /// "qR_Code": "octimuspraiseueueueueue",
+        /// "qR_Code": "octimuspraise",
         /// </remarks>
         /// <returns></returns>
         [HttpPost]
