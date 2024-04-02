@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using RMall_BE.Data;
 using RMall_BE.Interfaces.MovieInterfaces.SeatInterfaces;
+using RMall_BE.Models.Movies;
 using RMall_BE.Models.Movies.Seats;
 
 namespace RMall_BE.Repositories.MovieRepositories.SeatRepositories
@@ -35,6 +36,13 @@ namespace RMall_BE.Repositories.MovieRepositories.SeatRepositories
                 .FirstOrDefault(x => x.Id == id);
             return seat;
         }
+
+        public ICollection<Seat> GetSeatByRoomId(int roomId)
+        {
+            var seats = _context.Seats.Where(s => s.Room.Id == roomId).ToList();
+            return seats;
+        }
+
         public bool CreateSeat(Seat seat)
         {
             _context.Add(seat);

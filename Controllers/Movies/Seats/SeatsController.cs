@@ -53,6 +53,17 @@ namespace RMall_BE.Controllers.Movies.Seats
             return Ok(seat);
         }
 
+        [HttpGet]
+        [Route("roomId")]
+        public IActionResult GetSeatByRoomID(int roomId)
+        {
+            if (!_roomRepository.RoomExist(roomId))
+                return NotFound("Room Not Found!");
+
+            var seats = _mapper.Map<List<SeatDto>>(_seatRepository.GetSeatByRoomId(roomId));
+
+            return Ok(seats);
+        }
 
         [Authorize]
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
