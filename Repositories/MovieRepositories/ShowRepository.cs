@@ -45,9 +45,28 @@ namespace RMall_BE.Repositories.MovieRepositories
         }
         public ICollection<Show> GetShowByMovieID(int movieId)
         {
-            var shows = _context.Shows.Where(s => s.Movie.Id == movieId).ToList();
+            var shows = _context.Shows.Where(s => s.Movie_Id == movieId).ToList();
             return shows;
         }
+        public ICollection<Show> GetShowByRoomID(int roomId)
+        {
+            var shows = _context.Shows.Where(s => s.Room_Id == roomId).ToList();
+            return shows;
+        }
+        //public ICollection<Show> GetTodayShowByRoomID(int roomId, string startDate)
+        //{
+        //    DateTime date_time = DateTime.Parse(startDate).ToUniversalTime();
+        //    DateTime date_only = date_time.Date;
+        //    Console.WriteLine(date_only);
+
+        //    var shows = _context.Shows.Where(s => s.Room_Id == roomId 
+        //    && s.Start_Date.Date == date_only).ToList();
+
+        //    Console.WriteLine(shows.First().Show_Code);
+        //    Console.WriteLine("Done");
+
+        //    return shows;
+        //}
         public bool Save()
         {
             var saved = _context.SaveChanges();

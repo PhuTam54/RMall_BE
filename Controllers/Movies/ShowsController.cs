@@ -11,6 +11,7 @@ using RMall_BE.Interfaces.OrderInterfaces;
 using RMall_BE.Models;
 using RMall_BE.Models.Movies;
 using RMall_BE.Repositories.MovieRepositories;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace RMall_BE.Controllers.Movies
 {
@@ -66,7 +67,6 @@ namespace RMall_BE.Controllers.Movies
 
             var shows = _mapper.Map<List<ShowDto>>(_showRepository.GetShowByMovieID(movieId));
 
-
             return Ok(shows);
         }
 
@@ -97,8 +97,47 @@ namespace RMall_BE.Controllers.Movies
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            ////////////////////////////////////////////////////////////////////////////
+            // Xử lí tránh xung đột thời gian của các xuất chiếu /////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////
+
+            //var startDate = showCreate.Start_Date.ToString();
+            //var showInRoomToday = _showRepository.GetTodayShowByRoomID(roomId, startDate);
+            var movieInShow = _movieRepository.GetMovieById(movieId);
+            //Console.WriteLine(movieInShow);
+
+            //List<TimeSpan> emptySpaceInDay = new List<TimeSpan>();
+
+            //DateTime startTime = showCreate.Start_Date; // Giả sử giờ bắt đầu của showCreate đã được chuyển thành DateTime
+            //TimeSpan duration = TimeSpan.FromSeconds(movieInShow.Duration).TotalSeconds;
+
+            //// Tính thời gian kết thúc của xuất chiếu hiện tại
+            //DateTime endTime = startTime.Add(duration);
+
+            //// Lặp qua tất cả các xuất chiếu trong phòng chiếu hiện tại để kiểm tra xem có xung đột lịch không
+            //foreach (var item in showInRoomToday)
+            //{
+            //    DateTime existingStartTime = item.Movie.Start_Date;
+            //    TimeSpan existingDuration = item.Movie.Duration;
+
+            //    // Tính thời gian kết thúc của xuất chiếu hiện tại
+            //    DateTime existingEndTime = existingStartTime.Add(existingDuration);
+
+            //    // Kiểm tra xem thời gian bắt đầu hoặc kết thúc của xuất chiếu hiện tại có trùng với xuất chiếu khác không
+            //    if ((startTime >= existingStartTime && startTime < existingEndTime) ||
+            //        (endTime > existingStartTime && endTime <= existingEndTime))
+            //    {
+            //        // Xuất hiện xung đột lịch
+            //        return BadRequest(ModelState); // hoặc thực hiện xử lý phù hợp với nghiệp vụ của bạn
+            //    }
+            //}
+
+            // Nếu không có xung đột lịch, tiếp tục tạo xuất chiếu mới
+
             var showMap = _mapper.Map<Show>(showCreate);
-            showMap.Movie = _movieRepository.GetMovieById(movieId);
+            showMap.Movie_Id = movieId;
+            showMap.Room_Id = roomId;
+            showMap.Movie = movieInShow;
             showMap.Room = _roomRepository.GetRoomById(roomId);
 
             if (!_showRepository.CreateShow(showMap))

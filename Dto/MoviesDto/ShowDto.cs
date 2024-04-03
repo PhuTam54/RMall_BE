@@ -5,5 +5,7 @@
         public int Id { get; set; }
         public string Show_Code { get; set; }
         public DateTime Start_Date { get; set; }
+        public int RoomId { get; set; }
+        public int MovieId { get; set; }
     }
 }
