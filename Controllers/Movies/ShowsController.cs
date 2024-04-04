@@ -60,12 +60,12 @@ namespace RMall_BE.Controllers.Movies
 
         [HttpGet]
         [Route("movieId")]
-        public IActionResult GetShowByMovieID(int movieId)
+        public IActionResult GetShowByMovieId(int movieId)
         {
             if (!_movieRepository.MovieExist(movieId))
                 return NotFound("Movie Not Found!");
 
-            var shows = _mapper.Map<List<ShowDto>>(_showRepository.GetShowByMovieID(movieId));
+            var shows = _mapper.Map<List<ShowDto>>(_showRepository.GetShowByMovieId(movieId));
 
             return Ok(shows);
         }
@@ -134,9 +134,9 @@ namespace RMall_BE.Controllers.Movies
 
             // Nếu không có xung đột lịch, tiếp tục tạo xuất chiếu mới
 
+            showCreate.Movie_Id = movieId;
+            showCreate.Room_Id = roomId;
             var showMap = _mapper.Map<Show>(showCreate);
-            showMap.Movie_Id = movieId;
-            showMap.Room_Id = roomId;
             showMap.Movie = movieInShow;
             showMap.Room = _roomRepository.GetRoomById(roomId);
 
