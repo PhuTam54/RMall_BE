@@ -407,9 +407,6 @@ namespace RMallBE.Migrations
                     b.Property<int>("SeatTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Seat_Id")
-                        .HasColumnType("int");
-
                     b.Property<int>("Seat_Number")
                         .HasColumnType("int");
 
@@ -532,43 +529,6 @@ namespace RMallBE.Migrations
                     b.HasIndex("RoomId");
 
                     b.ToTable("Shows");
-                });
-
-            modelBuilder.Entity("RMall_BE.Models.Movies.Ticket", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Is_Used")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Order_Id")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<int>("Seat_Id")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Start_Date")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("Tickets");
                 });
 
             modelBuilder.Entity("RMall_BE.Models.Orders.Food", b =>
@@ -694,6 +654,45 @@ namespace RMallBE.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderFoods");
+                });
+
+            modelBuilder.Entity("RMall_BE.Models.Orders.Ticket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Is_Used")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Order_Id")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int>("SeatId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Seat_Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("SeatId");
+
+                    b.ToTable("Tickets");
                 });
 
             modelBuilder.Entity("RMall_BE.Models.Payment", b =>
@@ -1165,17 +1164,6 @@ namespace RMallBE.Migrations
                     b.Navigation("Room");
                 });
 
-            modelBuilder.Entity("RMall_BE.Models.Movies.Ticket", b =>
-                {
-                    b.HasOne("RMall_BE.Models.Orders.Order", "Order")
-                        .WithMany("Tickets")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-                });
-
             modelBuilder.Entity("RMall_BE.Models.Orders.Order", b =>
                 {
                     b.HasOne("RMall_BE.Models.Movies.Show", "Show")
@@ -1212,6 +1200,25 @@ namespace RMallBE.Migrations
                     b.Navigation("Food");
 
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("RMall_BE.Models.Orders.Ticket", b =>
+                {
+                    b.HasOne("RMall_BE.Models.Orders.Order", "Order")
+                        .WithMany("Tickets")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RMall_BE.Models.Movies.Seats.Seat", "Seat")
+                        .WithMany()
+                        .HasForeignKey("SeatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Seat");
                 });
 
             modelBuilder.Entity("RMall_BE.Models.Payment", b =>
