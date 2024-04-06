@@ -9,7 +9,5 @@ namespace RMall_BE.Dto.OrdersDto
         [Column(TypeName = "decimal(18, 2)")]
         public decimal Price { get; set; }
         public bool Is_Used { get; set; }
-        public int Order_Id { get; set; }
-        public int Seat_Id { get; set; }
     }
 }
