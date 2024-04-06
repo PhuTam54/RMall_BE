@@ -9,7 +9,9 @@ using RMall_BE.Interfaces;
 using RMall_BE.Interfaces.MovieInterfaces.SeatInterfaces;
 using RMall_BE.Interfaces.OrderInterfaces;
 using RMall_BE.Models;
+using RMall_BE.Models.Movies;
 using RMall_BE.Models.Orders;
+using RMall_BE.Models.User;
 using RMall_BE.Repositories.MovieRepositories;
 using RMall_BE.Repositories.OrderRepositories;
 
@@ -71,6 +73,8 @@ namespace RMall_BE.Controllers.Orders
         {
             if (!_orderRepository.OrderExist(orderId))
                 return NotFound("Order Not Found");
+            if (!_seatRepository.SeatExist(seatId))
+                return NotFound("Seat Not Found");
             if (ticketCreate == null)
                 return BadRequest(ModelState);
 
@@ -80,10 +84,12 @@ namespace RMall_BE.Controllers.Orders
             var ticketMap = _mapper.Map<Ticket>(ticketCreate);
             ticketMap.Order_Id = orderId;
             ticketMap.Seat_Id = seatId;
+            ticketMap.Order = _orderRepository.GetOrderById(orderId);
+            ticketMap.Seat = _seatRepository.GetSeatById(seatId);
 
             if (!_ticketRepository.CreateTicket(ticketMap))
             {
-                ModelState.AddModelError("", "Something went wrong while savin");
+                ModelState.AddModelError("", "Something went wrong while saving");
                 return StatusCode(500, ModelState);
             }
 

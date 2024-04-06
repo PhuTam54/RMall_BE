@@ -41,7 +41,7 @@ namespace RMall_BE.Repositories.OrderRepositories
         }
         public ICollection<Order> GetOrderByUserId(int userId)
         {
-            return _context.Orders.Where(o => o.User.Id == userId).ToList();
+            return _context.Orders.Where(o => o.User_Id == userId).ToList();
         }
 
         public bool CreateOrderFood(OrderFood orderFood)

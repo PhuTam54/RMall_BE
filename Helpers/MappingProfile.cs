@@ -39,8 +39,6 @@ namespace RMall_BE.Helpers
             CreateMap<MovieDto, Movie>();
             CreateMap<Room, RoomDto>();
             CreateMap<RoomDto, Room>();
-            CreateMap<Ticket, TicketDto>();
-            CreateMap<TicketDto, Ticket>();
             CreateMap<Show, ShowDto>();
             CreateMap<ShowDto, Show>();
             CreateMap<Language, LanguageDto>();
@@ -64,10 +62,14 @@ namespace RMall_BE.Helpers
             #endregion
 
             #region Order
-            CreateMap<Food, FoodDto>();
-            CreateMap<FoodDto, Food>();
             CreateMap<Order, OrderDto>();
             CreateMap<OrderDto, Order>();
+            CreateMap<Ticket, TicketDto>();
+            CreateMap<TicketDto, Ticket>();
+            CreateMap<OrderFood, OrderFoodDto>();
+            CreateMap<OrderFoodDto, OrderFood>();
+            CreateMap<Food, FoodDto>();
+            CreateMap<FoodDto, Food>();
             #endregion
 
             #region User

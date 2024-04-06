@@ -8,15 +8,8 @@ using RMall_BE.Identity;
 using RMall_BE.Interfaces;
 using RMall_BE.Interfaces.MovieInterfaces;
 using RMall_BE.Interfaces.OrderInterfaces;
-using RMall_BE.Models;
-using RMall_BE.Models.Movies;
-using RMall_BE.Models.Movies.Genres;
-using RMall_BE.Models.Movies.Languages;
 using RMall_BE.Models.Orders;
 using RMall_BE.Models.User;
-using RMall_BE.Repositories;
-using RMall_BE.Repositories.MovieRepositories;
-using RMall_BE.Repositories.OrderRepositories;
 
 namespace RMall_BE.Controllers.Orders
 {
@@ -94,12 +87,15 @@ namespace RMall_BE.Controllers.Orders
         /// "qR_Code": "octimuspraise",
         /// </remarks>
         /// <returns></returns>
+        /// 
+        [Authorize]
+        [RequiresClaim(IdentityData.RoleClaimName, "Customer")]
         [HttpPost]
-        public IActionResult CreateOrder([FromQuery]int userId, [FromQuery]int showId,[FromBody] OrderDto orderCreate)
+        public IActionResult CreateOrder([FromQuery] int userId, [FromQuery] int showId, [FromBody] OrderDto orderCreate)
         {
             if (!_userRepository.UserExist(userId))
                 return NotFound("User Not Found!");
-            if(!_showRepository.ShowExist(showId))
+            if (!_showRepository.ShowExist(showId))
                 return NotFound("Show Not Found!");
             if (orderCreate == null)
                 return BadRequest(ModelState);
@@ -108,34 +104,38 @@ namespace RMall_BE.Controllers.Orders
                 return BadRequest(ModelState);
 
             var orderMap = _mapper.Map<Order>(orderCreate);
+            orderMap.User_Id = userId;
+            orderMap.Show_Id = showId;
             orderMap.User = _userRepository.GetUserById(userId);
             orderMap.Show = _showRepository.GetShowById(showId);
 
-            var foods = new List<Food>();
-            foreach (var foodId in orderCreate.FoodIds)
-            {
-                Food food = _foodRepository.GetFoodById(foodId);
-                if(food == null)
-                {
-                    return NotFound("Food Not Found!");
-                }
-                foods.Add(food);
-            }
-
             if (!_orderRepository.CreateOrder(orderMap))
             {
-                ModelState.AddModelError("", "Something went wrong while savin");
+                ModelState.AddModelError("", "Something went wrong while saving");
                 return StatusCode(500, ModelState);
             }
+
+            //var foods = new List<Food>();
+            //foreach (var foodId in orderCreate.FoodIds)
+            //{
+            //    Food food = _foodRepository.GetFoodById(foodId);
+            //    if (food == null)
+            //    {
+            //        return NotFound("Food Not Found!");
+            //    }
+            //    foods.Add(food);
+            //}
             //foreach (var item in foods)
             //{
-            //    var orderFood = new OrderFood { Order_Id = orderMap.Id, Food_Id = item.Id, Order = orderMap, Food = item, Price = 1, Qty =  1};
+            //    var orderFood = new OrderFood { Order_Id = orderMap.Id, Food_Id = item.Id, Order = orderMap, Food = item, Price = 1, Qty = 1 };
             //    _orderRepository.CreateOrderFood(orderFood);
             //}
 
-            return Created("Ok fine quenchana", orderCreate);
-        }
+            //var ticket = new Ticket { Order_Id = orderMap.Id, Is_Used = false, Seat_Id = 0 };
+            //_orderRepository.CreateTicket(ticket);
 
+            return Created("Order created successfully", orderCreate);
+        }
 
         [Authorize]
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
