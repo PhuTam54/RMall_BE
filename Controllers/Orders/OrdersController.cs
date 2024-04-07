@@ -10,6 +10,10 @@ using RMall_BE.Interfaces.MovieInterfaces;
 using RMall_BE.Interfaces.OrderInterfaces;
 using RMall_BE.Models.Orders;
 using RMall_BE.Models.User;
+using System.Drawing;
+using System.Drawing.Imaging;
+using ZXing;
+using ZXing.Common;
 
 namespace RMall_BE.Controllers.Orders
 {
@@ -49,6 +53,21 @@ namespace RMall_BE.Controllers.Orders
                 return NotFound();
 
             var order = _mapper.Map<OrderDto>(_orderRepository.GetOrderById(id));
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(order);
+        }
+
+        [HttpGet]
+        [Route("OrderCode")]
+        public IActionResult GetOrderByOrderCode(string orderCode)
+        {
+            if (!_orderRepository.OrderExist(orderCode))
+                return NotFound();
+
+            var order = _mapper.Map<OrderDto>(_orderRepository.GetOrderByOrderCode(orderCode));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -103,36 +122,58 @@ namespace RMall_BE.Controllers.Orders
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            // Create a QR code writer instance
+            var qrCodeWriter = new BarcodeWriter();
+            qrCodeWriter.Format = BarcodeFormat.QR_CODE;
+            qrCodeWriter.Options = new EncodingOptions
+            {
+                Width = 300, // Set the desired width of the QR code image
+                Height = 300, // Set the desired height of the QR code image
+                Margin = 0 // Set the margin of the QR code image
+            };
+
+            // Create a renderer instance
+            var renderer = new ZXing.Rendering.BitmapRenderer();
+
+            // Set the renderer instance for BarcodeWriter
+            qrCodeWriter.Renderer = renderer;
+
+            var qrCodeBitmap = qrCodeWriter.Write(orderCreate.QR_Code);
+
+            // Convert QR code bitmap to base64 string
+            var qrCodeBase64 = Convert.ToBase64String(BitmapToBytes(qrCodeBitmap));
+
             var orderMap = _mapper.Map<Order>(orderCreate);
             orderMap.User_Id = userId;
             orderMap.Show_Id = showId;
             orderMap.User = _userRepository.GetUserById(userId);
             orderMap.Show = _showRepository.GetShowById(showId);
+            orderMap.QR_Code = qrCodeBase64;
+
+            //var qrWriter = new ZXing.BarcodeWriterPixelData
+            //{
+            //    Format = ZXing.BarcodeFormat.QR_CODE,
+            //    Options = new ZXing.QrCode.QrCodeEncodingOptions
+            //    {
+            //        Height = 200,
+            //        Width = 200
+            //    }
+            //};
+
+            //var pixelData = qrWriter.Write(orderCreate.QR_Code);
+            //var bitmap = new Bitmap(pixelData.Width, pixelData.Height, PixelFormat.Format32bppRgb);
+            //using (var ms = new MemoryStream(pixelData.Pixels))
+            //{
+            //    bitmap.Save(ms, ImageFormat.Png);
+            //    var image = Image.FromStream(ms);
+            //    // Now you can display the image in your UI
+            //}
 
             if (!_orderRepository.CreateOrder(orderMap))
             {
                 ModelState.AddModelError("", "Something went wrong while saving");
                 return StatusCode(500, ModelState);
             }
-
-            //var foods = new List<Food>();
-            //foreach (var foodId in orderCreate.FoodIds)
-            //{
-            //    Food food = _foodRepository.GetFoodById(foodId);
-            //    if (food == null)
-            //    {
-            //        return NotFound("Food Not Found!");
-            //    }
-            //    foods.Add(food);
-            //}
-            //foreach (var item in foods)
-            //{
-            //    var orderFood = new OrderFood { Order_Id = orderMap.Id, Food_Id = item.Id, Order = orderMap, Food = item, Price = 1, Qty = 1 };
-            //    _orderRepository.CreateOrderFood(orderFood);
-            //}
-
-            //var ticket = new Ticket { Order_Id = orderMap.Id, Is_Used = false, Seat_Id = 0 };
-            //_orderRepository.CreateTicket(ticket);
 
             return Created("Order created successfully", orderCreate);
         }
@@ -186,6 +227,17 @@ namespace RMall_BE.Controllers.Orders
             }
 
             return NoContent();
+        }
+
+        [HttpGet]
+        [Route("BitmapToBytes")]
+        private byte[] BitmapToBytes(Bitmap bitmap)
+        {
+            using (var stream = new MemoryStream())
+            {
+                bitmap.Save(stream, ImageFormat.Png);
+                return stream.ToArray();
+            }
         }
     }
 }

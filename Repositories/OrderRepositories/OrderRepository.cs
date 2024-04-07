@@ -39,6 +39,12 @@ namespace RMall_BE.Repositories.OrderRepositories
         {
             return _context.Orders.FirstOrDefault(o => o.Id == id);
         }
+
+        public Order GetOrderByOrderCode(string orderCode)
+        {
+            return _context.Orders.FirstOrDefault(o => o.Order_Code == orderCode);
+        }
+
         public ICollection<Order> GetOrderByUserId(int userId)
         {
             return _context.Orders.Where(o => o.User_Id == userId).ToList();
@@ -53,6 +59,11 @@ namespace RMall_BE.Repositories.OrderRepositories
         public bool OrderExist(int id)
         {
             return _context.Orders.Any(o => o.Id == id);
+        }
+
+        public bool OrderExist(string orderCode)
+        {
+            return _context.Orders.Any(o => o.Order_Code == orderCode);
         }
 
         public bool Save()

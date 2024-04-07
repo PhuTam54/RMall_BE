@@ -7,12 +7,14 @@ namespace RMall_BE.Interfaces.OrderInterfaces
     {
         ICollection<Order> GetAllOrder();
         Order GetOrderById(int id);
+        Order GetOrderByOrderCode(string orderCode);
         ICollection<Order> GetOrderByUserId(int userId);
         bool CreateOrderFood(OrderFood orderFood);
         bool CreateOrder(Order order);
         bool UpdateOrder(Order order);
         bool DeleteOrder(Order order);
         bool OrderExist(int id);
+        bool OrderExist(string orderCode);
         bool Save();
     }
 }
