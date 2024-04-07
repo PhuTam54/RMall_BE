@@ -86,6 +86,7 @@ namespace RMall_BE.Controllers
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Email, account.Email),
+                        new Claim(IdentityData.UserIdClaimName, account.Id.ToString()),
                         new Claim(IdentityData.RoleClaimName, userRole)
                         // 1.Customer / 2.Admin / 3.Tenant
                     };
