@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using RMall_BE.Models.Orders;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RMall_BE.Dto.OrdersDto
 {
@@ -17,5 +18,9 @@ namespace RMall_BE.Dto.OrdersDto
         public string Payment_Method { get; set; }
         public bool Is_Paid { get; set; } = false;
         public string QR_Code { get; set; }
+        public int User_Id { get; set; }
+        public int Show_Id { get; set; }
+        public ICollection<OrderFoodDto>? OrderFoods { get; set; }
+        public ICollection<TicketDto>? Tickets { get; set; }
     }
 }

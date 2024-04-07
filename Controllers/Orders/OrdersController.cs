@@ -97,13 +97,15 @@ namespace RMall_BE.Controllers.Orders
         /// <param name="showId"></param>
         /// <param name="orderCreate"></param>
         /// <remarks>
-        /// "order_Code": "abcdxyzThisIsACode",
-        /// "total": 23456,
-        /// "discount_Amount": 11111,
-        /// "discount_Code": "321paCgnaDnauQzyxdcba",
-        /// "final_Total": 12345,
-        /// "payment_Method": "momo",
-        /// "qR_Code": "octimuspraise",
+        /// "order_Code": "ThisIsACodeUnique_1712599828518_0.1532859899449781",
+        /// "total": 120,
+        /// "discount_Amount": 1,
+        /// "discount_Code": "thisIsADiscountCode",
+        /// "final_Total": 119,
+        /// "status": 0,
+        /// "payment_Method": "vnpay",
+        /// "is_Paid": false,
+        /// "qR_Code": "ThisIsACodeUnique_1712599828518_0.1532859899449781",
         /// </remarks>
         /// <returns></returns>
         /// 

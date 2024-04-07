@@ -1,4 +1,5 @@
-﻿using RMall_BE.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using RMall_BE.Data;
 using RMall_BE.Interfaces.OrderInterfaces;
 using RMall_BE.Models;
 using RMall_BE.Models.Orders;
@@ -31,7 +32,10 @@ namespace RMall_BE.Repositories.OrderRepositories
 
         public ICollection<Order> GetAllOrder()
         {
-            var orders = _context.Orders.ToList();
+            var orders = _context.Orders
+                .Include(o => o.OrderFoods)
+                .Include(o => o.Tickets)
+                .ToList();
             return orders;
         }
 
