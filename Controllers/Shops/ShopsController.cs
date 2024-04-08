@@ -100,6 +100,8 @@ namespace RMall_BE.Controllers.Shops
                 return BadRequest(ModelState);
 
             var shopMap = _mapper.Map<Shop>(shopCreate);
+            shopMap.Category_Id = categoryId;
+            shopMap.Floor_Id = floorId;
             shopMap.Category = _categoryRepository.GetCategoryById(categoryId);
             shopMap.Floor = _floorRepository.GetFloorById(floorId);
 

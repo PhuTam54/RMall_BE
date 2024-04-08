@@ -73,7 +73,7 @@ namespace RMall_BE.Controllers.Movies
         [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPut]
         [Route("id")]
-        public IActionResult UpdateMovie(int id, [FromBody] MovieDto updatedGenre)
+        public IActionResult UpdateMovie(int id, [FromBody] GenreDto updatedGenre)
         {
             if (!_genreRepository.GenreExist(id))
                 return NotFound();
