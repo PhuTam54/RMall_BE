@@ -23,7 +23,8 @@ namespace RMall_BE.Repositories.MovieRepositories.SeatRepositories
         public ICollection<Seat> GetAllSeat()
         {
             var seats = _context.Seats
-
+                .Include(s => s.SeatType)
+                .ThenInclude(st => st.SeatPricings)
                 .ToList();
             return seats;
         }

@@ -32,7 +32,9 @@ namespace RMall_BE.Repositories.MovieRepositories.SeatRepositories
 
         public ICollection<SeatType> GetAllSeatType()
         {
-            var seatTypes = _context.SeatTypes.ToList();
+            var seatTypes = _context.SeatTypes
+                .Include(st => st.SeatPricings)
+                .ToList();
             return seatTypes;
         }
 

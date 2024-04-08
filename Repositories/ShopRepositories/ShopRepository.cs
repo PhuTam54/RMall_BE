@@ -1,4 +1,5 @@
-﻿using RMall_BE.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using RMall_BE.Data;
 using RMall_BE.Interfaces.ShopInterfaces;
 using RMall_BE.Models.Shops;
 
@@ -14,7 +15,10 @@ namespace RMall_BE.Repositories.ShopRepositories
         }
         public ICollection<Shop> GetAllShop()
         {
-            var shops = _context.Shops.ToList();
+            var shops = _context.Shops
+                .Include(s => s.Category)
+                .Include(s => s.Floor)
+                .ToList();
             return shops;
         }
 
