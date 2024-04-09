@@ -34,7 +34,11 @@ namespace RMall_BE.Repositories.OrderRepositories
         {
             var orders = _context.Orders
                 .Include(o => o.OrderFoods)
+                    .ThenInclude(of => of.Food)
                 .Include(o => o.Tickets)
+                    .ThenInclude(t => t.Seat)
+                        .ThenInclude(s => s.SeatType)
+                            .ThenInclude(st => st.SeatPricings)
                 .ToList();
             return orders;
         }
@@ -46,7 +50,15 @@ namespace RMall_BE.Repositories.OrderRepositories
 
         public Order GetOrderByOrderCode(string orderCode)
         {
-            return _context.Orders.FirstOrDefault(o => o.Order_Code == orderCode);
+            var order = _context.Orders
+                .Include(o => o.OrderFoods)
+                    .ThenInclude(of => of.Food)
+                .Include(o => o.Tickets)
+                    .ThenInclude(t => t.Seat)
+                        .ThenInclude(s => s.SeatType)
+                            .ThenInclude(st => st.SeatPricings)
+                .FirstOrDefault(o => o.Order_Code == orderCode);
+            return order;
         }
 
         public ICollection<Order> GetOrderByUserId(int userId)
