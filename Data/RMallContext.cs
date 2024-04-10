@@ -33,7 +33,7 @@ namespace RMall_BE.Data
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<Show> Shows { get; set; }
         public DbSet<Genre> Genres { get; set; }
-        public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<Review> Reviews { get; set; }
         public DbSet<MovieGenre> MovieGenres { get; set; }
         public DbSet<GalleryMovie> GalleryMovies { get; set; }
         public DbSet<GalleryMall> GalleryMalls { get; set; }

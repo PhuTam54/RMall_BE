@@ -45,6 +45,10 @@ namespace RMall_BE.Helpers
             CreateMap<LanguageDto, Language>();
             CreateMap<Genre, GenreDto>();
             CreateMap<GenreDto, Genre>();
+            CreateMap<MovieGenre, MovieGenreDto>();
+            CreateMap<MovieGenreDto, MovieGenre>();
+            CreateMap<MovieLanguage, MovieLanguageDto>();
+            CreateMap<MovieLanguageDto, MovieLanguage>();
             CreateMap<GalleryMovie, GalleryMallDto>();
             CreateMap<GalleryMovieDto, GalleryMovie>();
             #endregion

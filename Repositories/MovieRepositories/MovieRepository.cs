@@ -23,14 +23,26 @@ namespace RMall_BE.Repositories.MovieRepositories
 
         public ICollection<Movie> GetAllMovie()
         {
-            var movies = _context.Movies.ToList();
+            var movies = _context.Movies
+                .Include(m => m.MovieGenres)
+                    .ThenInclude(mg => mg.Genre)
+                .Include(m => m.MovieLanguages)
+                    .ThenInclude(ml => ml.Language)
+                .Include(m => m.GalleryMovies)
+                .ToList();
             return movies;
         }
 
 
         public Movie GetMovieById(int id)
         {
-            return _context.Movies.FirstOrDefault(x => x.Id == id);
+            return _context.Movies
+                .Include(m => m.MovieGenres)
+                    .ThenInclude(mg => mg.Genre)
+                .Include(m => m.MovieLanguages)
+                    .ThenInclude(ml => ml.Language)
+                .Include(m => m.GalleryMovies)
+                .FirstOrDefault(x => x.Id == id);
         }
 
         public ICollection<Movie> GetMovieByGenreId(int genreId)
@@ -84,6 +96,22 @@ namespace RMall_BE.Repositories.MovieRepositories
             _context.MovieLanguages.Add(movieLanguage);
             return Save();
         }
+        public bool DeleteMovieGenresByMovieId(int id)
+        {
+            foreach (var movieGenre in _context.MovieGenres.Where(mg => mg.Movie_Id == id))
+            {
+                _context.MovieGenres.Remove(movieGenre);
+            }
+            return Save();
+        }
+        public bool DeleteMovieLanguagesByMovieId(int id)
+        {
+            foreach (var movieLanguage in _context.MovieLanguages.Where(ml => ml.Movie_id == id))
+            {
+                _context.MovieLanguages.Remove(movieLanguage);
+            }
+            return Save();
+        }
         public bool Save()
         {
             var saved = _context.SaveChanges();
@@ -94,6 +122,34 @@ namespace RMall_BE.Repositories.MovieRepositories
             return _context.Movies.Any(f => f.Id == id);
         }
 
-        
+        public double ConvertTimeToDouble(string time)
+        {
+            double hours = 0;
+            double minutes = 0;
+            double seconds = 0;
+
+            string[] parts = time.Split(' ');
+
+            foreach (string part in parts)
+            {
+                if (part.EndsWith("hrs"))
+                {
+                    double.TryParse(part.Replace("hrs", ""), out hours);
+                }
+                else if (part.EndsWith("mins"))
+                {
+                    double.TryParse(part.Replace("mins", ""), out minutes);
+                }
+                else if (part.EndsWith("ses"))
+                {
+                    double.TryParse(part.Replace("ses", ""), out seconds);
+                }
+            }
+
+            double totalMinutes = hours * 60 + minutes + seconds / 60;
+            double totalSeconds = totalMinutes * 60; // Convert total minutes to seconds
+            return totalSeconds;
+        }
+
     }
 }

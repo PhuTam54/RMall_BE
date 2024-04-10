@@ -12,10 +12,13 @@ namespace RMall_BE.Interfaces.MovieInterfaces
         ICollection<Movie> GetMovieByLanguageId(int languageId);
         bool CreateMovieGenre(MovieGenre movieGenre);
         bool CreateMovieLanguage(MovieLanguage movieLanguage);
+        bool DeleteMovieGenresByMovieId(int id);
+        bool DeleteMovieLanguagesByMovieId(int id);
         bool CreateMovie(Movie movie);
         bool UpdateMovie(Movie movie);
         bool DeleteMovie(Movie movie);
         bool MovieExist(int id);
         bool Save();
+        double ConvertTimeToDouble(string time);
     }
 }

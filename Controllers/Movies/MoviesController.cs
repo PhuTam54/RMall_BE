@@ -99,7 +99,13 @@ namespace RMall_BE.Controllers.Movies
         ///  "duration": "2 hrs 50 mins",
         ///  "director": "Jang Jae-hyun",
         ///  "favorite_Count": 987,
-        ///  "trailer": "https://www.youtube.com/"
+        ///  "trailer": "https://www.youtube.com/",
+        ///  "genreIds": [
+        ///    1, 2
+        /// ],
+        /// "languageIds": [
+        ///    1, 2
+        ///  ]
         ///  }
         /// </remarks>
         /// <returns></returns>
@@ -180,7 +186,50 @@ namespace RMall_BE.Controllers.Movies
                 return StatusCode(500, ModelState);
             }
 
-            //nếu cần thì sẽ thêm phần sửa MovieGenre và MovieLanguage
+            var genres = new List<Genre>();
+            var languages = new List<Language>();
+
+            foreach (var genreId in updatedMovie.GenreIds)
+            {
+                var genre = _genreRepository.GetGenreById(genreId);
+                if (genre == null)
+                {
+                    return NotFound("Genre Not Found!");
+                }
+                genres.Add(genre);
+            }
+
+            foreach (var languageId in updatedMovie.LanguageIds)
+            {
+                var language = _languageRepository.GetLanguageById(languageId);
+                if (language == null)
+                {
+                    return NotFound("Language Not Found!");
+                }
+                languages.Add(language);
+            }
+
+            // Remove existing movie genres and languages
+            _movieRepository.DeleteMovieGenresByMovieId(movieMap.Id);
+            _movieRepository.DeleteMovieLanguagesByMovieId(movieMap.Id);
+
+            if (!_movieRepository.UpdateMovie(movieMap))
+            {
+                ModelState.AddModelError("", "Something went wrong updating Movie!");
+                return StatusCode(500, ModelState);
+            }
+
+            foreach (var item in genres)
+            {
+                var movieGenre = new MovieGenre { Movie_Id = movieMap.Id, Genre_Id = item.Id, Movie = movieMap, Genre = item };
+                _movieRepository.CreateMovieGenre(movieGenre);
+            }
+
+            foreach (var item in languages)
+            {
+                var languageMovie = new MovieLanguage { Movie_id = movieMap.Id, Language_id = item.Id, Movie = movieMap, Language = item };
+                _movieRepository.CreateMovieLanguage(languageMovie);
+            }
 
             return NoContent();
         }

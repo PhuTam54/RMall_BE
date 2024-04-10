@@ -159,38 +159,6 @@ namespace RMallBE.Migrations
                     b.ToTable("Maps");
                 });
 
-            modelBuilder.Entity("RMall_BE.Models.Movies.Favorite", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Created_At")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("MovieId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Movie_Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("User_Id")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MovieId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Favorites");
-                });
-
             modelBuilder.Entity("RMall_BE.Models.Movies.GalleryMovie", b =>
                 {
                     b.Property<int>("Id")
@@ -358,6 +326,51 @@ namespace RMallBE.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Movies");
+                });
+
+            modelBuilder.Entity("RMall_BE.Models.Movies.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created_At")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Deleted_At")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Movie_Id")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Rating")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Updated_At")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("User_Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MovieId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("RMall_BE.Models.Movies.Room", b =>
@@ -1028,25 +1041,6 @@ namespace RMallBE.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("RMall_BE.Models.Movies.Favorite", b =>
-                {
-                    b.HasOne("RMall_BE.Models.Movies.Movie", "Movie")
-                        .WithMany("Favorites")
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RMall_BE.Models.User.Customer", "User")
-                        .WithMany("Favorites")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Movie");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("RMall_BE.Models.Movies.GalleryMovie", b =>
                 {
                     b.HasOne("RMall_BE.Models.Movies.Movie", "Movie")
@@ -1094,6 +1088,25 @@ namespace RMallBE.Migrations
                     b.Navigation("Language");
 
                     b.Navigation("Movie");
+                });
+
+            modelBuilder.Entity("RMall_BE.Models.Movies.Review", b =>
+                {
+                    b.HasOne("RMall_BE.Models.Movies.Movie", "Movie")
+                        .WithMany("Reviews")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RMall_BE.Models.User.Customer", "User")
+                        .WithMany("Reviews")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Movie");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("RMall_BE.Models.Movies.Seats.Seat", b =>
@@ -1298,13 +1311,13 @@ namespace RMallBE.Migrations
 
             modelBuilder.Entity("RMall_BE.Models.Movies.Movie", b =>
                 {
-                    b.Navigation("Favorites");
-
                     b.Navigation("GalleryMovies");
 
                     b.Navigation("MovieGenres");
 
                     b.Navigation("MovieLanguages");
+
+                    b.Navigation("Reviews");
 
                     b.Navigation("Shows");
                 });
@@ -1368,9 +1381,9 @@ namespace RMallBE.Migrations
                 {
                     b.Navigation("Cards");
 
-                    b.Navigation("Favorites");
-
                     b.Navigation("Orders");
+
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("RMall_BE.Models.User.Tenant", b =>

@@ -17,7 +17,7 @@ namespace RMall_BE.Models.Movies
         public string Trailer { get; set; }
         public ICollection<Show>? Shows { get; set; }
         public ICollection<MovieGenre>? MovieGenres { get; set; }
-        public ICollection<Favorite>? Favorites { get; set; }
+        public ICollection<Review>? Reviews { get; set; }
         public ICollection<GalleryMovie>? GalleryMovies { get; set; }
         public ICollection<MovieLanguage>? MovieLanguages { get; set; }
 
