@@ -77,6 +77,7 @@ builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IFoodRepository, FoodRepository>();
 builder.Services.AddScoped<ISeatRepository, SeatRepository>();
 builder.Services.AddScoped<IGenreRepository, GenreRepository>();
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<IGalleryMovieRepository, GalleryMovieRepository>();
 builder.Services.AddScoped<IGalleryMallRepository, GalleryMallRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();

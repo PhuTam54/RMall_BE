@@ -51,6 +51,8 @@ namespace RMall_BE.Helpers
             CreateMap<MovieLanguageDto, MovieLanguage>();
             CreateMap<GalleryMovie, GalleryMallDto>();
             CreateMap<GalleryMovieDto, GalleryMovie>();
+            CreateMap<Review, ReviewDto>();
+            CreateMap<ReviewDto, Review>();
             #endregion
 
             #region Seat

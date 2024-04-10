@@ -12,7 +12,7 @@ namespace RMall_BE.Models.User
         public string Address { get; set; }
         public ICollection<Order> Orders { get; set; }
         public ICollection<Card> Cards { get; set; }
-        public ICollection<Favorite> Favorites { get; set; }
+        public ICollection<Review> Reviews { get; set; }
 
     }
 }
