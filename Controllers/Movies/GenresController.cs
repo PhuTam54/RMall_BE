@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RMall_BE.Dto.MoviesDto;
+using RMall_BE.Helpers;
 using RMall_BE.Identity;
 using RMall_BE.Interfaces.MovieInterfaces;
 using RMall_BE.Models.Movies.Genres;
@@ -58,7 +59,7 @@ namespace RMall_BE.Controllers.Movies
                 return BadRequest(ModelState);
 
             var genreMap = _mapper.Map<Genre>(genreCreate);
-
+            genreMap.Slug = CreateSlug.Init_Slug(genreCreate.Name);
 
             if (!_genreRepository.CreateGenre(genreMap))
             {
@@ -83,9 +84,10 @@ namespace RMall_BE.Controllers.Movies
             if (id != updatedGenre.Id)
                 return BadRequest(ModelState);
 
+            var genreMap = _mapper.Map<Genre>(updatedGenre);
+            genreMap.Slug = CreateSlug.Init_Slug(updatedGenre.Name);
 
-            var movieMap = _mapper.Map<Genre>(updatedGenre);
-            if (!_genreRepository.UpdateGenre(movieMap))
+            if (!_genreRepository.UpdateGenre(genreMap))
             {
                 ModelState.AddModelError("", "Something went wrong updating Genre!");
                 return StatusCode(500, ModelState);

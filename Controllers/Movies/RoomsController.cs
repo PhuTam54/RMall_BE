@@ -106,6 +106,8 @@ namespace RMall_BE.Controllers.Movies
                 return BadRequest();
 
             var roomMap = _mapper.Map<Room>(updatedRoom);
+            roomMap.Slug = CreateSlug.Init_Slug(updatedRoom.Name);
+
             if (!_roomRepository.UpdateRoom(roomMap))
             {
                 ModelState.AddModelError("", "Something went wrong updating Room!");
