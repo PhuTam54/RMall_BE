@@ -29,6 +29,7 @@ namespace RMall_BE.Repositories.MovieRepositories
                 .Include(m => m.MovieLanguages)
                     .ThenInclude(ml => ml.Language)
                 .Include(m => m.GalleryMovies)
+                .Where(m => m.Shows.Where(s => s.Start_Date.AddDays(7) > DateTime.Now).Any())
                 .ToList();
             return movies;
         }
