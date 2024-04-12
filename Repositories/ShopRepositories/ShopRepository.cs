@@ -15,16 +15,13 @@ namespace RMall_BE.Repositories.ShopRepositories
         }
         public ICollection<Shop> GetAllShop()
         {
-            var shops = _context.Shops
-                .Include(s => s.Category)
-                .Include(s => s.Floor)
-                .ToList();
+            var shops = _context.Shops.ToList();
             return shops;
         }
 
         public Shop GetShopById(int id)
         {
-            return _context.Shops.FirstOrDefault(s => s.Id == id);
+            return _context.Shops.Include(s => s.Products).FirstOrDefault(s => s.Id == id);
 
         }
         public Shop GetShopByName(string name)
