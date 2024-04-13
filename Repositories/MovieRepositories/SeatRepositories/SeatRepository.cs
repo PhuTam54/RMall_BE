@@ -33,14 +33,18 @@ namespace RMall_BE.Repositories.MovieRepositories.SeatRepositories
         public Seat GetSeatById(int id)
         {
             var seat = _context.Seats
-
+                .Include(s => s.SeatType)
+                .ThenInclude(st => st.SeatPricings)
                 .FirstOrDefault(x => x.Id == id);
             return seat;
         }
 
         public ICollection<Seat> GetSeatByRoomId(int roomId)
         {
-            var seats = _context.Seats.Where(s => s.Room.Id == roomId).ToList();
+            var seats = _context.Seats
+                .Include(s => s.SeatType)
+                .ThenInclude(st => st.SeatPricings)
+                .Where(s => s.Room.Id == roomId).ToList();
             return seats;
         }
 

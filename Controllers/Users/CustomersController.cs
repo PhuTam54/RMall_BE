@@ -71,6 +71,11 @@ namespace RMall_BE.Controllers.Users
 
             var userMap = _mapper.Map<Customer>(userCreate);
             userMap.Role = 1;
+            userMap.Status = 0;
+            userMap.Address = "";
+            userMap.FullName = "";
+            userMap.Date_Of_Birth = DateTime.UtcNow;
+            userMap.Phone_Number = "";
             // Hash và gán mật khẩu vào đối tượng Customer
             userMap.Password = LoginRegisterController.HashPassword(userMap.Password);
 

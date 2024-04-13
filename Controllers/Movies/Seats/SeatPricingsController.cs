@@ -85,7 +85,6 @@ namespace RMall_BE.Controllers.Movies.Seats
             seatPricingMap.Show = _showRepository.GetShowById(showId);
             seatPricingMap.SeatType = _seatTypeRepository.GetSeatTypeById(seatTypeId);
 
-
             if (!_seatPricingRepository.CreateSeatPricing(seatPricingMap))
             {
                 ModelState.AddModelError("", "Something went wrong while savin");

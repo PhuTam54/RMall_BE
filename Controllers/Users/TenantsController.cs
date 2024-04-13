@@ -70,9 +70,14 @@ namespace RMall_BE.Controllers.Users
                 return BadRequest(ModelState);
 
             var userMap = _mapper.Map<Tenant>(userCreate);
+            userMap.Role = 3;
+            userMap.Status = 0;
+            userMap.Address = "";
+            userMap.FullName = "";
+            userMap.Date_Of_Birth = DateTime.UtcNow;
+            userMap.Phone_Number = "";
             // Hash và gán mật khẩu vào đối tượng Tenant
             userMap.Password = LoginRegisterController.HashPassword(userMap.Password);
-            userMap.Role = 3;
 
             if (!_userRepository.CreateUser(userMap))
             {

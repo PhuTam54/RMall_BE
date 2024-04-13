@@ -71,7 +71,7 @@ namespace RMall_BE.Controllers.Movies.Seats
                 return BadRequest(ModelState);
 
             var seatTypeMap = _mapper.Map<SeatType>(seatTypeCreate);
-
+            seatTypeMap.SeatPricings = new List<SeatPricing>();
 
             if (!_seatTypeRepository.CreateSeatType(seatTypeMap))
             {

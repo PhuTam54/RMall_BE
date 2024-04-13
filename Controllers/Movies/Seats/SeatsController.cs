@@ -82,6 +82,8 @@ namespace RMall_BE.Controllers.Movies.Seats
                 return BadRequest(ModelState);
 
             var seatMap = _mapper.Map<Seat>(seatCreate);
+            seatMap.Seat_Type_Id = seatTypeId;
+            seatMap.Room_Id = roomId;
             seatMap.Room = _roomRepository.GetRoomById(roomId);
             seatMap.SeatType = _seatTypeRepository.GetSeatTypeById(seatTypeId);
 
@@ -108,8 +110,8 @@ namespace RMall_BE.Controllers.Movies.Seats
             if (id != updatedSeat.Id)
                 return BadRequest(ModelState);
 
-
             var seatMap = _mapper.Map<Seat>(updatedSeat);
+
             if (!_seatRepository.UpdateSeat(seatMap))
             {
                 ModelState.AddModelError("", "Something went wrong updating seat");

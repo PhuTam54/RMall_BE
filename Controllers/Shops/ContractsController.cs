@@ -63,7 +63,7 @@ namespace RMall_BE.Controllers.Shops
         /// </remarks>
         /// <returns></returns>
         [Authorize]
-        [RequiresClaim(IdentityData.RoleClaimName, "Tenant")]
+        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpPost]
         public IActionResult CreateContract([FromQuery] int shopId, [FromQuery] int tenantId, [FromBody] ContractDto contractCreate)
         {
