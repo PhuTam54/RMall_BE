@@ -77,8 +77,9 @@ namespace RMall_BE.Controllers.Movies.Seats
                 ModelState.AddModelError("", "Something went wrong while savin");
                 return StatusCode(500, ModelState);
             }
+            var seatReservation = _mapper.Map<SeatReservationDto>(seatReservationMap);
 
-            return Ok("Successfully created");
+            return Ok(seatReservation);
         }
 
         [HttpPut]
