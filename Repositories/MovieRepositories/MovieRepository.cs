@@ -34,6 +34,18 @@ namespace RMall_BE.Repositories.MovieRepositories
             return movies;
         }
 
+        public ICollection<Movie> GetAllMovieForAdmin()
+        {
+            var movies = _context.Movies
+                .Include(m => m.MovieGenres)
+                    .ThenInclude(mg => mg.Genre)
+                .Include(m => m.MovieLanguages)
+                    .ThenInclude(ml => ml.Language)
+                .Include(m => m.GalleryMovies)
+                .ToList();
+            return movies;
+        }
+
 
         public Movie GetMovieById(int id)
         {

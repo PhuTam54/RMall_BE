@@ -7,6 +7,7 @@ namespace RMall_BE.Interfaces.MovieInterfaces
     public interface IMovieRepository
     {
         ICollection<Movie> GetAllMovie();
+        ICollection<Movie> GetAllMovieForAdmin();
         Movie GetMovieById(int id);
         ICollection<Movie> GetMovieByGenreId(int genreId);
         ICollection<Movie> GetMovieByLanguageId(int languageId);

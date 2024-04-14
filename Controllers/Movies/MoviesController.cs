@@ -41,6 +41,16 @@ namespace RMall_BE.Controllers.Movies
         }
 
         [HttpGet]
+        [Route("admin")]
+        public IActionResult GetAllMovieForAdmin()
+        {
+
+            var movies = _mapper.Map<List<MovieDto>>(_movieRepository.GetAllMovieForAdmin());
+
+            return Ok(movies);
+        }
+
+        [HttpGet]
         [Route("id")]
         public IActionResult GetMovieById(int id)
         {
