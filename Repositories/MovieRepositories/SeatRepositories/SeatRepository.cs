@@ -48,6 +48,16 @@ namespace RMall_BE.Repositories.MovieRepositories.SeatRepositories
             return seats;
         }
 
+        public ICollection<Seat> GetSeatByRoomAndShowId(int roomId, int showId)
+        {
+            var seats = _context.Seats
+                .Include(s => s.SeatType)
+                    .ThenInclude(st => st.SeatPricings)
+                .Include(s => s.SeatReservations.Where(SeatRepositories => SeatRepositories.Show_Id == showId))
+                .Where(s => s.Room.Id == roomId).ToList();
+            return seats;
+        }
+
         public bool CreateSeat(Seat seat)
         {
             _context.Add(seat);
