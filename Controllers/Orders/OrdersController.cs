@@ -181,7 +181,7 @@ namespace RMall_BE.Controllers.Orders
         }
 
         [Authorize]
-        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
+        [RequiresClaim(IdentityData.RoleClaimName, "Customer")]
         [HttpPut]
         [Route("id")]
         public IActionResult UpdateOrder(int id, [FromBody] OrderDto updatedOrder)
