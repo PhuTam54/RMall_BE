@@ -7,5 +7,6 @@
         public DateTime Start_Date { get; set; }
         public int Room_Id { get; set; }
         public int Movie_Id { get; set; }
+        public RoomDto Room { get; set; }
     }
 }
