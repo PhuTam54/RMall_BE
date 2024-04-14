@@ -339,7 +339,7 @@ namespace RMallBE.Migrations
                     b.Property<DateTime>("Created_At")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Deleted_At")
+                    b.Property<DateTime?>("Deleted_At")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("MovieId")
@@ -355,7 +355,7 @@ namespace RMallBE.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Updated_At")
+                    b.Property<DateTime?>("Updated_At")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("UserId")
@@ -484,9 +484,17 @@ namespace RMallBE.Migrations
                     b.Property<int>("Seat_Id")
                         .HasColumnType("int");
 
+                    b.Property<int>("ShowId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Show_Id")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("SeatId");
+
+                    b.HasIndex("ShowId");
 
                     b.ToTable("SeatReservations");
                 });
@@ -1155,7 +1163,15 @@ namespace RMallBE.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("RMall_BE.Models.Movies.Show", "Show")
+                        .WithMany()
+                        .HasForeignKey("ShowId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Seat");
+
+                    b.Navigation("Show");
                 });
 
             modelBuilder.Entity("RMall_BE.Models.Movies.Show", b =>

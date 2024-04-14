@@ -21,13 +21,15 @@ namespace RMall_BE.Controllers.Movies.Seats
         private readonly IMapper _mapper;
         private readonly IRoomRepository _roomRepository;
         private readonly ISeatTypeRepository _seatTypeRepository;
+        private readonly IShowRepository _showRepository;
 
-        public SeatsController(ISeatRepository seatRepository, IMapper mapper,IRoomRepository roomRepository,ISeatTypeRepository seatTypeRepository)
+        public SeatsController(ISeatRepository seatRepository, IMapper mapper,IRoomRepository roomRepository,ISeatTypeRepository seatTypeRepository, IShowRepository showRepository)
         {
             _seatRepository = seatRepository;
             _mapper = mapper;
             _roomRepository = roomRepository;
             _seatTypeRepository = seatTypeRepository;
+            _showRepository = showRepository;
         }
 
         [HttpGet]
@@ -55,12 +57,26 @@ namespace RMall_BE.Controllers.Movies.Seats
 
         [HttpGet]
         [Route("roomId")]
-        public IActionResult GetSeatByRoomID(int roomId)
+        public IActionResult GetSeatByRoomId(int roomId)
         {
             if (!_roomRepository.RoomExist(roomId))
                 return NotFound("Room Not Found!");
 
             var seats = _mapper.Map<List<SeatDto>>(_seatRepository.GetSeatByRoomId(roomId));
+
+            return Ok(seats);
+        }
+
+        [HttpGet]
+        [Route("reservation")]
+        public IActionResult GetSeatByRoomAndShowId(int roomId, int showId)
+        {
+            if (!_roomRepository.RoomExist(roomId))
+                return NotFound("Room Not Found!");
+            if (!_showRepository.ShowExist(showId))
+                return NotFound("Show Not Found!");
+
+            var seats = _mapper.Map<List<SeatDto>>(_seatRepository.GetSeatByRoomAndShowId(roomId, showId));
 
             return Ok(seats);
         }

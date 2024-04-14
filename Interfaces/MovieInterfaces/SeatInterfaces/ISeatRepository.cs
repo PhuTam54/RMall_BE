@@ -7,7 +7,8 @@ namespace RMall_BE.Interfaces.MovieInterfaces.SeatInterfaces
         ICollection<Seat> GetAllSeat();
         Seat GetSeatById(int id);
         ICollection<Seat> GetSeatByRoomId(int roomId);
-        bool CreateSeat(Seat seat);
+        ICollection<Seat> GetSeatByRoomAndShowId(int roomId, int showId);
+        bool CreateSeat(Seat seat); 
         bool UpdateSeat(Seat seat);
         bool DeleteSeat(Seat seat);
         bool SeatExist(int id);

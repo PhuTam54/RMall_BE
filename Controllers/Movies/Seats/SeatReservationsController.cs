@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using RMall_BE.Dto;
 using RMall_BE.Dto.MoviesDto.SeatsDto;
 using RMall_BE.Interfaces;
+using RMall_BE.Interfaces.MovieInterfaces;
 using RMall_BE.Interfaces.MovieInterfaces.SeatInterfaces;
 using RMall_BE.Models;
 using RMall_BE.Models.Movies.Seats;
@@ -18,12 +19,14 @@ namespace RMall_BE.Controllers.Movies.Seats
         private readonly ISeatReservationRepository _seatReservationRepository;
         private readonly IMapper _mapper;
         private readonly ISeatRepository _seatRepository;
+        private readonly IShowRepository _showRepository;
 
-        public SeatReservationsController(ISeatReservationRepository seatReservationRepository, IMapper mapper, ISeatRepository seatRepository)
+        public SeatReservationsController(ISeatReservationRepository seatReservationRepository, IMapper mapper, ISeatRepository seatRepository, IShowRepository showRepository)
         {
             _seatReservationRepository = seatReservationRepository;
             _mapper = mapper;
             _seatRepository = seatRepository;
+            _showRepository = showRepository;
         }
 
         [HttpGet]
@@ -51,10 +54,12 @@ namespace RMall_BE.Controllers.Movies.Seats
         }
 
         [HttpPost]
-        public IActionResult CreateSeatReservation([FromQuery] int seatId,[FromBody] SeatReservationDto seatReservationCreate)
+        public IActionResult CreateSeatReservation([FromQuery] int seatId, [FromQuery] int showId, [FromBody] SeatReservationDto seatReservationCreate)
         {
             if (!_seatRepository.SeatExist(seatId))
                 return NotFound("Seat Not Found");
+            if (!_showRepository.ShowExist(showId))
+                return NotFound("Show Not Found");
             if (seatReservationCreate == null)
                 return BadRequest(ModelState);
 
@@ -63,7 +68,9 @@ namespace RMall_BE.Controllers.Movies.Seats
 
             var seatReservationMap = _mapper.Map<SeatReservation>(seatReservationCreate);
             seatReservationMap.Seat = _seatRepository.GetSeatById(seatId);
-
+            seatReservationMap.Seat_Id = seatId;
+            seatReservationMap.Show = _showRepository.GetShowById(showId);
+            seatReservationMap.Show_Id = showId;
 
             if (!_seatReservationRepository.CreateSeatReservation(seatReservationMap))
             {
