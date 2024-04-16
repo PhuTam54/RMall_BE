@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <Folder Include="Services\Momo\" />
+    <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 	
 	<PropertyGroup>

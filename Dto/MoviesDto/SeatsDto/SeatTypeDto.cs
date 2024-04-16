@@ -6,7 +6,7 @@ namespace RMall_BE.Dto.MoviesDto.SeatsDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<SeatPricingDto> SeatPricings { get; set; }
+      //  public ICollection<SeatPricingDto> SeatPricings { get; set; }
 
     }
 }

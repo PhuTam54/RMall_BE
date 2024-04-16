@@ -111,8 +111,8 @@ namespace RMall_BE.Controllers.Users
             return NoContent();
         }
 
-        [Authorize]
-        [RequiresClaim(IdentityData.RoleClaimName, "Admin")]
+        //[Authorize]
+        //[RequiresClaim(IdentityData.RoleClaimName, "Admin")]
         [HttpDelete]
         [Route("id")]
         public IActionResult DeleteUser(int id)

@@ -125,8 +125,8 @@ namespace RMall_BE.Controllers.Shops
             if (updatedShop == null)
                 return BadRequest(ModelState);
 
-            if (id != updatedShop.Id)
-                return BadRequest(ModelState);
+            //if (id != updatedShop.Id)
+            //    return BadRequest(ModelState);
 
             if (!ModelState.IsValid)
                 return BadRequest();
