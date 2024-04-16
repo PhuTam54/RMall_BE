@@ -30,14 +30,17 @@ namespace RMall_BE.Repositories.OrderRepositories
             return Save();
         }
 
-        public ICollection<Order> GetAllOrder()
-        {
-            var orders = _context.Orders
-                .ToList();
-            return orders;
-        }
 
-        public Order GetOrderById(int id)
+		public ICollection<Order> GetAllOrder()
+		{
+			var orders = _context.Orders
+				.Include(u => u.User)
+				.Include(sh => sh.Show)
+				.ToList();
+			return orders;
+		}
+
+		public Order GetOrderById(int id)
         {
             return _context.Orders
                 .Include(o => o.OrderFoods)

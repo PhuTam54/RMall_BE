@@ -30,16 +30,53 @@ namespace RMall_BE.Repositories.MovieRepositories
             return Save();
         }
 
-        public ICollection<Show> GetAllShow()
-        {
-            var shows = _context.Shows
-                .Include(r => r.Room)
-                .ThenInclude(s => s.Seats)
-                .ToList();
-            return shows;
-        }
+		public ICollection<Show> GetAllShow()
+		{
+			var shows = _context.Shows
+				.Include(m => m.Movie)
+				.Include(r => r.Room)
+				.ThenInclude(s => s.Seats)
+				.ToList();
+			return shows;
+		}
 
-        public Show GetShowById(int id)
+		
+		public ICollection<Show> GetShowing(DateTime timeNow)
+		{
+			//var timeNow = DateTime.UtcNow;
+			var shows = _context.Shows
+				.Include(m => m.Movie)
+				.Include(r => r.Room)
+				.ThenInclude(s => s.Seats)
+				.Include(o => o.Orders)
+				.ThenInclude(t => t.Tickets)
+				.ToList();
+			List<Show> showing = new List<Show>();
+
+			foreach (var show in shows)
+			{
+				string[] parts = show.Movie.Duration.Split(new string[] { " hrs ", " mins" }, StringSplitOptions.RemoveEmptyEntries);
+
+				if (parts.Length == 2)
+				{
+					if (int.TryParse(parts[0], out int hours) && int.TryParse(parts[1], out int minutes))
+					{
+						TimeSpan movieDuration = new TimeSpan(hours, minutes, 0);
+						DateTime showEndTime = show.Start_Date + movieDuration;
+
+						if (timeNow >= show.Start_Date && timeNow <= showEndTime)
+						{
+							showing.Add(show);
+						}
+					}
+				}
+
+			}
+			showing = showing.OrderByDescending(s => s.GetNumberOfReservedSeats()).ToList();
+			return showing;
+		}
+
+		public Show GetShowById(int id)
         {
             return _context.Shows.FirstOrDefault(s => s.Id == id);
         }

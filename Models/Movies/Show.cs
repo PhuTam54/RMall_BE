@@ -14,7 +14,12 @@ namespace RMall_BE.Models.Movies
         public Room Room { get; set; }
         public ICollection<Order> Orders { get; set; }
         public ICollection<SeatPricing> SeatPricings { get; set; }
+		public int GetNumberOfReservedSeats()
+		{
+			var countShow = Orders.Where(o => o.Show.Id == this.Id).Sum(o => o.Tickets.Count);
 
+			return countShow > 0 ? countShow : 0;
+		}
 
-    }
+	}
 }
