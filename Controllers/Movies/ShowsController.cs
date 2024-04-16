@@ -34,16 +34,24 @@ namespace RMall_BE.Controllers.Movies
             _foodRepository = foodRepository;
         }
 
-        [HttpGet]
-        public IActionResult GetAllShow()
-        {
+		[HttpGet]
+		public IActionResult GetAllShow()
+		{
 
-            var shows = _mapper.Map<List<ShowDto>>(_showRepository.GetAllShow()); 
+			var shows = _showRepository.GetAllShow();
 
-            return Ok(shows);
-        }
+			return Ok(shows);
+		}
 
-        [HttpGet]
+		[HttpGet]
+		[Route("timeNow")]
+		public IActionResult GetAllShowing(DateTime timeNow)
+		{
+			var shows = _showRepository.GetShowing(timeNow);
+			return Ok(shows);
+		}
+
+		[HttpGet]
         [Route("id")]
         public IActionResult GetShowById(int id)
         {
