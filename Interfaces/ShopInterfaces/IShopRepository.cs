@@ -9,6 +9,7 @@ namespace RMall_BE.Interfaces.ShopInterfaces
         Shop GetShopById(int id);
         Shop GetShopByName(string name);
         ICollection<Shop> GetShopOfCategory(int categoryId);
+        ICollection<Shop> GetShopByFloorId(int floorId);
         bool CreateShop(Shop shop);
         bool UpdateShop(Shop shop);
         bool DeleteShop(Shop shop);

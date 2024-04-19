@@ -50,6 +50,20 @@ namespace RMall_BE.Controllers.Shops
 
             return Ok(shop);
         }
+        [HttpGet]
+        [Route("floor")]
+        public IActionResult GetShopByFloorId(int floorId)
+        {
+            if (!_floorRepository.FloorExist(floorId))
+                return NotFound();
+
+            var shop = _mapper.Map<List<ShopDto>>(_shopRepository.GetShopByFloorId(floorId));
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(shop);
+        }
 
         [HttpGet]
         [Route("name")]

@@ -33,6 +33,13 @@ namespace RMall_BE.Repositories.ShopRepositories
         {
             return _context.Shops.Where(s => s.Category_Id == categoryId).ToList();
         }
+        public ICollection<Shop> GetShopByFloorId(int floorId)
+        {
+            return _context.Shops
+                .Include(s => s.Floor)
+                .Include(s => s.Category)
+                .Where(s => s.Floor.Id == floorId).ToList();
+        }
         public bool CreateShop(Shop shop)
         {
             _context.Add(shop);
@@ -49,8 +56,6 @@ namespace RMall_BE.Repositories.ShopRepositories
             return Save();
         }
 
-
-
         public bool Save()
         {
             var saved = _context.SaveChanges();
@@ -61,7 +66,5 @@ namespace RMall_BE.Repositories.ShopRepositories
         {
             return _context.Shops.Any(s => s.Id == id);
         }
-
-
     }
 }
