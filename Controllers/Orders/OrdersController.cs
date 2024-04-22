@@ -82,7 +82,7 @@ namespace RMall_BE.Controllers.Orders
             if (!_userRepository.UserExist(userId))
                 return NotFound("User Not Found!");
 
-            var orders = _mapper.Map<List<OrderDto>>(_orderRepository.GetOrderByUserId(userId));
+            var orders = _mapper.Map<List<OrderReturnDto>>(_orderRepository.GetOrderByUserId(userId));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

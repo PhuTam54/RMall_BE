@@ -70,6 +70,8 @@ namespace RMall_BE.Helpers
             #region Order
             CreateMap<Order, OrderDto>();
             CreateMap<OrderDto, Order>();
+            CreateMap<Order, OrderReturnDto>();
+            CreateMap<OrderReturnDto, Order>();
             CreateMap<Ticket, TicketDto>();
             CreateMap<TicketDto, Ticket>();
             CreateMap<OrderFood, OrderFoodDto>();

@@ -71,6 +71,10 @@ namespace RMall_BE.Repositories.OrderRepositories
                     .ThenInclude(t => t.Seat)
                         .ThenInclude(s => s.SeatType)
                             .ThenInclude(st => st.SeatPricings)
+                .Include(o => o.Show)
+                    .ThenInclude(st => st.Movie)
+                        .ThenInclude(m => m.MovieGenres)
+                            .ThenInclude(mg => mg.Genre)
                 .Where(o => o.User_Id == userId).ToList();
         }
 
